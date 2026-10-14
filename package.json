@@ -1,0 +1,31 @@
+{
+  "name": "science-video-factory",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Manifest-driven science explainer videos built with Remotion.",
+  "type": "module",
+  "scripts": {
+    "dev": "remotion studio --no-open",
+    "studio": "remotion studio --no-open",
+    "validate": "tsx scripts/validate.ts",
+    "preview": "tsx scripts/preview.ts",
+    "render": "tsx scripts/render.ts",
+    "still": "tsx scripts/still.ts",
+    "new-episode": "tsx scripts/new-episode.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.535",
+    "@remotion/player": "4.0.535",
+    "remotion": "4.0.535",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.6.3"
+  }
+}
