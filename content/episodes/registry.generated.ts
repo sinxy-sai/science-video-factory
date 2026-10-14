@@ -1,17 +1,8 @@
-// Temporary compatibility registry. Run the registry generator to replace this file.
+// GENERATED FILE. Run npm run generate-registry to update.
 import type {EpisodeModule} from '../episode-module';
-import {manifest as howMemoryWorksManifest} from './how-memory-works/manifest';
-import {manifest as whatIsTransformerManifest} from './what-is-transformer/manifest';
-import {manifest as whySkyBlueManifest} from './why-sky-blue/manifest';
-
-const createModule = (manifest: EpisodeModule['manifest']): EpisodeModule => ({
-  manifest,
-  renderScene: () => null,
-});
-
-const howMemoryWorks = createModule(howMemoryWorksManifest);
-const whatIsTransformer = createModule(whatIsTransformerManifest);
-const whySkyBlue = createModule(whySkyBlueManifest);
+import {episode as howMemoryWorks} from './how-memory-works/episode';
+import {episode as whatIsTransformer} from './what-is-transformer/episode';
+import {episode as whySkyBlue} from './why-sky-blue/episode';
 
 export const episodeRegistry: Record<string, EpisodeModule> = {
   [howMemoryWorks.manifest.id]: howMemoryWorks,

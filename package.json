@@ -12,6 +12,7 @@
     "render": "tsx scripts/render.ts",
     "still": "tsx scripts/still.ts",
     "new-episode": "tsx scripts/new-episode.ts",
+    "generate-registry": "tsx scripts/generate-registry.ts",
     "test": "npm run typecheck && npm run validate -- why-sky-blue && npm run validate -- how-memory-works && npm run validate -- what-is-transformer",
     "typecheck": "tsc --noEmit"
   },
