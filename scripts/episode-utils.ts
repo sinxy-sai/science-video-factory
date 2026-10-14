@@ -1,7 +1,8 @@
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join, resolve} from 'node:path';
-import {getEpisodeManifest} from '../content/episodes';
-import {episodeManifestSchema, totalDurationInFrames, type EpisodeManifest} from '../content/schema';
+import {getEpisodeModule} from '../content/episodes/registry.generated';
+import type {EpisodeModule} from '../content/episode-module';
+import {totalDurationInFrames, type EpisodeManifest} from '../content/schema';
 
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -12,10 +13,13 @@ export function assertEpisodeId(id: string): string {
   return id;
 }
 
-export async function loadEpisodeManifest(id: string): Promise<EpisodeManifest> {
+export async function loadEpisodeModule(id: string): Promise<EpisodeModule> {
   const safeId = assertEpisodeId(id);
-  const manifest = getEpisodeManifest(safeId);
-  return episodeManifestSchema.parse(manifest);
+  return getEpisodeModule(safeId);
+}
+
+export async function loadEpisodeManifest(id: string): Promise<EpisodeManifest> {
+  return (await loadEpisodeModule(id)).manifest;
 }
 
 export function writePropsFile(manifest: EpisodeManifest): string {

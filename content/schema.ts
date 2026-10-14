@@ -3,18 +3,7 @@ import {z} from 'zod';
 export const formatSchema = z.enum(['landscape', 'portrait']);
 export type VideoFormat = z.infer<typeof formatSchema>;
 
-export const visualTypeSchema = z.enum([
-  'title',
-  'spectrum',
-  'scattering',
-  'connection',
-  'comparison',
-  'transformer-tokens',
-  'transformer-attention',
-  'transformer-parallel',
-  'transformer-stack',
-  'summary',
-]);
+export const visualTypeSchema = z.string().min(1);
 export type VisualType = z.infer<typeof visualTypeSchema>;
 
 const audioSchema = z

@@ -28,9 +28,7 @@ export const SceneRenderer: React.FC<{scene: SceneManifest}> = ({scene}) => {
       return <TransformerDiagram mode="stack" />;
     case 'summary':
       return <ConclusionDiagram />;
-    default: {
-      const exhaustive: never = scene.visual;
-      return exhaustive;
-    }
+    default:
+      return null;
   }
 };
