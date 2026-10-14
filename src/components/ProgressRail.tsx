@@ -1,6 +1,6 @@
 import React from 'react';
 import {interpolate} from 'remotion';
-import {theme} from '../theme/theme';
+import {theme} from '../shared/theme/theme';
 
 type ProgressRailProps = {
   progress: number;
@@ -14,3 +14,4 @@ export const ProgressRail: React.FC<ProgressRailProps> = ({progress}) => {
     </div>
   );
 };
+

@@ -1,10 +1,10 @@
 import React from 'react';
 import type {SceneManifest} from '../../content/schema';
-import {SpectrumDiagram} from '../visuals/SpectrumDiagram';
-import {ScatteringDiagram} from '../visuals/ScatteringDiagram';
-import {ConnectionDiagram} from '../visuals/ConnectionDiagram';
-import {ConclusionDiagram} from '../visuals/ConclusionDiagram';
-import {TransformerDiagram} from '../visuals/TransformerDiagram';
+import {SpectrumScene as SpectrumDiagram} from '../../content/episodes/why-sky-blue/scenes/SpectrumScene';
+import {ScatteringScene as ScatteringDiagram} from '../../content/episodes/why-sky-blue/scenes/ScatteringScene';
+import {ConnectionScene as ConnectionDiagram} from '../../content/episodes/how-memory-works/scenes/ConnectionScene';
+import {ConclusionDiagram} from '../shared/visuals/ConclusionDiagram';
+import {TransformerScene as TransformerDiagram} from '../../content/episodes/what-is-transformer/scenes/TransformerScene';
 
 export const SceneRenderer: React.FC<{scene: SceneManifest}> = ({scene}) => {
   switch (scene.visual) {
@@ -18,13 +18,13 @@ export const SceneRenderer: React.FC<{scene: SceneManifest}> = ({scene}) => {
       return <ConnectionDiagram />;
     case 'comparison':
       return <ScatteringDiagram comparison />;
-    case 'transformer-tokens':
+    case 'tokens':
       return <TransformerDiagram mode="tokens" />;
-    case 'transformer-attention':
+    case 'attention':
       return <TransformerDiagram mode="attention" />;
-    case 'transformer-parallel':
+    case 'parallel':
       return <TransformerDiagram mode="parallel" />;
-    case 'transformer-stack':
+    case 'stack':
       return <TransformerDiagram mode="stack" />;
     case 'summary':
       return <ConclusionDiagram />;
@@ -32,3 +32,4 @@ export const SceneRenderer: React.FC<{scene: SceneManifest}> = ({scene}) => {
       return null;
   }
 };
+

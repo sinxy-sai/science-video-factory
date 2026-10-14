@@ -2,7 +2,7 @@ import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
 import type {SceneManifest} from '../../content/schema';
 import {ProgressRail} from './ProgressRail';
-import {theme} from '../theme/theme';
+import {theme} from '../shared/theme/theme';
 
 type SceneFrameProps = {
   scene: SceneManifest;
@@ -32,3 +32,4 @@ export const SceneFrame: React.FC<SceneFrameProps> = ({scene, sceneIndex, sceneC
     </div>
   );
 };
+

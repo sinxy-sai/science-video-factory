@@ -1,11 +1,11 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
-import {theme} from '../theme/theme';
+import {theme} from '../../../../src/shared/theme/theme';
 
 const colors = ['#D94C4C', '#F08B4B', '#F1D34A', '#7FD17D', '#55B7FF', '#6978D8', '#A66BCE'];
 const labels = ['红', '橙', '黄', '绿', '蓝', '靛', '紫'];
 
-export const SpectrumDiagram: React.FC = () => {
+export const SpectrumScene: React.FC = () => {
   const frame = useCurrentFrame();
   const reveal = interpolate(frame, [10, 70], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
@@ -30,3 +30,5 @@ export const SpectrumDiagram: React.FC = () => {
     </svg>
   );
 };
+
+

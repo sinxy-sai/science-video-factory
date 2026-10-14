@@ -1,6 +1,6 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
-import {theme} from '../theme/theme';
+import {theme} from '../../../../src/shared/theme/theme';
 
 const nodes = [
   {x: 250, y: 180, label: '注意'},
@@ -12,7 +12,7 @@ const nodes = [
 
 const edges = [[0, 1], [1, 2], [0, 3], [1, 3], [1, 4], [2, 4], [3, 4]];
 
-export const ConnectionDiagram: React.FC = () => {
+export const ConnectionScene: React.FC = () => {
   const frame = useCurrentFrame();
   const reveal = interpolate(frame, [0, 90], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   return (
@@ -33,3 +33,5 @@ export const ConnectionDiagram: React.FC = () => {
     </svg>
   );
 };
+
+

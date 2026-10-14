@@ -1,8 +1,8 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
-import {theme} from '../theme/theme';
+import {theme} from '../../../../src/shared/theme/theme';
 
-export const ScatteringDiagram: React.FC<{comparison?: boolean}> = ({comparison = false}) => {
+export const ScatteringScene: React.FC<{comparison?: boolean}> = ({comparison = false}) => {
   const frame = useCurrentFrame();
   const travel = interpolate(frame, [0, 150], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const rayCount = comparison ? 8 : 12;
@@ -48,3 +48,5 @@ export const ScatteringDiagram: React.FC<{comparison?: boolean}> = ({comparison 
     </svg>
   );
 };
+
+

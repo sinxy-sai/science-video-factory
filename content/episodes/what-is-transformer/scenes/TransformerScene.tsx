@@ -1,13 +1,13 @@
 import React from 'react';
 import {interpolate, useCurrentFrame} from 'remotion';
-import {theme} from '../theme/theme';
+import {theme} from '../../../../src/shared/theme/theme';
 
 type TransformerMode = 'tokens' | 'attention' | 'parallel' | 'stack';
 
 const tokens = ['我', '喜欢', '学习', 'AI'];
 const tokenColors = ['#55B7FF', '#7FE0B0', '#FFB36B', '#C59BFF'];
 
-export const TransformerDiagram: React.FC<{mode: TransformerMode}> = ({mode}) => {
+export const TransformerScene: React.FC<{mode: TransformerMode}> = ({mode}) => {
   const frame = useCurrentFrame();
   const reveal = interpolate(frame, [0, 40], [0, 1], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   if (mode === 'tokens') return <Tokens mode={mode} reveal={reveal} frame={frame} />;
@@ -116,3 +116,5 @@ const Stack: React.FC<{reveal: number; frame: number}> = ({reveal, frame}) => {
     </svg>
   );
 };
+
+
