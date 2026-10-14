@@ -43,3 +43,11 @@ Replaced `.extend(...)` with `.safeExtend(...)` in all three episode modules so 
 - `npm run validate -- why-sky-blue`: exited with code 0; valid manifest, 1020 frames.
 - `npm run validate -- how-memory-works`: exited with code 0; valid manifest, 570 frames.
 - `npm run validate -- what-is-transformer`: exited with code 0; valid manifest, 1350 frames.
+
+## EOF cleanup verification
+
+- `npm run typecheck`: exited with code 0.
+- `npm run validate -- why-sky-blue`: exited with code 0; valid manifest, 1020 frames.
+- `npm run validate -- how-memory-works`: exited with code 0; valid manifest, 570 frames.
+- `npm run validate -- what-is-transformer`: exited with code 0; valid manifest, 1350 frames.
+- `git diff --check 4cd6395..HEAD`: exited with code 0 after removing the three episode EOF blank lines and the pre-existing task-4 report EOF blank line.
