@@ -35,4 +35,3 @@ export const ConclusionDiagram: React.FC = () => {
     </svg>
   );
 };
-

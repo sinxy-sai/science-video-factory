@@ -30,5 +30,3 @@ export const SpectrumScene: React.FC = () => {
     </svg>
   );
 };
-
-

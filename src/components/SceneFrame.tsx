@@ -32,4 +32,3 @@ export const SceneFrame: React.FC<SceneFrameProps> = ({scene, sceneIndex, sceneC
     </div>
   );
 };
-

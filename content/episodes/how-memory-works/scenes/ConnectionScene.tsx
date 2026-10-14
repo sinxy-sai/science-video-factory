@@ -33,5 +33,3 @@ export const ConnectionScene: React.FC = () => {
     </svg>
   );
 };
-
-

@@ -12,7 +12,7 @@
 
 ## Commit
 
-`32675183942974247e76a6fdbbfae90f48acdc0d`
+`dbdf8e202f1df0125dbf79ba57871e165576f16b`
 
 ## Test
 
@@ -23,3 +23,9 @@ Output: exited with code 0; TypeScript completed without errors.
 ## Concerns
 
 The temporary central `SceneRenderer` remains until Task 4 and currently retains compatibility imports/switching. Task 3 is expected to replace the temporary registry, and Task 4 will complete central renderer delegation.
+## Fix follow-up
+
+Updated the report commit hash and removed extra end-of-file blank lines from changed files.
+
+Verification rerun: npm run typecheck exited 0 with no TypeScript errors. git diff --check HEAD^..HEAD is clean.
+pm run typecheck exited 0 with no TypeScript errors. git diff --check 4cd6395..HEAD reports the pre-amend committed EOF blank lines; the cleanup is included in this follow-up commit.

@@ -32,4 +32,3 @@ export const SceneRenderer: React.FC<{scene: SceneManifest}> = ({scene}) => {
       return null;
   }
 };
-

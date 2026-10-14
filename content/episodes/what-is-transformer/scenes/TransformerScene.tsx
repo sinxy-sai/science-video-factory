@@ -116,5 +116,3 @@ const Stack: React.FC<{reveal: number; frame: number}> = ({reveal, frame}) => {
     </svg>
   );
 };
-
-

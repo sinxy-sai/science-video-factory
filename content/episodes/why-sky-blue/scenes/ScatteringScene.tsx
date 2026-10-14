@@ -48,5 +48,3 @@ export const ScatteringScene: React.FC<{comparison?: boolean}> = ({comparison = 
     </svg>
   );
 };
-
-

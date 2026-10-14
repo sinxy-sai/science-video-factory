@@ -14,4 +14,3 @@ export const ProgressRail: React.FC<ProgressRailProps> = ({progress}) => {
     </div>
   );
 };
-
