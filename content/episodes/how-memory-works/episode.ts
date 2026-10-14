@@ -8,7 +8,7 @@ import {ConclusionDiagram} from '../../../src/shared/visuals/ConclusionDiagram';
 import {ConnectionScene} from './scenes/ConnectionScene';
 
 const memoryVisualSchema = z.enum(['title', 'connection', 'summary']);
-const localManifestSchema = episodeManifestSchema.extend({
+const localManifestSchema = episodeManifestSchema.safeExtend({
   scenes: z.array(sceneSchema.extend({visual: memoryVisualSchema})),
 });
 const validatedManifest = localManifestSchema.parse(manifest);
@@ -24,3 +24,4 @@ export const episode: EpisodeModule = {
     }
   },
 };
+

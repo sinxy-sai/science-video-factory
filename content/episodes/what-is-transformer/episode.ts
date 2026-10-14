@@ -8,7 +8,7 @@ import {ConclusionDiagram} from '../../../src/shared/visuals/ConclusionDiagram';
 import {TransformerScene} from './scenes/TransformerScene';
 
 const transformerVisualSchema = z.enum(['title', 'tokens', 'attention', 'parallel', 'stack', 'summary']);
-const localManifestSchema = episodeManifestSchema.extend({
+const localManifestSchema = episodeManifestSchema.safeExtend({
   scenes: z.array(sceneSchema.extend({visual: transformerVisualSchema})),
 });
 const validatedManifest = localManifestSchema.parse(manifest);
@@ -27,3 +27,4 @@ export const episode: EpisodeModule = {
     }
   },
 };
+

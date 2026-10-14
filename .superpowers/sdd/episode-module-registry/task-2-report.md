@@ -31,3 +31,15 @@ Corrected the report commit hash and cleaned extra end-of-file blank lines from 
 
 - `npm run typecheck`: exited with code 0.
 - `git diff --check 4cd6395..HEAD`: exited with code 0.
+
+## Zod 4 compatibility fix
+
+Replaced `.extend(...)` with `.safeExtend(...)` in all three episode modules so the refined public manifest schema composes correctly under Zod 4.
+
+## Cross-task verification
+
+- `npm run typecheck`: exited with code 0; `tsc --noEmit` completed without errors.
+- `npm run generate-registry`: exited with code 0.
+- `npm run validate -- why-sky-blue`: exited with code 0; valid manifest, 1020 frames.
+- `npm run validate -- how-memory-works`: exited with code 0; valid manifest, 570 frames.
+- `npm run validate -- what-is-transformer`: exited with code 0; valid manifest, 1350 frames.

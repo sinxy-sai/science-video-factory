@@ -9,7 +9,7 @@ import {SpectrumScene} from './scenes/SpectrumScene';
 import {ScatteringScene} from './scenes/ScatteringScene';
 
 const skyVisualSchema = z.enum(['title', 'spectrum', 'scattering', 'comparison', 'summary']);
-const localManifestSchema = episodeManifestSchema.extend({
+const localManifestSchema = episodeManifestSchema.safeExtend({
   scenes: z.array(sceneSchema.extend({visual: skyVisualSchema})),
 });
 const validatedManifest = localManifestSchema.parse(manifest);
@@ -27,3 +27,4 @@ export const episode: EpisodeModule = {
     }
   },
 };
+
