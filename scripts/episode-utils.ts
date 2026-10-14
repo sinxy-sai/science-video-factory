@@ -58,3 +58,13 @@ export function readJson(path: string): unknown {
 export function pathExists(path: string): boolean {
   return existsSync(path);
 }
+
+export function getBrowserExecutable(): string | null {
+  const candidate = resolve('node_modules', '.remotion', 'chrome-headless-shell', 'chrome-headless-shell-win64', 'chrome-headless-shell.exe');
+  return existsSync(candidate) ? candidate : null;
+}
+
+export function browserArgs(): string[] {
+  const executable = getBrowserExecutable();
+  return executable ? [`--browser-executable=${executable}`] : [];
+}

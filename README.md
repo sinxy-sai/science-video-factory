@@ -29,6 +29,8 @@ npm run new-episode -- how-memory-works
 
 当前示例不包含配音和字幕。后续音频字段可以在不重写场景组件的情况下加入 manifest。
 
+项目脚本会自动使用 `node_modules/.remotion/chrome-headless-shell/` 下的本地 Chrome Headless Shell。若该文件不存在，Remotion 会尝试自动下载浏览器。
+
 ## 目录
 
 - `src/`：通用 Remotion 组件和视觉实现。

@@ -1,6 +1,6 @@
 import {spawnSync} from 'node:child_process';
 import {join} from 'node:path';
-import {ensureRenderDir, loadEpisodeManifest, parseFlag, writeManifestSnapshot, writePropsFile} from './episode-utils';
+import {browserArgs, ensureRenderDir, loadEpisodeManifest, parseFlag, writeManifestSnapshot, writePropsFile} from './episode-utils';
 
 const args = process.argv.slice(2);
 const [episodeId] = args;
@@ -18,7 +18,7 @@ const outputName = `${manifest.id}-frame-${frame}.png`;
 const outputPath = join(renderDir, outputName);
 writeManifestSnapshot(manifest, renderDir, outputName.replace(/\.png$/, ''));
 
-const result = spawnSync('npx', ['remotion', 'still', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, '--scale=0.5', `--frame=${frame}`], {
+const result = spawnSync('npx', ['remotion', 'still', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, '--scale=0.5', `--frame=${frame}`, ...browserArgs()], {
   stdio: 'inherit',
   shell: true,
 });

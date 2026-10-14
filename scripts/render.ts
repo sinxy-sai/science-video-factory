@@ -1,6 +1,6 @@
 import {spawnSync} from 'node:child_process';
 import {join} from 'node:path';
-import {ensureRenderDir, loadEpisodeManifest, parseFlag, writeManifestSnapshot, writePropsFile} from './episode-utils';
+import {browserArgs, ensureRenderDir, loadEpisodeManifest, parseFlag, writeManifestSnapshot, writePropsFile} from './episode-utils';
 
 const args = process.argv.slice(2);
 const [episodeId] = args;
@@ -18,7 +18,7 @@ const outputPath = join(renderDir, outputName);
 writeManifestSnapshot(manifest, renderDir, outputName.replace(/\.mp4$/, ''));
 
 const scale = parseFlag(args, '--scale', '1');
-const result = spawnSync('npx', ['remotion', 'render', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, `--scale=${scale}`], {
+const result = spawnSync('npx', ['remotion', 'render', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, `--scale=${scale}`, ...browserArgs()], {
   stdio: 'inherit',
   shell: true,
 });
