@@ -16,7 +16,7 @@
 
 ## Test
 
-Command: `npm run typecheck`
+Command: `nnpm run typecheck`
 
 Output: exited with code 0; TypeScript completed without errors.
 
@@ -27,5 +27,11 @@ The temporary central `SceneRenderer` remains until Task 4 and currently retains
 
 Updated the report commit hash and removed extra end-of-file blank lines from changed files.
 
-Verification rerun: npm run typecheck exited 0 with no TypeScript errors. git diff --check HEAD^..HEAD is clean.
-pm run typecheck exited 0 with no TypeScript errors. git diff --check 4cd6395..HEAD reports the pre-amend committed EOF blank lines; the cleanup is included in this follow-up commit.
+Verification rerun: nnpm run typecheck exited 0 with no TypeScript errors. git diff --check 4cd6395..HEAD is clean.
+npm run typecheck exited 0 with no TypeScript errors. git diff --check 4cd6395..HEAD reports the pre-amend committed EOF blank lines; the cleanup is included in this follow-up commit.
+
+## Final verification
+
+- 
+pm run typecheck: exited with code 0; 	sc --noEmit completed without errors.
+- git diff --check 4cd6395..HEAD: exited with code 0; no whitespace errors.
