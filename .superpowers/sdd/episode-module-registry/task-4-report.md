@@ -15,13 +15,14 @@ Implemented and committed Task 4.
 - `npm run typecheck`: passed (`tsc --noEmit` completed successfully).
 - `npm run generate-registry`: passed (`tsx scripts/generate-registry.ts` completed successfully; no generated file changes were needed).
 - `git diff --check`: passed (no whitespace errors).
-- `npm run validate -- what-is-transformer`: failed before manifest validation because existing episode modules call Zod 4 `.extend()` on a refined schema. Runtime error: `Cannot overwrite keys on object schemas containing refinements. Use .safeExtend() instead.` The stack points to `content/episodes/how-memory-works/episode.ts:11`.
+- `npm run validate -- what-is-transformer`: passed after the cross-task Zod schema fix in commit `7901a6269155f051ec10a74a358cff80941d6571`; registry loading and manifest parsing completed successfully.
 
 ## Commit
 
 - Commit message: `refactor: delegate scene rendering to episodes`
-- Commit hash: `8c218087f53ad3cc110ebe33c16a33d870d88abf`
+- Commit hash: `7c5ea0149018280dcc8094111c37a655c8437963`
 
 ## Concerns
 
-The requested validation command is currently blocked by the pre-existing Zod schema compatibility error in episode implementation files, which are outside Task 4's allowed modification scope. Core Task 4 typechecking, registry generation, and whitespace checks pass.
+No remaining Task 4 concerns. The requested validation now passes with the cross-task Zod schema fix.
+
