@@ -6,8 +6,7 @@ const episodesDirectory = resolve(process.cwd(), 'content/episodes');
 const registryPath = resolve(episodesDirectory, 'registry.generated.ts');
 
 function toImportAlias(id: string): string {
-  const camelCaseId = id.replace(/-([a-z0-9])/g, (_, character: string) => character.toUpperCase());
-  return /^[a-zA-Z_$]/.test(camelCaseId) ? camelCaseId : `episode_${camelCaseId}`;
+  return `episode_${id.replace(/-/g, '_')}`;
 }
 
 function generateRegistry(): void {
