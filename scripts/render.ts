@@ -1,6 +1,6 @@
 import {spawnSync} from 'node:child_process';
 import {join} from 'node:path';
-import {browserArgs, ensureRenderDir, loadEpisodeManifest, parseFlag, writeManifestSnapshot, writePropsFile} from './episode-utils';
+import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, writeManifestSnapshot, writePropsFile} from './episode-utils';
 
 const args = process.argv.slice(2);
 const [episodeId] = args;
@@ -10,7 +10,7 @@ if (!episodeId) {
   process.exit(1);
 }
 
-const manifest = await loadEpisodeManifest(episodeId);
+const {manifest} = await loadEpisodeModule(episodeId);
 const propsPath = writePropsFile(manifest);
 const renderDir = ensureRenderDir(manifest);
 const outputName = `${manifest.id}-${manifest.format}-${manifest.width}x${manifest.height}.mp4`;

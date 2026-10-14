@@ -1,4 +1,4 @@
-import {loadEpisodeManifest, describeManifest} from './episode-utils';
+import {describeManifest, loadEpisodeModule} from './episode-utils';
 
 const [episodeId] = process.argv.slice(2);
 
@@ -8,7 +8,8 @@ if (!episodeId) {
 }
 
 try {
-  const manifest = await loadEpisodeManifest(episodeId);
+  const episode = await loadEpisodeModule(episodeId);
+  const {manifest} = episode;
   console.log(`Valid manifest: ${describeManifest(manifest)}`);
   console.log(`Scenes: ${manifest.scenes.map((scene) => scene.id).join(' → ')}`);
 } catch (error) {

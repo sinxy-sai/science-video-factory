@@ -13,7 +13,8 @@
     "still": "tsx scripts/still.ts",
     "new-episode": "tsx scripts/new-episode.ts",
     "generate-registry": "tsx scripts/generate-registry.ts",
-    "test": "npm run typecheck && npm run validate -- why-sky-blue && npm run validate -- how-memory-works && npm run validate -- what-is-transformer",
+    "validate-all": "tsx scripts/validate-all.ts",
+    "test": "npm run generate-registry && npm run typecheck && npm run validate-all",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -1,5 +1,5 @@
 import {spawnSync} from 'node:child_process';
-import {browserArgs, loadEpisodeManifest, writePropsFile} from './episode-utils';
+import {browserArgs, loadEpisodeModule, writePropsFile} from './episode-utils';
 
 const [episodeId] = process.argv.slice(2);
 
@@ -8,7 +8,7 @@ if (!episodeId) {
   process.exit(1);
 }
 
-const manifest = await loadEpisodeManifest(episodeId);
+const {manifest} = await loadEpisodeModule(episodeId);
 const propsPath = writePropsFile(manifest);
 const result = spawnSync('npx', ['remotion', 'studio', '--no-open', `--props=${propsPath}`, ...browserArgs()], {
   stdio: 'inherit',
