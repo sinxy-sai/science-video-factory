@@ -7,31 +7,27 @@
 - Added `content/episodes/what-is-transformer/episode.ts` and local Transformer scene module.
 - Added shared `TitleCard`, `ConclusionDiagram`, and copied theme under `src/shared`.
 - Updated Transformer manifest visual names to `tokens`, `attention`, `parallel`, and `stack`.
-- Updated existing shared component and temporary scene renderer imports to the shared/local paths.
-- Deleted the old files under `src/visuals`.
+- Updated shared component imports and deleted the old files under `src/visuals`.
 
-## Commit
+## Original commit
 
 `dbdf8e202f1df0125dbf79ba57871e165576f16b`
 
-## Test
+## Original test
 
-Command: `nnpm run typecheck`
+Command: `npm run typecheck`
 
-Output: exited with code 0; TypeScript completed without errors.
+Result: exited with code 0; TypeScript completed without errors.
 
 ## Concerns
 
-The temporary central `SceneRenderer` remains until Task 4 and currently retains compatibility imports/switching. Task 3 is expected to replace the temporary registry, and Task 4 will complete central renderer delegation.
+The temporary central `SceneRenderer` remains until Task 4. The temporary registry is expected to be replaced in Task 3.
+
 ## Fix follow-up
 
-Updated the report commit hash and removed extra end-of-file blank lines from changed files.
-
-Verification rerun: nnpm run typecheck exited 0 with no TypeScript errors. git diff --check 4cd6395..HEAD is clean.
-npm run typecheck exited 0 with no TypeScript errors. git diff --check 4cd6395..HEAD reports the pre-amend committed EOF blank lines; the cleanup is included in this follow-up commit.
+Corrected the report commit hash and cleaned extra end-of-file blank lines from changed files.
 
 ## Final verification
 
-- 
-pm run typecheck: exited with code 0; 	sc --noEmit completed without errors.
-- git diff --check 4cd6395..HEAD: exited with code 0; no whitespace errors.
+- `npm run typecheck`: exited with code 0.
+- `git diff --check 4cd6395..HEAD`: exited with code 0.
