@@ -9,6 +9,10 @@ export const visualTypeSchema = z.enum([
   'scattering',
   'connection',
   'comparison',
+  'transformer-tokens',
+  'transformer-attention',
+  'transformer-parallel',
+  'transformer-stack',
   'summary',
 ]);
 export type VisualType = z.infer<typeof visualTypeSchema>;

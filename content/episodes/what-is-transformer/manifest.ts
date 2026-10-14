@@ -1,0 +1,66 @@
+import type {EpisodeManifest} from '../../schema';
+import {LANDSCAPE_PRESET} from '../../presets';
+
+export const manifest: EpisodeManifest = {
+  id: 'what-is-transformer',
+  title: 'Transformer 是什么？',
+  language: 'zh-CN',
+  ...LANDSCAPE_PRESET,
+  theme: 'clear-science',
+  scenes: [
+    {
+      id: 'input',
+      title: '先把文字拆成 token',
+      claim: 'Transformer 处理的不是整句话，而是一串可以计算的 token。',
+      visual: 'transformer-tokens',
+      durationInFrames: 180,
+      supportingText: 'token 可以是一个字、一个词，或词的一部分。',
+      accent: '#55B7FF',
+    },
+    {
+      id: 'attention',
+      title: '再寻找上下文关系',
+      claim: 'Self-Attention 会让每个 token 参考其他 token，判断谁更重要。',
+      visual: 'transformer-attention',
+      durationInFrames: 270,
+      supportingText: '同一个词，在不同上下文里可以得到不同的表示。',
+      accent: '#7FE0B0',
+    },
+    {
+      id: 'parallel',
+      title: '很多 token 可以同时计算',
+      claim: '相比逐个处理，Transformer 能把一整组 token 放进矩阵并行计算。',
+      visual: 'transformer-parallel',
+      durationInFrames: 240,
+      supportingText: '这让训练大模型时可以充分利用 GPU。',
+      accent: '#FFB36B',
+    },
+    {
+      id: 'block',
+      title: '一个模块会重复堆叠',
+      claim: 'Attention 和前馈网络组成一个 Transformer block，多个 block 逐层提炼信息。',
+      visual: 'transformer-stack',
+      durationInFrames: 270,
+      supportingText: '层数越多，表示通常越抽象，但计算也越昂贵。',
+      accent: '#C59BFF',
+    },
+    {
+      id: 'output',
+      title: '最后预测下一个 token',
+      claim: '语言模型会根据已经理解的上下文，为下一个 token 计算概率。',
+      visual: 'transformer-tokens',
+      durationInFrames: 210,
+      supportingText: '不断重复这个过程，就能生成一段文字。',
+      accent: '#55B7FF',
+    },
+    {
+      id: 'summary',
+      title: '一句话理解 Transformer',
+      claim: '它用 Attention 建立上下文关系，用并行矩阵计算处理大量 token。',
+      visual: 'summary',
+      durationInFrames: 180,
+      supportingText: '今天的语言模型、视觉模型和多模态模型，都大量使用了这套思想。',
+      accent: '#7FE0B0',
+    },
+  ],
+};

@@ -4,6 +4,7 @@ import {SpectrumDiagram} from '../visuals/SpectrumDiagram';
 import {ScatteringDiagram} from '../visuals/ScatteringDiagram';
 import {ConnectionDiagram} from '../visuals/ConnectionDiagram';
 import {ConclusionDiagram} from '../visuals/ConclusionDiagram';
+import {TransformerDiagram} from '../visuals/TransformerDiagram';
 
 export const SceneRenderer: React.FC<{scene: SceneManifest}> = ({scene}) => {
   switch (scene.visual) {
@@ -17,6 +18,14 @@ export const SceneRenderer: React.FC<{scene: SceneManifest}> = ({scene}) => {
       return <ConnectionDiagram />;
     case 'comparison':
       return <ScatteringDiagram comparison />;
+    case 'transformer-tokens':
+      return <TransformerDiagram mode="tokens" />;
+    case 'transformer-attention':
+      return <TransformerDiagram mode="attention" />;
+    case 'transformer-parallel':
+      return <TransformerDiagram mode="parallel" />;
+    case 'transformer-stack':
+      return <TransformerDiagram mode="stack" />;
     case 'summary':
       return <ConclusionDiagram />;
     default: {

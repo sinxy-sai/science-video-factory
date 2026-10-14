@@ -15,6 +15,10 @@
 - `scattering`：路径、扩散或过程。
 - `connection`：节点、连接或网络关系。
 - `comparison`：两个状态或两个量的比较。
+- `transformer-tokens`：Transformer 的 token 输入和输出。
+- `transformer-attention`：Self-Attention 的上下文连接。
+- `transformer-parallel`：token 的矩阵化并行计算。
+- `transformer-stack`：Attention、前馈网络和多层 block 堆叠。
 - `summary`：把前面的关系收束为结论。
 
 新增视觉类型时，同时更新 `content/schema.ts`、`SceneRenderer.tsx` 和本文件。
