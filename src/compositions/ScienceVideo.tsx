@@ -1,11 +1,14 @@
 import React from 'react';
-import {AbsoluteFill, Sequence, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Sequence} from 'remotion';
+import {getEpisodeModule} from '../../content/episodes/registry.generated';
+import type {EpisodeModule} from '../../content/episode-module';
 import type {EpisodeManifest} from '../../content/schema';
 import {SceneFrame} from '../components/SceneFrame';
 import {SceneRenderer} from '../scenes/SceneRenderer';
 import '../styles.css';
 
 export const ScienceVideo: React.FC<{manifest: EpisodeManifest}> = ({manifest}) => {
+  const episode = getEpisodeModule(manifest.id);
   let offset = 0;
   return (
     <AbsoluteFill className="science-video">
@@ -14,7 +17,7 @@ export const ScienceVideo: React.FC<{manifest: EpisodeManifest}> = ({manifest}) 
         offset += scene.durationInFrames;
         return (
           <Sequence key={scene.id} from={from} durationInFrames={scene.durationInFrames}>
-            <SceneContent manifest={manifest} scene={scene} sceneIndex={sceneIndex} />
+            <SceneContent episode={episode} manifest={manifest} scene={scene} sceneIndex={sceneIndex} />
           </Sequence>
         );
       })}
@@ -23,14 +26,14 @@ export const ScienceVideo: React.FC<{manifest: EpisodeManifest}> = ({manifest}) 
 };
 
 const SceneContent: React.FC<{
+  episode: EpisodeModule;
   manifest: EpisodeManifest;
   scene: EpisodeManifest['scenes'][number];
   sceneIndex: number;
-}> = ({manifest, scene, sceneIndex}) => {
-  useCurrentFrame();
+}> = ({episode, manifest, scene, sceneIndex}) => {
   return (
     <SceneFrame scene={scene} sceneIndex={sceneIndex} sceneCount={manifest.scenes.length}>
-      <SceneRenderer scene={scene} />
+      <SceneRenderer episode={episode} scene={scene} />
     </SceneFrame>
   );
 };
