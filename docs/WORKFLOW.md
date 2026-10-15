@@ -5,19 +5,23 @@
 ```text
 用户需求和资料
   ↓
-知识结构与场景拆解
+观众、学习目标与知识关系
   ↓
-分镜表：视觉关系 + 动画 beats
+长分镜表：镜头语言 + 视觉关系 + 动画 beats + 字幕意图
+  ↓
+每镜技术选型：Remotion / HyperFrames-GSAP / Manim / SVG-Canvas-WebGL
+  ↓
+静态 hero frame 与动效设计
   ↓
 content/episodes/<id>/manifest.ts
   ↓
-Schema 校验
+Schema 校验与字幕时间轴检查
   ↓
-Remotion Studio 动态预览
+Remotion Studio / HyperFrames preview 动态预览
   ↓
-静帧检查
+代表帧、节奏和可视化检查
   ↓
-MP4 渲染
+Remotion 总合成与 MP4 渲染
 ```
 
 ## 命令
@@ -35,6 +39,15 @@ npm run delete-episode -- my-topic
 
 删除视频项目时，`delete-episode` 会同时清理对应的 episode 目录、渲染目录和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。
 
+## 技术分工
+
+- **Remotion**：主时间轴、场景编排、字幕、素材合成和最终 MP4。
+- **HyperFrames + GSAP**：复杂 kinetic motion、路径运动、stagger、文字动效和转场；作为镜头级 HTML 动画分支，通过视频或图像序列接入 Remotion。
+- **Manim**：公式、几何、坐标系、向量、矩阵和数学推导镜头；输出素材后交给 Remotion 合成。
+- **SVG / Canvas / WebGL**：分别处理精确图示、粒子/密集重绘和空间/流场效果。
+
+默认不添加音效；字幕仍是分镜契约的一部分。
+
 ## 内容原则
 
 - 每场景一个主要知识关系。
@@ -44,6 +57,8 @@ npm run delete-episode -- my-topic
 - 4 秒以上的场景至少包含两个有意义的状态变化。
 - 先做静态布局，再加帧动画。
 - 先用 SVG/CSS，只有需要密集重绘时才使用 Canvas。
+- 不把所有镜头压缩成“标题 + 图表 + 淡入”；每镜要选择合适的镜头语言和动画类型。
+- 镜头必须展示状态变化、因果、比较、尺度变化或视线引导中的至少一种。
 
 ## 分镜 beats
 
