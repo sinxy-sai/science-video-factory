@@ -31,5 +31,16 @@ for (const [name, source] of sources) {
     }
   }
 }
+const shotRenderRoot = resolve('renders', episodeId, 'shots');
+if (existsSync(shotRenderRoot)) {
+  const destination = join(destinationRoot, 'shots');
+  cpSync(shotRenderRoot, destination, {recursive: true});
+  for (const file of readdirSync(destination, {recursive: true, withFileTypes: true})) {
+    if (file.isFile()) {
+      const full = join(file.parentPath ?? destination, file.name);
+      files.push({source: relative(resolve(), join(shotRenderRoot, relative(destination, full))), destination: relative(resolve(), full)});
+    }
+  }
+}
 writeFileSync(join(destinationRoot, 'assets.manifest.json'), JSON.stringify({episodeId, files}, null, 2) + '\n', 'utf8');
 console.log(`Prepared ${files.length} assets for ${episodeId}`);

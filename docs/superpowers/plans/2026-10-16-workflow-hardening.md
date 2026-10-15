@@ -27,10 +27,10 @@
 - Modify: `science-video-factory/scripts/episode-utils.ts`
 - Create: `science-video-factory/content/shot-brief.ts`
 
-- [ ] Define Zod schemas for implementation kind, continuity, asset references, and ShotBrief.
-- [ ] Export typed loaders that read `shot-briefs/*.json` in numeric order.
-- [ ] Add helpers for workflow paths and placeholder detection.
-- [ ] Run `npm run typecheck`.
+- [x] Define Zod schemas for implementation kind, continuity, asset references, visual direction, motion, quality checks, and ShotBrief.
+- [x] Load `shot-briefs/*.json` in numeric order during workflow validation.
+- [x] Add workflow path and placeholder checks.
+- [x] Run `npm run typecheck`.
 
 ### Task 2: Replace episode scaffolding
 
@@ -39,10 +39,10 @@
 - Create: `science-video-factory/scripts/test-new-episode-workflow.ts`
 - Modify: `science-video-factory/package.json`
 
-- [ ] Generate script, storyboard, shot-briefs, hyperframes, manim, and assets/generated directories.
-- [ ] Generate a valid first ShotBrief matching the placeholder manifest scene.
-- [ ] Add `prepare-assets` script entry.
-- [ ] Test generated tree and cleanup in a temporary episode.
+- [x] Generate script, storyboard, shot-briefs, hyperframes, manim, and assets/generated directories.
+- [x] Generate a first ShotBrief and real HyperFrames shot workspace matching the placeholder manifest scene.
+- [x] Add `prepare-assets` script entry.
+- [x] Test generated tree and cleanup in a temporary episode.
 
 ### Task 3: Implement deterministic asset preparation
 
@@ -51,10 +51,10 @@
 - Modify: `science-video-factory/scripts/episode-utils.ts`
 - Modify: `science-video-factory/README.md`
 
-- [ ] Copy generated, HyperFrames, and Manim outputs into `public/episodes/<id>/...`.
-- [ ] Write `assets.manifest.json` with source and destination paths.
-- [ ] Remove stale destination files before copying.
-- [ ] Run the command against a generated episode.
+- [x] Copy generated, HyperFrames, Manim, and rendered shot outputs into `public/episodes/<id>/...`.
+- [x] Write `assets.manifest.json` with source and destination paths.
+- [x] Remove stale destination files before copying.
+- [x] Run the command against a generated episode.
 
 ### Task 4: Enforce workflow validation
 
@@ -64,10 +64,10 @@
 - Create: `science-video-factory/scripts/workflow-validation.ts`
 - Modify: `science-video-factory/scripts/test-storyboard.ts`
 
-- [ ] Validate script/storyboard presence and non-placeholder content.
-- [ ] Validate ShotBrief schema, manifest id alignment, durations, implementation files, continuity chain, and caption coverage.
-- [ ] Produce actionable errors with episode and shot ids.
-- [ ] Run validation on a generated fixture and ensure malformed fixtures fail.
+- [x] Validate script/storyboard presence and non-placeholder content.
+- [x] Validate ShotBrief schema, manifest id alignment, durations, implementation files, continuity chain, style pack, renderer, and caption coverage.
+- [x] Produce actionable errors with episode and shot ids.
+- [x] Run validation on generated fixtures; malformed and placeholder fixtures fail.
 
 ### Task 5: Pin local dependencies and standardize output
 
@@ -76,10 +76,10 @@
 - Modify: `science-video-factory/scripts/render.ts`
 - Modify: `science-video-factory/README.md`
 
-- [ ] Add pinned `gsap` and HyperFrames package dependencies using the project’s supported package names.
-- [ ] Remove CDN usage from project-owned HTML/HyperFrames assets where present.
-- [ ] Render to `renders/<id>/final.mp4` and snapshot metadata beside it.
-- [ ] Document old outputs as removed from the standard contract.
+- [x] Add pinned `gsap` and HyperFrames package dependencies.
+- [x] Generated HyperFrames shots use local GSAP assets; removed example assets contain no CDN path.
+- [x] Render to `renders/<id>/final.mp4` and snapshot metadata beside it.
+- [x] Document old outputs as removed from the standard contract.
 
 ### Task 6: Remove obsolete black-hole example and verify repository
 
@@ -90,7 +90,21 @@
 - Delete: `science-video-factory/.remotion/black-hole-light.props.json`
 - Modify: `science-video-factory/content/episodes/registry.generated.ts`
 
-- [ ] Delete the example and regenerate registry.
-- [ ] Run `npm run typecheck`.
-- [ ] Run `npm run validate-all`.
-- [ ] Run the workflow fixture test and full test suite.
+- [x] Delete the example and regenerate registry.
+- [x] Run `npm run typecheck`.
+- [x] Run `npm run validate-all`.
+- [x] Run workflow fixture checks and the full test suite.
+
+### Task 7: Official renderer default and visual quality closure
+
+**Files:**
+- Create: `science-video-factory/styles/vermilion-editorial/`
+- Create: `science-video-factory/scripts/author-shots.ts`
+- Create: `science-video-factory/scripts/preview-shots.ts`
+- Create: `science-video-factory/scripts/render-shots.ts`
+- Create: `science-video-factory/scripts/verify-output.ts`
+
+- [x] Add a reusable Style Pack derived from the approved kinetic title card direction.
+- [x] Add episode-level author, preview, shot-render, and final-output verification commands.
+- [x] Route the default renderer through official HyperFrames `check` and delivery render.
+- [x] Document the complete default path and keep `remotion-native` as an explicit exception.

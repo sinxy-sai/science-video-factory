@@ -9,6 +9,7 @@ npm install
 npm run new-episode -- my-topic
 npm run prepare-assets -- my-topic
 npm run validate-shots -- my-topic
+npm run render-shots -- my-topic
 npm run validate -- my-topic
 npm run preview -- my-topic
 npm run render -- my-topic
@@ -35,13 +36,17 @@ npm run delete-episode -- my-topic
 3. 默认使用 `hyperframes-default`：在 `hyperframes/<shot-id>/` 中完成 DESIGN.md 和 HTML composition。
 4. 在 `manifest.ts` 中定义场景、时长、beats 和本地视觉类型。
 5. 在 `episode.ts` 中使用 `z.enum([...])` 声明本 episode 的视觉 schema，并映射到 `scenes/` 组件。
-6. 运行 `npm run validate-shots -- <episode-id>`，调用 HyperFrames 官方 `check` 做 lint、runtime、layout、motion 和 WCAG 检查。
-7. 将 HyperFrames/Manim 产物放入对应目录，运行 `npm run prepare-assets -- <episode-id>`。
-8. 运行 `npm run generate-registry` 更新静态 registry。
-9. 运行 `npm run validate -- <episode-id>` 或 `npm run validate-all`。
-10. 用 `npm run preview -- <episode-id>` 做动态节奏检查。
-11. 用 `npm run still -- <episode-id> --frame 30` 检查单帧布局。
-12. 用 `npm run render -- <episode-id>` 输出唯一标准文件 `renders/<episode-id>/final.mp4`。
+6. 运行 `npm run author-shots -- <episode-id>` 应用默认 Style Pack 和镜头设计模板。
+7. 运行 `npm run validate-shots -- <episode-id>`，调用 HyperFrames 官方 `check` 做 lint、runtime、layout、motion 和 WCAG 检查。
+8. 用 `npm run preview-shots -- <episode-id> [shot-id]` 预览镜头。
+9. 用 `npm run render-shots -- <episode-id>` 输出 HyperFrames 镜头素材。
+10. 将 HyperFrames/Manim 产物放入对应目录，运行 `npm run prepare-assets -- <episode-id>`。
+11. 运行 `npm run generate-registry` 更新静态 registry。
+12. 运行 `npm run validate -- <episode-id>` 或 `npm run validate-all`。
+13. 用 `npm run preview -- <episode-id>` 做动态节奏检查。
+14. 用 `npm run still -- <episode-id> --frame 30` 检查单帧布局。
+15. 用 `npm run render -- <episode-id>` 输出唯一标准文件 `renders/<episode-id>/final.mp4`。
+16. 用 `npm run verify-output -- <episode-id>` 写入输出验证摘要。
 
 字幕是当前分镜流程的一部分，按场景相对帧写入 manifest 并由 Remotion 渲染；配音仍是可选项，可以在不重写场景组件的情况下接入。场景进度条属于调试信息，不进入最终视频。
 

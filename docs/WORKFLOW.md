@@ -35,7 +35,9 @@ Remotion 总合成与 MP4 渲染
 ```powershell
 npm run new-episode -- my-topic
 npm run validate-shots -- my-topic
+npm run author-shots -- my-topic
 npm run prepare-assets -- my-topic
+npm run render-shots -- my-topic
 npm run validate -- my-topic
 npm run preview -- my-topic
 npm run still -- my-topic --frame 30
@@ -48,6 +50,8 @@ npm run delete-episode -- my-topic
 新 episode 默认使用 `hyperframes-default`。每个镜头在 `hyperframes/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查；`remotion-native` 只能在 ShotBrief 中显式声明。
 
 `validate-shots` 调用 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查。通过后才进入资产准备和最终合成。
+
+`author-shots` 应用 `styles/vermilion-editorial/` 默认 Style Pack；`preview-shots` 启动官方 HyperFrames Studio；`render-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
 `prepare-assets` 会将生成素材统一复制到 `public/episodes/<episode-id>/`，并写入 `assets.manifest.json`。
 

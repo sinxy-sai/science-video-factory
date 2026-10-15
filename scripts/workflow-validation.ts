@@ -41,6 +41,9 @@ export function validateWorkflow(episode: EpisodeModule): void {
     if ([brief.title, brief.narration, brief.visualStyle, brief.visualDirection.composition, brief.visualDirection.focalPoint, brief.visualDirection.palette, brief.visualDirection.typography, brief.motion.entrance, brief.motion.transformation, brief.motion.transition].some(containsPlaceholder)) {
       throw new Error(`${id}/${brief.id}: ShotBrief still contains placeholder visual or motion direction`);
     }
+    if (!existsSync(resolve('styles', brief.visualStyle, 'DESIGN.md'))) throw new Error(`${id}/${brief.id}: unknown style pack ${brief.visualStyle}`);
+    if (brief.renderer === 'hyperframes-default' && !brief.implementation.hyperframes) throw new Error(`${id}/${brief.id}: hyperframes-default requires implementation.hyperframes=true`);
+    if (brief.renderer === 'remotion-native' && !brief.implementation.remotion) throw new Error(`${id}/${brief.id}: remotion-native requires implementation.remotion=true`);
     if (!sceneIds.has(brief.sceneId)) throw new Error(`${id}/${brief.id}: sceneId ${brief.sceneId} is not in manifest`);
     briefSceneIds.add(brief.sceneId);
     const scene = scenes.find((item) => item.id === brief.sceneId)!;

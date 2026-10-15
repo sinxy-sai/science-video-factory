@@ -28,10 +28,12 @@ This project generates explanatory videos for real viewers. Keep the explanation
 5. Implement the scene in `manifest.ts`, `episode.ts`, and `scenes/`.
 6. Put HyperFrames and Manim source/output under their episode directories, then run `npm run prepare-assets -- <episode-id>`.
 7. Run `npm run validate-shots -- <episode-id>`. This invokes the official HyperFrames `check` command for lint, runtime, layout, motion, and WCAG contrast.
-8. Run `npm run validate -- <episode-id>`. Both shot and episode validation must pass before preview or render.
-9. Preview with `npm run preview -- <episode-id>` and inspect the dynamic rhythm.
-10. Check representative frames with `npm run still -- <episode-id> --frame 30`.
-11. Render with `npm run render -- <episode-id>`; the standard output is `renders/<episode-id>/final.mp4`.
+8. Use `npm run preview-shots -- <episode-id> [shot-id]` and `npm run render-shots -- <episode-id>` for the official HyperFrames shot path.
+9. Run `npm run prepare-assets -- <episode-id>` and `npm run validate -- <episode-id>`. Both shot and episode validation must pass before final render.
+10. Preview with `npm run preview -- <episode-id>` and inspect the dynamic rhythm.
+11. Check representative frames with `npm run still -- <episode-id> --frame 30`.
+12. Render with `npm run render -- <episode-id>`; the standard output is `renders/<episode-id>/final.mp4`.
+13. Run `npm run verify-output -- <episode-id>` to record final output metadata.
 
 The Remotion renderer receives the selected manifest through a serialized props file. Do not hardcode a new episode into a scene component.
 
