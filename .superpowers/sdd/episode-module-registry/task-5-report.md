@@ -34,7 +34,3 @@ Commit message: `refactor: route workflow commands through episode registry`
 
 - `new-episode.ts` invokes npm with `shell: true`, matching the existing preview/render process style; Node emits its standard deprecation warning for this usage.
 - Registry generation remains an explicit step for new episode directories and is also run automatically by `npm test` and `new-episode`.
-
-
-
-
