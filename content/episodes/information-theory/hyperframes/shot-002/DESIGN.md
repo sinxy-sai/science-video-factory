@@ -1,0 +1,39 @@
+# Vermilion Editorial
+
+Dark editorial motion design inspired by a printed poster: charcoal ink, warm paper-white type, vermilion accents, mono production labels, asymmetric left-anchored composition, decisive staggered entrances, and quiet ambient glow.
+
+## Colors
+
+- `#151311` charcoal ink background
+- `#F3EDE2` warm paper-white type
+- `#D94B2B` vermilion accent
+- `#8D877E` muted production label
+- `#2C2925` structural rules and ghost type
+
+## Typography
+
+- Display: Arial Black, 900
+- Metadata: Courier New, 400/700
+
+## Motion
+
+- Alternating directional entrances
+- Fast `expo.out` or `power4.out` for decisive moments
+- Slow background drift only when it supports the scene
+- Transitions own exits between scenes
+
+## Avoid
+
+- centered equal-weight stacks
+- neon cyan or purple gradients
+- generic rounded cards
+- infinite loops or random motion
+
+
+## Shot Direction
+
+asymmetric split screen
+
+Focal point: 1 bit between two choices
+
+Motion: choices enter from opposite sides; question collapses into one bit; center rule wipe.
