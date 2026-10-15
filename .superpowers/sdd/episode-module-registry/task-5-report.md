@@ -26,7 +26,7 @@ Completed Task 5. CLI commands resolve episode modules through the generated sta
 
 ## Commit
 
-`20f9c57a37d75095af1441d231d926ab0ff1ea19` (implementation commit; report is in follow-up commit `58955d23aeabf7177ebf1ee565c570ceb4e530fc`)
+`20f9c57a37d75095af1441d231d926ab0ff1ea19` (implementation commit; report is in follow-up commit `8d3ec2bbe9516bd8aa80a9446f0417228c6f5191`)
 
 Commit message: `refactor: route workflow commands through episode registry`
 
@@ -34,6 +34,7 @@ Commit message: `refactor: route workflow commands through episode registry`
 
 - `new-episode.ts` invokes npm with `shell: true`, matching the existing preview/render process style; Node emits its standard deprecation warning for this usage.
 - Registry generation remains an explicit step for new episode directories and is also run automatically by `npm test` and `new-episode`.
+
 
 
 
