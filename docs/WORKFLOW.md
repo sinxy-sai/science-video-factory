@@ -7,15 +7,21 @@
   ↓
 观众、学习目标与知识关系
   ↓
-长分镜表：镜头语言 + 视觉关系 + 动画 beats + 字幕意图
+  完整旁白剧本：content/episodes/<id>/script.md
   ↓
-每镜技术选型：Remotion / HyperFrames-GSAP / Manim / SVG-Canvas-WebGL
+  长分镜表：storyboard.md（镜头语言 + 视觉关系 + 动画 beats + 字幕意图）
   ↓
-静态 hero frame 与动效设计
+  每镜 ShotBrief：shot-briefs/shot-*.json（连续性 + 技术路线 + 素材）
   ↓
-content/episodes/<id>/manifest.ts
+  每镜实现：Remotion / HyperFrames-GSAP / Manim / SVG-Canvas-WebGL
   ↓
-Schema 校验与字幕时间轴检查
+  静态 hero frame 与动效设计
+  ↓
+  content/episodes/<id>/manifest.ts
+  ↓
+  npm run prepare-assets -- <id>
+  ↓
+  Schema、连续性、分镜一致性与字幕覆盖校验
   ↓
 Remotion Studio / HyperFrames preview 动态预览
   ↓
@@ -28,6 +34,7 @@ Remotion 总合成与 MP4 渲染
 
 ```powershell
 npm run new-episode -- my-topic
+npm run prepare-assets -- my-topic
 npm run validate -- my-topic
 npm run preview -- my-topic
 npm run still -- my-topic --frame 30
@@ -35,7 +42,11 @@ npm run render -- my-topic --scale 0.5
 npm run delete-episode -- my-topic
 ```
 
-输出保存在 `renders/<episode-id>/`，并带有 manifest 快照，方便追溯生成输入。
+`new-episode` 会生成完整目录骨架：`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`hyperframes/`、`manim/` 和 `assets/generated/`。
+
+`prepare-assets` 会将生成素材统一复制到 `public/episodes/<episode-id>/`，并写入 `assets.manifest.json`。
+
+输出统一为 `renders/<episode-id>/final.mp4`，并带有 `final.manifest.json` 快照，方便追溯生成输入。不要再使用带多个历史命名的 MP4 文件作为标准输出。
 
 删除视频项目时，`delete-episode` 会同时清理对应的 episode 目录、渲染目录和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。
 
@@ -46,7 +57,7 @@ npm run delete-episode -- my-topic
 - **Manim**：公式、几何、坐标系、向量、矩阵和数学推导镜头；输出素材后交给 Remotion 合成。
 - **SVG / Canvas / WebGL**：分别处理精确图示、粒子/密集重绘和空间/流场效果。
 
-默认不添加音效；字幕仍是分镜契约的一部分。
+默认不添加音效；字幕仍是分镜契约的一部分。`validate` 会强制检查剧本、分镜、ShotBrief、连续性、实现文件和字幕覆盖率。
 
 ## 内容原则
 

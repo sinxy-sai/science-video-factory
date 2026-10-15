@@ -1,6 +1,6 @@
 import {spawnSync} from 'node:child_process';
 import {join} from 'node:path';
-import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, writeManifestSnapshot, writePropsFile} from './episode-utils';
+import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from './episode-utils';
 
 const args = process.argv.slice(2);
 const [episodeId] = args;
@@ -13,14 +13,15 @@ if (!episodeId) {
 const {manifest} = await loadEpisodeModule(episodeId);
 const propsPath = writePropsFile(manifest);
 const renderDir = ensureRenderDir(manifest);
-const outputName = `${manifest.id}-${manifest.format}-${manifest.width}x${manifest.height}.mp4`;
+const outputName = 'final.mp4';
 const outputPath = join(renderDir, outputName);
-writeManifestSnapshot(manifest, renderDir, outputName.replace(/\.mp4$/, ''));
+writeManifestSnapshot(manifest, renderDir, 'final');
 
 const scale = parseFlag(args, '--scale', '1');
 const result = spawnSync('npx', ['remotion', 'render', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, `--scale=${scale}`, ...browserArgs()], {
   stdio: 'inherit',
   shell: true,
+  env: projectToolEnv(),
 });
 
 process.exit(result.status ?? 1);

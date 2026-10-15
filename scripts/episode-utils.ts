@@ -1,5 +1,5 @@
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
-import {join, resolve} from 'node:path';
+import {delimiter, join, resolve} from 'node:path';
 import {getEpisodeModule} from '../content/episodes/registry.generated';
 import type {EpisodeModule} from '../content/episode-module';
 import {totalDurationInFrames, type EpisodeManifest} from '../content/schema';
@@ -34,6 +34,14 @@ export function ensureRenderDir(manifest: EpisodeManifest): string {
   const directory = resolve('renders', manifest.id);
   mkdirSync(directory, {recursive: true});
   return directory;
+}
+
+export function episodeRoot(id: string): string {
+  return resolve('content', 'episodes', assertEpisodeId(id));
+}
+
+export function publicEpisodeRoot(id: string): string {
+  return resolve('public', 'episodes', assertEpisodeId(id));
 }
 
 export function writeManifestSnapshot(manifest: EpisodeManifest, directory: string, filename: string): string {
@@ -71,4 +79,12 @@ export function getBrowserExecutable(): string | null {
 export function browserArgs(): string[] {
   const executable = getBrowserExecutable();
   return executable ? [`--browser-executable=${executable}`] : [];
+}
+
+export function projectToolEnv(): NodeJS.ProcessEnv {
+  const ffmpegBin = resolve('tools', 'ffmpeg', 'bin');
+  return {
+    ...process.env,
+    PATH: `${ffmpegBin}${delimiter}${process.env.PATH ?? ''}`,
+  };
 }

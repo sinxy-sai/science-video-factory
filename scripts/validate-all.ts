@@ -1,10 +1,12 @@
 import {episodeRegistry} from '../content/episodes/registry.generated';
 import {describeManifest} from './episode-utils';
+import {validateWorkflow} from './workflow-validation';
 
 let failed = false;
 for (const id of Object.keys(episodeRegistry)) {
   try {
     const {manifest} = episodeRegistry[id];
+    validateWorkflow(episodeRegistry[id]);
     console.log(`Valid manifest: ${describeManifest(manifest)}`);
     console.log(`Scenes: ${manifest.scenes.map((scene) => scene.id).join(' → ')}`);
   } catch (error) {

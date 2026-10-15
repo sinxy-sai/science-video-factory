@@ -19,18 +19,22 @@ This project generates explanatory videos for real viewers. Keep the explanation
 - Use `remotion:remotion-docs` when an API or version detail is uncertain.
 - Use `superpowers:verification-before-completion` before claiming a render, validation, or implementation is complete.
 
-## Manifest-first workflow
+## Contract-first workflow
 
-1. Choose or create `content/episodes/<episode-id>/manifest.ts`.
-2. Write a storyboard for each scene: one claim, one visual relationship, and explicit animation beats.
-3. Keep each scene focused on one claim and one visual relationship.
-4. Run `npm run validate -- <episode-id>`.
-5. Preview with `npm run preview -- <episode-id>` and inspect the dynamic rhythm.
-6. Check representative frames with `npm run still -- <episode-id> --frame 30`.
-7. Render with `npm run render -- <episode-id>`.
-8. Inspect the output and the manifest snapshot in `renders/<episode-id>/`.
+1. Run `npm run new-episode -- <episode-id>` to create the required workflow directories.
+2. Write the complete narration in `script.md`.
+3. Write `storyboard.md` with one claim, one visual relationship, explicit beats, and caption intent per shot.
+4. Create one `shot-briefs/shot-*.json` for every manifest scene. Include continuity, renderer choice, implementation files, and assets.
+5. Implement the scene in `manifest.ts`, `episode.ts`, and `scenes/`.
+6. Put HyperFrames and Manim source/output under their episode directories, then run `npm run prepare-assets -- <episode-id>`.
+7. Run `npm run validate -- <episode-id>`. Validation must pass before preview or render.
+8. Preview with `npm run preview -- <episode-id>` and inspect the dynamic rhythm.
+9. Check representative frames with `npm run still -- <episode-id> --frame 30`.
+10. Render with `npm run render -- <episode-id>`; the standard output is `renders/<episode-id>/final.mp4`.
 
 The Remotion renderer receives the selected manifest through a serialized props file. Do not hardcode a new episode into a scene component.
+
+`validate` also checks that every manifest scene has a ShotBrief, ShotBrief durations match the manifest, continuity inheritance is valid, declared implementation files exist, and captions cover at least 80% of the shot duration.
 
 ## Renderer choices
 

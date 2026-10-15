@@ -1,4 +1,5 @@
 import {describeManifest, loadEpisodeModule} from './episode-utils';
+import {validateWorkflow} from './workflow-validation';
 
 const [episodeId] = process.argv.slice(2);
 
@@ -9,6 +10,7 @@ if (!episodeId) {
 
 try {
   const episode = await loadEpisodeModule(episodeId);
+  validateWorkflow(episode);
   const {manifest} = episode;
   console.log(`Valid manifest: ${describeManifest(manifest)}`);
   console.log(`Scenes: ${manifest.scenes.map((scene) => scene.id).join(' → ')}`);

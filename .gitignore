@@ -4,3 +4,4 @@ renders/
 dist/
 *.local
 .venv/
+tools/ffmpeg/

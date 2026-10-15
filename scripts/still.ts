@@ -1,6 +1,6 @@
 import {spawnSync} from 'node:child_process';
 import {join} from 'node:path';
-import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, writeManifestSnapshot, writePropsFile} from './episode-utils';
+import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from './episode-utils';
 
 const args = process.argv.slice(2);
 const [episodeId] = args;
@@ -21,6 +21,7 @@ writeManifestSnapshot(manifest, renderDir, outputName.replace(/\.png$/, ''));
 const result = spawnSync('npx', ['remotion', 'still', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, '--scale=0.5', `--frame=${frame}`, ...browserArgs()], {
   stdio: 'inherit',
   shell: true,
+  env: projectToolEnv(),
 });
 
 process.exit(result.status ?? 1);

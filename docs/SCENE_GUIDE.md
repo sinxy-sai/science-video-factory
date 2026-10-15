@@ -1,6 +1,17 @@
 # 场景指南
 
-每个 episode 是自包含模块，目录至少包含 `manifest.ts`、`episode.ts`、`scenes/`、`assets/` 和 `notes.md`。`episode.ts` 使用公共 manifest schema 加上本地视觉 schema 校验 manifest，并负责把视觉值映射到本 episode 的场景组件。生成的 `content/episodes/registry.generated.ts` 通过静态 import 收集所有 episode，命令行和 Remotion 都从这个 registry 加载模块。
+每个 episode 是自包含模块，目录至少包含 `script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`manifest.ts`、`episode.ts`、`scenes/`、`assets/generated/`、`hyperframes/` 和 `manim/`。`episode.ts` 使用公共 manifest schema 加上本地视觉 schema 校验 manifest，并负责把视觉值映射到本 episode 的场景组件。生成的 `content/episodes/registry.generated.ts` 通过静态 import 收集所有 episode，命令行和 Remotion 都从这个 registry 加载模块。
+
+### ShotBrief 契约
+
+每个 manifest scene 必须对应一个 `shot-briefs/shot-*.json`。ShotBrief 至少描述：
+
+- `sceneId`、`title`、`narration`、`visual`、`durationInFrames`
+- `continuity.inherits` 和 `continuity.leaves`
+- `implementation.hyperframes`、`implementation.manim`、`implementation.remotion` 与实现文件
+- 该镜头使用的资产及其目标 public 路径
+
+镜头之间的连续性必须可追溯：下一镜声明继承的对象，必须由上一镜声明留下。
 
 每个场景由以下内容组成：
 
@@ -34,7 +45,11 @@
 
 ```powershell
 npm run new-episode -- my-topic
+npm run prepare-assets -- my-topic
 npm run validate -- my-topic
 npm run preview -- my-topic
+npm run still -- my-topic --frame 30
 npm run render -- my-topic
 ```
+
+最终文件是 `renders/my-topic/final.mp4`。`validate` 失败时不能进入标准渲染流程。
