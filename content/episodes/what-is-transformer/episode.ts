@@ -4,8 +4,8 @@ import type {EpisodeModule} from '../../episode-module';
 import {episodeManifestSchema, sceneSchema} from '../../schema';
 import {manifest} from './manifest';
 import {TitleCard} from '../../../src/shared/visuals/TitleCard';
-import {ConclusionDiagram} from '../../../src/shared/visuals/ConclusionDiagram';
 import {TransformerScene} from './scenes/TransformerScene';
+import {TransformerConclusionDiagram} from './scenes/TransformerConclusionDiagram';
 
 const transformerVisualSchema = z.enum(['title', 'tokens', 'attention', 'parallel', 'stack', 'summary']);
 const localManifestSchema = episodeManifestSchema.safeExtend({
@@ -22,7 +22,7 @@ export const episode: EpisodeModule = {
       case 'attention': return React.createElement(TransformerScene, {mode: "attention"});
       case 'parallel': return React.createElement(TransformerScene, {mode: "parallel"});
       case 'stack': return React.createElement(TransformerScene, {mode: "stack"});
-      case 'summary': return React.createElement(ConclusionDiagram);
+      case 'summary': return React.createElement(TransformerConclusionDiagram);
       default: throw new Error(`Unknown what-is-transformer visual: ${scene.visual}`);
     }
   },

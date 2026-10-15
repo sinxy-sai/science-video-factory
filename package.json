@@ -14,7 +14,9 @@
     "new-episode": "tsx scripts/new-episode.ts",
     "generate-registry": "tsx scripts/generate-registry.ts",
     "validate-all": "tsx scripts/validate-all.ts",
-    "test": "npm run generate-registry && npm run typecheck && npm run validate-all",
+    "test": "npm run generate-registry && npm run typecheck && npm run validate-all && npm run test:default && npm run test:transformer-routing",
+    "test:default": "tsx scripts/test-default-entry.ts",
+    "test:transformer-routing": "tsx scripts/test-transformer-routing.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

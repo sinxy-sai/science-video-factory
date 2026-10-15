@@ -7,7 +7,10 @@ import {SceneFrame} from '../components/SceneFrame';
 import {SceneRenderer} from '../scenes/SceneRenderer';
 import '../styles.css';
 
-export const ScienceVideo: React.FC<{manifest: EpisodeManifest}> = ({manifest}) => {
+export const ScienceVideo: React.FC<{manifest?: EpisodeManifest | null}> = ({manifest}) => {
+  if (!manifest) {
+    return <AbsoluteFill style={{backgroundColor: '#000'}} />;
+  }
   const episode = getEpisodeModule(manifest.id);
   let offset = 0;
   return (
