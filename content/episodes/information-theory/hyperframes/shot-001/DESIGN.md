@@ -1,14 +1,14 @@
-# Vermilion Editorial
+# Information Grid
 
-Dark editorial motion design inspired by a printed poster: charcoal ink, warm paper-white type, vermilion accents, mono production labels, asymmetric left-anchored composition, decisive staggered entrances, and quiet ambient glow.
+Dark editorial motion design inspired by a printed poster: charcoal ink, pale blue type, mint signal accents, mono production labels, asymmetric left-anchored composition, decisive staggered entrances, and quiet ambient glow.
 
 ## Colors
 
-- `#151311` charcoal ink background
-- `#F3EDE2` warm paper-white type
-- `#D94B2B` vermilion accent
-- `#8D877E` muted production label
-- `#2C2925` structural rules and ghost type
+- `#07111F` midnight blue background
+- `#E7F0FF` pale blue type
+- `#48D7C4` mint signal accent
+- `#6F89A8` muted blue labels
+- `#17304A` grid structure and ghost type
 
 ## Typography
 

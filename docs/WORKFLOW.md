@@ -51,7 +51,7 @@ npm run delete-episode -- my-topic
 
 `validate-shots` 调用 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查。通过后才进入资产准备和最终合成。
 
-`author-shots` 应用 `styles/vermilion-editorial/` 默认 Style Pack；`preview-shots` 启动官方 HyperFrames Studio；`render-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
+`author-shots` 默认读取当前 episode 的 `visual-style.md`；只有显式设置 `SCIENCE_VIDEO_STYLE` 时才使用 `styles/<name>/DESIGN.md`。项目不提供默认视觉风格，风格必须根据话题确定。`preview-shots` 启动官方 HyperFrames Studio；`render-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
 `prepare-assets` 会将生成素材统一复制到 `static/episodes/<episode-id>/`，并写入 `assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
 

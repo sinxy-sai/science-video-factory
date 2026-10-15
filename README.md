@@ -36,7 +36,7 @@ npm run delete-episode -- my-topic
 3. 默认使用 `hyperframes-default`：在 `hyperframes/<shot-id>/` 中完成 DESIGN.md 和 HTML composition。
 4. 在 `manifest.ts` 中定义场景、时长、beats 和本地视觉类型。
 5. 在 `episode.ts` 中使用 `z.enum([...])` 声明本 episode 的视觉 schema，并映射到 `scenes/` 组件。
-6. 运行 `npm run author-shots -- <episode-id>` 应用默认 Style Pack 和镜头设计模板。
+6. 根据话题完成 `visual-style.md` 和每个 ShotBrief 的视觉方向，再运行 `npm run author-shots -- <episode-id>`。项目没有默认视觉风格；如需复用明确的外部 Style Pack，必须显式设置 `SCIENCE_VIDEO_STYLE`。
 7. 运行 `npm run validate-shots -- <episode-id>`，调用 HyperFrames 官方 `check` 做 lint、runtime、layout、motion 和 WCAG 检查。
 8. 用 `npm run preview-shots -- <episode-id> [shot-id]` 预览镜头。
 9. 用 `npm run render-shots -- <episode-id>` 输出 HyperFrames 镜头素材。

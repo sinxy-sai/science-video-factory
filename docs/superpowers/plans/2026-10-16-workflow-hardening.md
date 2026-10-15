@@ -98,7 +98,7 @@
 ### Task 7: Official renderer default and visual quality closure
 
 **Files:**
-- Create: `science-video-factory/styles/vermilion-editorial/`
+- Style packs are optional and topic-defined; no default style pack is created.
 - Create: `science-video-factory/scripts/author-shots.ts`
 - Create: `science-video-factory/scripts/preview-shots.ts`
 - Create: `science-video-factory/scripts/render-shots.ts`

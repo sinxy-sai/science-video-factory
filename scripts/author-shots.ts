@@ -6,10 +6,20 @@ import {episodeRoot} from './episode-utils';
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) { console.error('Usage: npm run author-shots -- <episode-id>'); process.exit(1); }
 const root = episodeRoot(episodeId);
-const styleName = process.env.SCIENCE_VIDEO_STYLE ?? 'vermilion-editorial';
-const stylePath = resolve('styles', styleName, 'DESIGN.md');
-if (!existsSync(stylePath)) throw new Error(`Unknown style pack: ${styleName}`);
-const style = readFileSync(stylePath, 'utf8');
+const explicitStyle = process.env.SCIENCE_VIDEO_STYLE;
+const episodeStylePath = join(root, 'visual-style.md');
+const episodeStyle = readFileSync(episodeStylePath, 'utf8');
+const styleName = explicitStyle ?? 'episode-defined';
+const style = explicitStyle
+  ? (() => {
+      const stylePath = resolve('styles', explicitStyle, 'DESIGN.md');
+      if (!existsSync(stylePath)) throw new Error(`Unknown explicit style pack: ${explicitStyle}`);
+      return readFileSync(stylePath, 'utf8');
+    })()
+  : episodeStyle;
+if (!explicitStyle && style.includes('Define palette')) {
+  throw new Error(`${episodeId}: define the topic-specific visual language in visual-style.md before authoring shots`);
+}
 for (const brief of loadShotBriefs(episodeId)) {
   const shotRoot = join(root, 'hyperframes', brief.id);
   mkdirSync(join(shotRoot, 'assets'), {recursive: true});
