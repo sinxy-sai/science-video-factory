@@ -18,6 +18,14 @@ npm run render -- my-topic
 npm run new-episode -- my-topic
 ```
 
+删除指定视频项目：
+
+```powershell
+npm run delete-episode -- my-topic
+```
+
+该命令会删除 `content/episodes/<episode-id>/`、`renders/<episode-id>/` 和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。只会清理这个 episode 对应的文件。
+
 ## 工作流
 
 1. 将知识结构拆成每场景一个主要关系。

@@ -26,9 +26,12 @@ npm run validate -- my-topic
 npm run preview -- my-topic
 npm run still -- my-topic --frame 30
 npm run render -- my-topic --scale 0.5
+npm run delete-episode -- my-topic
 ```
 
 输出保存在 `renders/<episode-id>/`，并带有 manifest 快照，方便追溯生成输入。
+
+删除视频项目时，`delete-episode` 会同时清理对应的 episode 目录、渲染目录和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。
 
 ## 内容原则
 

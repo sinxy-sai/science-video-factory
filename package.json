@@ -12,10 +12,12 @@
     "render": "tsx scripts/render.ts",
     "still": "tsx scripts/still.ts",
     "new-episode": "tsx scripts/new-episode.ts",
+    "delete-episode": "tsx scripts/delete-episode.ts",
     "generate-registry": "tsx scripts/generate-registry.ts",
     "validate-all": "tsx scripts/validate-all.ts",
-    "test": "npm run generate-registry && npm run typecheck && npm run validate-all && npm run test:default",
+    "test": "npm run generate-registry && npm run typecheck && npm run validate-all && npm run test:default && npm run test:delete-episode",
     "test:default": "tsx scripts/test-default-entry.ts",
+    "test:delete-episode": "tsx scripts/test-delete-episode.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
