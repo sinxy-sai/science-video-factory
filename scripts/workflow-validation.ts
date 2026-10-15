@@ -5,6 +5,7 @@ import type {EpisodeModule} from '../content/episode-module';
 
 const placeholderTerms = ['Replace with', 'Describe the science', 'TODO', 'TBD'];
 const nonEmpty = (path: string) => existsSync(path) && readFileSync(path, 'utf8').trim().length > 0;
+const containsPlaceholder = (value: string) => placeholderTerms.some((term) => value.includes(term));
 
 export function loadShotBriefs(episodeId: string): ShotBrief[] {
   const directory = resolve('content', 'episodes', episodeId, 'shot-briefs');
@@ -37,6 +38,9 @@ export function validateWorkflow(episode: EpisodeModule): void {
   const sceneIds = new Set(scenes.map((scene) => scene.id));
   const briefSceneIds = new Set<string>();
   for (const [index, brief] of briefs.entries()) {
+    if ([brief.title, brief.narration, brief.visualStyle, brief.visualDirection.composition, brief.visualDirection.focalPoint, brief.visualDirection.palette, brief.visualDirection.typography, brief.motion.entrance, brief.motion.transformation, brief.motion.transition].some(containsPlaceholder)) {
+      throw new Error(`${id}/${brief.id}: ShotBrief still contains placeholder visual or motion direction`);
+    }
     if (!sceneIds.has(brief.sceneId)) throw new Error(`${id}/${brief.id}: sceneId ${brief.sceneId} is not in manifest`);
     briefSceneIds.add(brief.sceneId);
     const scene = scenes.find((item) => item.id === brief.sceneId)!;

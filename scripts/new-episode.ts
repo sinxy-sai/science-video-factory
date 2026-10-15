@@ -1,4 +1,4 @@
-import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
+import {copyFileSync, existsSync, mkdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import {assertEpisodeId} from './episode-utils';
@@ -23,6 +23,7 @@ mkdirSync(join(directory, 'assets', 'generated'), {recursive: true});
 mkdirSync(join(directory, 'scenes'), {recursive: true});
 mkdirSync(join(directory, 'shot-briefs'), {recursive: true});
 mkdirSync(join(directory, 'hyperframes'), {recursive: true});
+mkdirSync(join(directory, 'hyperframes', 'shot-001', 'assets'), {recursive: true});
 mkdirSync(join(directory, 'manim'), {recursive: true});
 writeFileSync(join(directory, 'assets', '.gitkeep'), '', 'utf8');
 writeFileSync(join(directory, 'assets', 'generated', '.gitkeep'), '', 'utf8');
@@ -34,9 +35,12 @@ writeFileSync(
 writeFileSync(join(directory, 'script.md'), `# ${safeId}\n\n## 目标\n\n在这里写完整旁白剧本。每个镜头的 narration 必须与最终配音一致。\n\n## 旁白\n\n在这里写本集完整旁白。\n`, 'utf8');
 writeFileSync(join(directory, 'storyboard.md'), `# ${safeId} 分镜表\n\n| 镜头 | 时间 | 画面 | 旁白 | 技术 |\n|---|---|---|---|---|\n| shot-001 | 00:00–00:05 | Replace with shot description | Replace with narration | Remotion |\n`, 'utf8');
 writeFileSync(join(directory, 'visual-style.md'), `# ${safeId} Visual Style\n\nDefine palette, typography, motion language, and continuity rules for this episode.\n`, 'utf8');
-writeFileSync(join(directory, 'hyperframes', 'README.md'), '# HyperFrames\n\nPlace HyperFrames source files and rendered outputs here.\n', 'utf8');
+writeFileSync(join(directory, 'hyperframes', 'README.md'), '# HyperFrames\n\nDefault renderer path. Each shot gets `hyperframes/<shot-id>/DESIGN.md`, `index.html`, and rendered output. Run `npm run validate-shots -- <episode-id>` before final composition.\n', 'utf8');
 writeFileSync(join(directory, 'manim', 'README.md'), '# Manim\n\nPlace Manim source files and rendered outputs here.\n', 'utf8');
-writeFileSync(join(directory, 'shot-briefs', 'shot-001.json'), JSON.stringify({id:'shot-001',sceneId:'intro',title:'Replace with a shot title',narration:'Replace with a short spoken line.',visual:'intro',durationInFrames:150,continuity:{leaves:['primary-subject'],inherits:[]},implementation:{hyperframes:false,manim:false,remotion:true,files:['scenes/IntroScene.tsx']},assets:[]}, null, 2) + '\n', 'utf8');
+writeFileSync(join(directory, 'hyperframes', 'shot-001', 'DESIGN.md'), `# Shot 001 Design\n\nChoose a named HyperFrames visual style and define the hero frame before writing animation.\n`, 'utf8');
+copyFileSync('node_modules/gsap/dist/gsap.min.js', join(directory, 'hyperframes', 'shot-001', 'assets', 'gsap.min.js'));
+writeFileSync(join(directory, 'hyperframes', 'shot-001', 'index.html'), `<!doctype html>\n<html lang="zh-CN"><head><meta charset="UTF-8"><title>${safeId} shot-001</title><script src="assets/gsap.min.js"></script><style>html,body{margin:0;width:1920px;height:1080px;background:#151311;color:#F3EDE2;font-family:Arial Black,Arial,sans-serif}main{width:100%;height:100%;padding:140px 160px;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center}.eyebrow{font:700 22px Courier New,monospace;color:#8D877E;letter-spacing:.16em}.title{font-size:clamp(120px,15vw,260px);line-height:.88;color:#F3EDE2}.accent{color:#D94B2B}.rule{height:8px;width:320px;background:#D94B2B;transform-origin:left}</style></head><body><div data-composition-id="shot-001" data-width="1920" data-height="1080" data-duration="5"><main><div id="eyebrow" class="eyebrow clip" data-start="0" data-duration="5" data-track-index="1">SHOT / 001</div><div id="title" class="title clip" data-start="0" data-duration="5" data-track-index="2">REPLACE <span class="accent">TITLE</span></div><div id="rule" class="rule clip" data-start="0" data-duration="5" data-track-index="3"></div></main><script>window.__timelines=window.__timelines||{};const tl=gsap.timeline({paused:true});tl.from('#eyebrow',{x:-30,opacity:0,duration:.45,ease:'power3.out'},.15).from('#title',{x:-80,opacity:0,rotation:-2,duration:.8,ease:'expo.out'},.3).from('#rule',{scaleX:0,duration:.55,ease:'power4.out'},.8);window.__timelines['shot-001']=tl;</script></div></body></html>`, 'utf8');
+writeFileSync(join(directory, 'shot-briefs', 'shot-001.json'), JSON.stringify({id:'shot-001',sceneId:'intro',title:'Replace with a shot title',narration:'Replace with a short spoken line.',visual:'intro',durationInFrames:150,renderer:'hyperframes-default',visualStyle:'replace-with-named-style',visualDirection:{composition:'left-anchored editorial poster',focalPoint:'oversized title lockup',hierarchy:['title','accent-rule','metadata'],palette:'replace-with-style-palette',typography:'replace-with-style-type',texture:'optional paper, grain, or glow'},motion:{entrance:'replace-with-entrance',transformation:'replace-with-transformation',exit:'transition-owned',transition:'replace-with-transition',pacing:'measured'},continuity:{leaves:['primary-subject'],inherits:[]},implementation:{hyperframes:true,manim:false,remotion:true,files:['hyperframes/shot-001/index.html','scenes/IntroScene.tsx']},qualityChecks:{lint:true,validate:true,inspect:true,animationMap:true,strict:true},assets:[]}, null, 2) + '\n', 'utf8');
 writeFileSync(
   join(directory, 'manifest.ts'),
   `import type {EpisodeManifest} from '../../schema';\nimport {LANDSCAPE_PRESET} from '../../presets';\n\nexport const manifest: EpisodeManifest = {\n  id: '${safeId}',\n  title: 'Replace with a topic',\n  language: 'zh-CN',\n  ...LANDSCAPE_PRESET,\n  theme: 'clear-science',\n  scenes: [\n    {\n      id: 'intro',\n      title: 'Replace with a scene title',\n      claim: 'Replace with one concise knowledge claim.',\n      visual: 'intro',\n      durationInFrames: 150,\n      beats: [\n        {id: 'enter', purpose: 'enter', startFrame: 0, durationInFrames: 24},\n        {id: 'resolve', purpose: 'resolve', startFrame: 24, durationInFrames: 60},\n      ],\n      captions: [\n        {id: 'intro-caption', text: 'Replace with a short spoken line.', startFrame: 18, durationInFrames: 60},\n      ],\n      supportingText: 'Replace with a short explanation.',\n    },\n  ],\n};\n`,
@@ -61,5 +65,6 @@ if (result.status !== 0) {
 console.log(`Created episode scaffold: ${directory}`);
 console.log(`Next commands:`);
 console.log(`  npm run validate -- ${safeId}`);
+console.log(`  npm run validate-shots -- ${safeId}`);
 console.log(`  npm run preview -- ${safeId}`);
 console.log(`  npm run render -- ${safeId}`);

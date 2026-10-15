@@ -8,6 +8,7 @@
     "dev": "remotion studio --no-open",
     "studio": "remotion studio --no-open",
     "validate": "tsx scripts/validate.ts",
+    "validate-shots": "tsx scripts/validate-shots.ts",
     "preview": "tsx scripts/preview.ts",
     "render": "tsx scripts/render.ts",
     "prepare-assets": "tsx scripts/prepare-assets.ts",
