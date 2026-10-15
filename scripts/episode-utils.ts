@@ -8,7 +8,7 @@ const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
 export function assertEpisodeId(id: string): string {
   if (!idPattern.test(id)) {
-    throw new Error(`Invalid episode id "${id}". Use lowercase kebab-case, for example: why-sky-blue`);
+    throw new Error(`Invalid episode id "${id}". Use lowercase kebab-case, for example: my-topic`);
   }
   return id;
 }

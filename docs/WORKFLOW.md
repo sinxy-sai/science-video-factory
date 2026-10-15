@@ -21,11 +21,11 @@ MP4 渲染
 ## 命令
 
 ```powershell
-npm run validate -- why-sky-blue
-npm run preview -- why-sky-blue
-npm run still -- why-sky-blue --frame 30
-npm run render -- why-sky-blue --scale 0.5
-npm run new-episode -- how-memory-works
+npm run new-episode -- my-topic
+npm run validate -- my-topic
+npm run preview -- my-topic
+npm run still -- my-topic --frame 30
+npm run render -- my-topic --scale 0.5
 ```
 
 输出保存在 `renders/<episode-id>/`，并带有 manifest 快照，方便追溯生成输入。

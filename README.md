@@ -29,7 +29,7 @@ npm run new-episode -- my-topic
 7. 用 `npm run still -- <episode-id> --frame 30` 检查单帧布局。
 8. 用 `npm run render -- <episode-id>` 输出 MP4。
 
-当前示例不包含配音和字幕。后续音频字段可以在不重写场景组件的情况下加入 manifest。
+生成的视频默认不包含配音和字幕。后续音频字段可以在不重写场景组件的情况下加入 manifest。
 
 项目脚本会自动使用 `node_modules/.remotion/chrome-headless-shell/` 下的本地 Chrome Headless Shell。若该文件不存在，Remotion 会尝试自动下载浏览器。
 
