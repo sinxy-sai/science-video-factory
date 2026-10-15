@@ -9,14 +9,17 @@ export function deleteEpisode(episodeId: string, projectRoot = process.cwd()): v
   const root = resolve(projectRoot);
   const episodeDirectory = resolve(root, 'content', 'episodes', safeId);
   const renderDirectory = resolve(root, 'renders', safeId);
+  const staticDirectory = resolve(root, 'static', 'episodes', safeId);
   const propsFile = resolve(root, '.remotion', `${safeId}.props.json`);
   const episodesRoot = resolve(root, 'content', 'episodes');
   const rendersRoot = resolve(root, 'renders');
+  const staticRoot = resolve(root, 'static', 'episodes');
   const remotionRoot = resolve(root, '.remotion');
 
   if (
     !episodeDirectory.startsWith(episodesRoot + sep) ||
     !renderDirectory.startsWith(rendersRoot + sep) ||
+    !staticDirectory.startsWith(staticRoot + sep) ||
     !propsFile.startsWith(remotionRoot + sep)
   ) {
     throw new Error(`Refusing to delete episode outside project: ${safeId}`);
@@ -27,6 +30,7 @@ export function deleteEpisode(episodeId: string, projectRoot = process.cwd()): v
 
   rmSync(episodeDirectory, {recursive: true, force: true});
   rmSync(renderDirectory, {recursive: true, force: true});
+  rmSync(staticDirectory, {recursive: true, force: true});
   rmSync(propsFile, {force: true});
 }
 
