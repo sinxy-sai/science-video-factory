@@ -28,7 +28,7 @@ writeFileSync(
 );
 writeFileSync(
   join(directory, 'manifest.ts'),
-  `import type {EpisodeManifest} from '../../schema';\nimport {LANDSCAPE_PRESET} from '../../presets';\n\nexport const manifest: EpisodeManifest = {\n  id: '${safeId}',\n  title: 'Replace with a topic',\n  language: 'zh-CN',\n  ...LANDSCAPE_PRESET,\n  theme: 'clear-science',\n  scenes: [\n    {\n      id: 'intro',\n      title: 'Replace with a scene title',\n      claim: 'Replace with one concise knowledge claim.',\n      visual: 'intro',\n      durationInFrames: 150,\n      supportingText: 'Replace with a short explanation.',\n    },\n  ],\n};\n`,
+  `import type {EpisodeManifest} from '../../schema';\nimport {LANDSCAPE_PRESET} from '../../presets';\n\nexport const manifest: EpisodeManifest = {\n  id: '${safeId}',\n  title: 'Replace with a topic',\n  language: 'zh-CN',\n  ...LANDSCAPE_PRESET,\n  theme: 'clear-science',\n  scenes: [\n    {\n      id: 'intro',\n      title: 'Replace with a scene title',\n      claim: 'Replace with one concise knowledge claim.',\n      visual: 'intro',\n      durationInFrames: 150,\n      beats: [\n        {id: 'enter', purpose: 'enter', startFrame: 0, durationInFrames: 24},\n        {id: 'resolve', purpose: 'resolve', startFrame: 24, durationInFrames: 60},\n      ],\n      captions: [\n        {id: 'intro-caption', text: 'Replace with a short spoken line.', startFrame: 18, durationInFrames: 60},\n      ],\n      supportingText: 'Replace with a short explanation.',\n    },\n  ],\n};\n`,
   'utf8',
 );
 writeFileSync(
@@ -38,7 +38,7 @@ writeFileSync(
 );
 writeFileSync(
   join(directory, 'episode.ts'),
-  `import React from 'react';\nimport {z} from 'zod';\nimport type {EpisodeModule} from '../../episode-module';\nimport {episodeManifestSchema, sceneSchema} from '../../schema';\nimport {manifest} from './manifest';\nimport {IntroScene} from './scenes/IntroScene';\n\nconst localVisualSchema = z.enum(['intro']);\nconst localManifestSchema = episodeManifestSchema.safeExtend({\n  scenes: z.array(sceneSchema.extend({visual: localVisualSchema})),\n});\nconst validatedManifest = localManifestSchema.parse(manifest);\n\nexport const episode: EpisodeModule = {\n  manifest: validatedManifest,\n  renderScene: ({scene}) => {\n    switch (scene.visual) {\n      case 'intro': return React.createElement(IntroScene);\n      default: throw new Error(\`Unknown ${safeId} visual: \${scene.visual}\`);\n    }\n  },\n};\n`,
+  `import React from 'react';\nimport {z} from 'zod';\nimport type {EpisodeModule} from '../../episode-module';\nimport {episodeManifestSchema, sceneSchema} from '../../schema';\nimport {manifest} from './manifest';\nimport {IntroScene} from './scenes/IntroScene';\n\nconst localVisualSchema = z.enum(['intro']);\nconst localManifestSchema = episodeManifestSchema.safeExtend({\n  scenes: z.array(sceneSchema.safeExtend({visual: localVisualSchema})),\n});\nconst validatedManifest = localManifestSchema.parse(manifest);\n\nexport const episode: EpisodeModule = {\n  manifest: validatedManifest,\n  renderScene: ({scene}) => {\n    switch (scene.visual) {\n      case 'intro': return React.createElement(IntroScene);\n      default: throw new Error(\`Unknown ${safeId} visual: \${scene.visual}\`);\n    }\n  },\n};\n`,
   'utf8',
 );
 

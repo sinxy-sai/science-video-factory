@@ -6,6 +6,25 @@ export type VideoFormat = z.infer<typeof formatSchema>;
 export const visualTypeSchema = z.string().min(1);
 export type VisualType = z.infer<typeof visualTypeSchema>;
 
+export const sceneBeatPurposeSchema = z.enum(['enter', 'establish', 'focus', 'process', 'compare', 'resolve', 'transition']);
+export type SceneBeatPurpose = z.infer<typeof sceneBeatPurposeSchema>;
+
+export const sceneBeatSchema = z.object({
+  id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  purpose: sceneBeatPurposeSchema,
+  startFrame: z.number().int().nonnegative(),
+  durationInFrames: z.number().int().positive(),
+});
+export type SceneBeat = z.infer<typeof sceneBeatSchema>;
+
+export const captionSchema = z.object({
+  id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+  text: z.string().min(1),
+  startFrame: z.number().int().nonnegative(),
+  durationInFrames: z.number().int().positive(),
+});
+export type Caption = z.infer<typeof captionSchema>;
+
 const audioSchema = z
   .object({
     src: z.string().min(1),
@@ -13,16 +32,78 @@ const audioSchema = z
   })
   .optional();
 
-export const sceneSchema = z.object({
-  id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
-  title: z.string().min(1),
-  claim: z.string().min(1),
-  visual: visualTypeSchema,
-  durationInFrames: z.number().int().positive(),
-  supportingText: z.string().min(1).optional(),
-  accent: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
-  audio: audioSchema,
-});
+export const sceneSchema = z
+  .object({
+    id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
+    title: z.string().min(1),
+    claim: z.string().min(1),
+    visual: visualTypeSchema,
+    durationInFrames: z.number().int().positive(),
+    beats: z.array(sceneBeatSchema).min(1),
+    captions: z.array(captionSchema).default([]),
+    supportingText: z.string().min(1).optional(),
+    accent: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+    audio: audioSchema,
+  })
+  .superRefine((scene, ctx) => {
+    const ids = new Set<string>();
+    let previousEnd = 0;
+    for (const [index, beat] of scene.beats.entries()) {
+      const beatEnd = beat.startFrame + beat.durationInFrames;
+      if (ids.has(beat.id)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['beats', index, 'id'],
+          message: `Duplicate beat id: ${beat.id}`,
+        });
+      }
+      if (beat.startFrame < previousEnd) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['beats', index, 'startFrame'],
+          message: 'Beats must be sorted and must not overlap',
+        });
+      }
+      if (beatEnd > scene.durationInFrames) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['beats', index],
+          message: 'Beat must fit within scene duration',
+        });
+      }
+      ids.add(beat.id);
+      previousEnd = Math.max(previousEnd, beatEnd);
+    }
+
+    const captionIds = new Set<string>();
+    let previousCaptionEnd = 0;
+    for (const [index, caption] of scene.captions.entries()) {
+      const captionEnd = caption.startFrame + caption.durationInFrames;
+      if (captionIds.has(caption.id)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['captions', index, 'id'],
+          message: `Duplicate caption id: ${caption.id}`,
+        });
+      }
+      if (caption.startFrame < previousCaptionEnd) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['captions', index, 'startFrame'],
+          message: 'Captions must be sorted and must not overlap',
+        });
+      }
+      if (captionEnd > scene.durationInFrames) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ['captions', index],
+          message: 'Caption must fit within scene duration',
+        });
+      }
+      captionIds.add(caption.id);
+      previousCaptionEnd = Math.max(previousCaptionEnd, captionEnd);
+    }
+  });
 
 export type SceneManifest = z.infer<typeof sceneSchema>;
 

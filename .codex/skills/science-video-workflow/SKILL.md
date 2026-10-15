@@ -20,12 +20,13 @@ This project generates explanatory videos, not cinematic reels. Keep the reading
 ## Manifest-first workflow
 
 1. Choose or create `content/episodes/<episode-id>/manifest.ts`.
-2. Keep each scene focused on one claim and one visual relationship.
-3. Run `npm run validate -- <episode-id>`.
-4. Preview with `npm run preview -- <episode-id>`.
-5. Check a frame with `npm run still -- <episode-id> --frame 30`.
-6. Render with `npm run render -- <episode-id>`.
-7. Inspect the output and the manifest snapshot in `renders/<episode-id>/`.
+2. Write a storyboard for each scene: one claim, one visual relationship, and explicit animation beats.
+3. Keep each scene focused on one claim and one visual relationship.
+4. Run `npm run validate -- <episode-id>`.
+5. Preview with `npm run preview -- <episode-id>` and inspect the dynamic rhythm.
+6. Check representative frames with `npm run still -- <episode-id> --frame 30`.
+7. Render with `npm run render -- <episode-id>`.
+8. Inspect the output and the manifest snapshot in `renders/<episode-id>/`.
 
 The Remotion renderer receives the selected manifest through a serialized props file. Do not hardcode a new episode into a scene component.
 
@@ -45,7 +46,8 @@ The Remotion renderer receives the selected manifest through a serialized props 
 - Keep text at readable video sizes and avoid long paragraphs.
 - Do not rely on hover, audio, or interaction to reveal the core explanation.
 - Give motion a job: introduce, emphasize, compare, show process, or show cause and effect.
+- Do not render a progress rail or other debug UI into the final video.
 
 ## Future audio
 
-Audio and captions are optional extensions. Add them to the manifest only when the episode needs them, then route to `remotion-captions` or an approved narration workflow. Do not make the current no-audio renderer wait for an audio file.
+Captions are part of the storyboard contract: add scene-relative caption cues to the manifest and render them with the caption layer. Audio and narration remain optional extensions; route them to `remotion-captions` or an approved narration workflow without making the no-audio renderer wait for an audio file.

@@ -8,6 +8,7 @@
 - `claim`：这一场景要让观众记住的知识主张。
 - `visual`：由当前 episode 的本地 `z.enum([...])` 定义的视觉类型。
 - `durationInFrames`：整数帧数，和 episode 的 fps 一起决定时长。
+- `beats`：按场景局部帧定义的动画阶段，不能重叠或超出场景时长。
 - `supportingText`：补充说明，可省略。
 
 示例视觉类型（具体可用值由各 episode 的本地 schema 决定）：
@@ -24,6 +25,10 @@
 - `summary`：把前面的关系收束为结论。
 
 新增视觉类型时，在所属 episode 的 `episode.ts` 中更新本地 schema 和渲染映射，并在需要时更新本文件。
+
+### Beat purpose
+
+可用的 beat purpose 包括：`enter`、`establish`、`focus`、`process`、`compare`、`resolve`、`transition`。场景组件通过 `beat` 和 `beatProgress` 读取当前阶段，把它们映射成确定性的 SVG/CSS 状态变化。
 
 ## 精确工作流
 
