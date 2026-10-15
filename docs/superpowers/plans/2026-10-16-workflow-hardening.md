@@ -51,7 +51,7 @@
 - Modify: `science-video-factory/scripts/episode-utils.ts`
 - Modify: `science-video-factory/README.md`
 
-- [x] Copy generated, HyperFrames, Manim, and rendered shot outputs into `public/episodes/<id>/...`.
+- [x] Copy generated, HyperFrames, Manim, and rendered shot outputs into `static/episodes/<id>/...`.
 - [x] Write `assets.manifest.json` with source and destination paths.
 - [x] Remove stale destination files before copying.
 - [x] Run the command against a generated episode.
@@ -86,7 +86,7 @@
 **Files:**
 - Delete: `science-video-factory/content/episodes/black-hole-light/`
 - Delete: `science-video-factory/renders/black-hole-light/`
-- Delete: `science-video-factory/public/black-hole-light/`
+- Delete: `science-video-factory/static/black-hole-light/`
 - Delete: `science-video-factory/.remotion/black-hole-light.props.json`
 - Modify: `science-video-factory/content/episodes/registry.generated.ts`
 

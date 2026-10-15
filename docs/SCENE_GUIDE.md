@@ -9,7 +9,7 @@
 - `sceneId`、`title`、`narration`、`visual`、`durationInFrames`
 - `continuity.inherits` 和 `continuity.leaves`
 - `implementation.hyperframes`、`implementation.manim`、`implementation.remotion` 与实现文件
-- 该镜头使用的资产及其目标 public 路径
+- 该镜头使用的资产及其目标 `static/` 路径
 
 镜头之间的连续性必须可追溯：下一镜声明继承的对象，必须由上一镜声明留下。
 

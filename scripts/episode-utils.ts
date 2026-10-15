@@ -40,8 +40,8 @@ export function episodeRoot(id: string): string {
   return resolve('content', 'episodes', assertEpisodeId(id));
 }
 
-export function publicEpisodeRoot(id: string): string {
-  return resolve('public', 'episodes', assertEpisodeId(id));
+export function staticEpisodeRoot(id: string): string {
+  return resolve('static', 'episodes', assertEpisodeId(id));
 }
 
 export function writeManifestSnapshot(manifest: EpisodeManifest, directory: string, filename: string): string {

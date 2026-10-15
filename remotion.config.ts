@@ -1,6 +1,7 @@
 import {Config} from '@remotion/cli/config';
 
-Config.setPublicDir('public');
+// Keep generated Remotion assets separate from source content and renders.
+Config.setPublicDir('static');
 Config.setOverwriteOutput(true);
 Config.setCodec('h264');
 Config.setPixelFormat('yuv420p');

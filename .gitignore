@@ -1,6 +1,7 @@
 node_modules/
 .remotion/
 renders/
+static/
 dist/
 *.local
 .venv/

@@ -53,7 +53,7 @@ npm run delete-episode -- my-topic
 
 `author-shots` 应用 `styles/vermilion-editorial/` 默认 Style Pack；`preview-shots` 启动官方 HyperFrames Studio；`render-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
-`prepare-assets` 会将生成素材统一复制到 `public/episodes/<episode-id>/`，并写入 `assets.manifest.json`。
+`prepare-assets` 会将生成素材统一复制到 `static/episodes/<episode-id>/`，并写入 `assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
 
 输出统一为 `renders/<episode-id>/final.mp4`，并带有 `final.manifest.json` 快照，方便追溯生成输入。不要再使用带多个历史命名的 MP4 文件作为标准输出。
 

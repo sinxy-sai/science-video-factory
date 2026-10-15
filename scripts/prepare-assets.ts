@@ -1,6 +1,6 @@
 import {cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync} from 'node:fs';
 import {join, relative, resolve} from 'node:path';
-import {episodeRoot, loadEpisodeManifest, publicEpisodeRoot} from './episode-utils';
+import {episodeRoot, loadEpisodeManifest, staticEpisodeRoot} from './episode-utils';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) {
@@ -10,7 +10,7 @@ if (!episodeId) {
 
 await loadEpisodeManifest(episodeId);
 const sourceRoot = episodeRoot(episodeId);
-const destinationRoot = publicEpisodeRoot(episodeId);
+const destinationRoot = staticEpisodeRoot(episodeId);
 if (existsSync(destinationRoot)) rmSync(destinationRoot, {recursive: true, force: true});
 mkdirSync(destinationRoot, {recursive: true});
 

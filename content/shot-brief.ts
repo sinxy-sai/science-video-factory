@@ -20,7 +20,7 @@ export const shotContinuitySchema = z.object({
 export const shotAssetSchema = z.object({
   id: z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/),
   source: z.string().min(1),
-  publicPath: z.string().min(1),
+  staticPath: z.string().min(1),
 });
 
 export const shotVisualDirectionSchema = z.object({
