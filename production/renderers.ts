@@ -33,7 +33,11 @@ function validateBrowserSource(context: RendererContext): string[] {
   const source = readFileSync(indexPath, 'utf8');
   if (!source.includes('data-composition-id=')) errors.push('browser shot must declare data-composition-id');
   if (!source.includes('data-width=') || !source.includes('data-height=') || !source.includes('data-duration=')) errors.push('browser shot must declare data-width, data-height, and data-duration');
-  if (!source.includes('window.__timelines')) errors.push('browser shot must register window.__timelines');
+  if (context.brief.implementation.visualMode === 'webgl') {
+    if (!source.includes("addEventListener('hf-seek'") && !source.includes('addEventListener("hf-seek"')) errors.push('webgl shot must render from the HyperFrames hf-seek event');
+  } else if (!source.includes('window.__timelines')) {
+    errors.push('browser shot must register window.__timelines');
+  }
   if (context.brief.implementation.sourceRoot.startsWith('hyperframes/')) errors.push('legacy hyperframes source path is not supported; use html/<shot-id>/');
   return errors;
 }

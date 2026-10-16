@@ -34,7 +34,7 @@ npm run remove-episode -- my-topic
 ## 工作流
 
 1. 接收用户想法后先进入讨论阶段，确认观众、学习目标、事实边界、时长、节奏、风格和音频策略；未完成批准不能开始写 renderer source。
-2. 写完整 `content-plan.md` 和 `shot-design.md`。三分钟视频默认要求两份文档各至少 10,000 个字符，并且 front matter 必须声明讨论、内容、分镜和制作批准。
+2. 写完整 `content-plan.md` 和 `shot-design.md`，并且 front matter 必须声明讨论、内容、分镜和制作批准。
 3. 再写 `script.md`、`storyboard.md` 和每个场景的 `shot-briefs/shot-*.json`。
 4. 默认使用 `browser`：在 `html/<shot-id>/` 中完成 DESIGN.md 和 HTML composition。
 5. 在 `manifest.ts` 中定义场景、时长、beats 和本地视觉类型。
