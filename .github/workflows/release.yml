@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Check out tagged commit
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -27,8 +29,15 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
-            gh release edit "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file .github/release_template.md
+          previous_tag="$(git tag --sort=-creatordate | grep -v "^${GITHUB_REF_NAME}$" | head -n 1)"
+          if [ -n "$previous_tag" ]; then
+            git log --pretty=format:'- `%h` %s' "${previous_tag}..${GITHUB_SHA}" > /tmp/release-commits.md
           else
-            gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file .github/release_template.md
+            git log --pretty=format:'- `%h` %s' "${GITHUB_SHA}" -n 20 > /tmp/release-commits.md
+          fi
+          cat .github/release_template.md /tmp/release-commits.md > /tmp/release-notes.md
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release edit "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file /tmp/release-notes.md
+          else
+            gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file /tmp/release-notes.md
           fi
