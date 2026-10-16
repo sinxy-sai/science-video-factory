@@ -38,7 +38,7 @@ npm run delete-episode -- my-topic
 4. 在 `manifest.ts` 中定义场景、时长、beats 和本地视觉类型。
 5. 在 `episode.ts` 中使用 `z.enum([...])` 声明本 episode 的视觉 schema，并映射到 `scenes/` 组件。
 7. 运行 `npm run validate-planning -- <episode-id>`，检查长文本计划、状态和批准。
-8. 根据话题完成 `visual-style.md` 和每个 ShotBrief 的视觉方向，再运行 `npm run author-shots -- <episode-id>`。可复用的 Style Pack 位于 `styles/<name>/`。
+8. 根据话题完成 `visual-style.md` 和每个 ShotBrief 的视觉方向，再运行 `npm run author-shots -- <episode-id>`。当前版本使用 episode 自己的视觉语言。
 9. 运行 `npm run validate-shots -- <episode-id>`，按 renderer adapter 执行 HyperFrames、Remotion 或其他 renderer 的检查；不支持的 renderer 会明确失败。
 8. 用 `npm run preview-shots -- <episode-id> [shot-id]` 预览镜头。
 9. 用 `npm run render-shots -- <episode-id>` 输出 HyperFrames 镜头素材。
