@@ -2,7 +2,7 @@
 
 ## Status
 
-- State: design proposed
+- State: implemented in the browser-first workflow
 - Scope: replace placeholder renderer routing with an executable multi-backend shot pipeline
 - First production route: browser-authored shots powered by HyperFrames, composed by Remotion
 
@@ -84,7 +84,7 @@ Each adapter receives the episode id, ShotBrief, source directory, output path, 
 ### Browser adapter
 
 - Source: `html/<shot-id>/index.html`.
-- Required source contract: `data-composition-id`, width, height, duration, registered `window.__timelines`, and deterministic timeline construction.
+- Required source contract: `data-composition-id`, width, height, duration, and deterministic timeline construction. HTML/SVG/Canvas shots register `window.__timelines`; WebGL shots render from the deterministic HyperFrames `hf-seek` event.
 - Preview: HyperFrames preview.
 - Validation: HyperFrames lint, validate, inspect, and optional animation map.
 - Render: HyperFrames render to the declared output kind.
@@ -104,7 +104,7 @@ Extend the shot implementation contract with:
 - `composition`: `'asset'`.
 - `visualMode`: `'html' | 'svg' | 'canvas' | 'webgl' | 'external'`.
 
-The existing `renderer` field remains the selected adapter id. Existing HyperFrames briefs are migrated by defaulting `sourceRoot` to `hyperframes/<shot-id>` and output to an MP4 under `renders/<episode-id>/shots/`.
+The existing `renderer` field remains the selected adapter id. Browser ShotBriefs must declare `sourceRoot: html/<shot-id>`, a visual mode, an asset composition, and an explicit output contract under `renders/<episode-id>/shots/`.
 
 The episode manifest gains a per-scene `shotAsset` reference populated during asset preparation.
 

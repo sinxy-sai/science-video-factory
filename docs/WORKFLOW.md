@@ -7,7 +7,7 @@
   ↓
 多轮内容讨论与用户确认
   ↓
-content-plan.md + shot-design.md（长文本、批准状态）
+content-plan.md + shot-design.md（计划内容、批准状态）
   ↓
 观众、学习目标与知识关系
   ↓
@@ -17,7 +17,7 @@ content-plan.md + shot-design.md（长文本、批准状态）
   ↓
   每镜 ShotBrief：shot-briefs/shot-*.json（连续性 + 技术路线 + 素材）
   ↓
-  每镜实现：HTML/CSS/JavaScript + SVG/Canvas 2D/Three.js-WebGL + GSAP / HyperFrames / Remotion / FFmpeg
+  每镜实现：HTML/CSS/JavaScript + SVG/Canvas 2D/Three.js-WebGL + GSAP
   ↓
   静态 hero frame 与动效设计
   ↓
@@ -48,15 +48,15 @@ npm run render-still-frame -- my-topic --frame 30
 npm run remove-episode -- my-topic
 ```
 
-`new-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`html/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准，并且不能为空。
+`create-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`html/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准，并且不能为空。
 
 新 episode 默认使用 `browser`。每个镜头在 `html/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查。Remotion 不绘制镜头内容，只合成已渲染的镜头资产。
 
-`validate-planning` 先检查计划文档和批准状态，并确认文档非空且没有重复段落。`validate-shots` 通过 renderer adapter 执行 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查；其他 renderer 必须有对应 adapter，否则明确失败。通过后才进入资产准备和最终合成。
+`validate-episode-planning` 先检查计划文档和批准状态，并确认文档非空且没有重复段落。`validate-episode-shots` 通过 `browser` renderer adapter 执行 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查；Manim 和 Blender 在没有执行器时明确失败。通过后才进入资产准备和最终合成。
 
-`author-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-shots` 启动官方 HyperFrames Studio；`render-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
+`author-episode-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-episode-shots` 启动官方 HyperFrames Studio；`render-episode-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-episode-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
-`contact-sheet` 会把代表帧合成为可审阅的 PNG 接触表；`visual-regression` 可对比 `baselines/` 下的历史帧。 最终 `render-episode` 只接受 `--scale 1`，缩放输出不能写入标准 `final.mp4`；预览请使用 `render-still-frame` 或 Remotion 直接输出到临时路径。`prepare-assets` 会将生成素材统一复制到 `static/episodes/<episode-id>/`，并写入 `assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
+`generate-contact-sheet` 会把代表帧合成为可审阅的 PNG 接触表；`compare-episode-visual-regression` 可对比 `baselines/` 下的历史帧。最终 `render-episode` 只接受 `--scale 1`，缩放输出不能写入标准 `final.mp4`；预览请使用 `render-still-frame` 或 Remotion 直接输出到临时路径。`prepare-episode-assets` 会校验 ShotBrief 声明的输出，并将镜头素材和生成素材复制到 `static/episodes/<episode-id>/`，写入 `shots/assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
 
 输出统一为 `renders/<episode-id>/final.mp4`，并带有 `final.manifest.json` 快照，方便追溯生成输入。不要再使用带多个历史命名的 MP4 文件作为标准输出。
 
