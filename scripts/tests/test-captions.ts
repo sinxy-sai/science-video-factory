@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import {episodeManifestSchema} from '../content/schema';
-import {getActiveCaption} from '../src/motion/captions';
+import {episodeManifestSchema} from '../../content/schema';
+import {getActiveCaption} from '../../src/motion/captions';
 
 const manifest = episodeManifestSchema.parse({
   id: 'caption-demo',

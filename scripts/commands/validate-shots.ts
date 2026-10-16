@@ -1,9 +1,9 @@
 import {existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {loadEpisodeManifest} from './episode-utils';
-import {loadShotBriefs} from './workflow-validation';
-import {getRendererAdapter, validateRenderer} from '../production/renderers';
+import {loadEpisodeManifest} from '../lib/episode-utils';
+import {loadShotBriefs} from '../lib/workflow-validation';
+import {getRendererAdapter, validateRenderer} from '../../production/renderers';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) {

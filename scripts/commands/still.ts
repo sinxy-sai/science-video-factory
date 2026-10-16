@@ -1,6 +1,6 @@
 import {spawnSync} from 'node:child_process';
 import {join} from 'node:path';
-import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from './episode-utils';
+import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from '../lib/episode-utils';
 
 const args = process.argv.slice(2);
 const [episodeId] = args;

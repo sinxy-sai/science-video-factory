@@ -1,6 +1,6 @@
 import {cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync} from 'node:fs';
 import {join, relative, resolve} from 'node:path';
-import {episodeRoot, loadEpisodeManifest, staticEpisodeRoot} from './episode-utils';
+import {episodeRoot, loadEpisodeManifest, staticEpisodeRoot} from '../lib/episode-utils';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) {

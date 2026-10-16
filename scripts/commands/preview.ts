@@ -1,5 +1,5 @@
 import {spawnSync} from 'node:child_process';
-import {browserArgs, loadEpisodeModule, writePropsFile} from './episode-utils';
+import {browserArgs, loadEpisodeModule, writePropsFile} from '../lib/episode-utils';
 
 const [episodeId] = process.argv.slice(2);
 

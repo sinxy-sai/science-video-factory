@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
-import {episodeManifestSchema} from '../content/schema';
-import {getActiveSceneBeat} from '../src/motion/scene-beats';
+import {episodeManifestSchema} from '../../content/schema';
+import {getActiveSceneBeat} from '../../src/motion/scene-beats';
 
 const scene = {
   id: 'demo-scene',

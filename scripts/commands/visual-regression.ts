@@ -1,7 +1,7 @@
 import {existsSync, readdirSync} from 'node:fs';
 import {join} from 'node:path';
-import {ensureRenderDir, loadEpisodeManifest} from './episode-utils';
-import {comparePngs, decodePng} from '../production/visual-regression';
+import {ensureRenderDir, loadEpisodeManifest} from '../lib/episode-utils';
+import {comparePngs, decodePng} from '../../production/visual-regression';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) { console.error('Usage: npm run visual-regression -- <episode-id>'); process.exit(1); }

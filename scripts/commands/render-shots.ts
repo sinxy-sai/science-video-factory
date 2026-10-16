@@ -1,9 +1,9 @@
 import {existsSync, mkdirSync} from 'node:fs';
 import {join, resolve} from 'node:path';
-import {loadShotBriefs} from './workflow-validation';
-import {ensureRenderDir, loadEpisodeManifest} from './episode-utils';
-import {getRendererAdapter, validateRenderer} from '../production/renderers';
-import {validatePlanning} from '../production/planning';
+import {loadShotBriefs} from '../lib/workflow-validation';
+import {ensureRenderDir, loadEpisodeManifest} from '../lib/episode-utils';
+import {getRendererAdapter, validateRenderer} from '../../production/renderers';
+import {validatePlanning} from '../../production/planning';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) { console.error('Usage: npm run render-shots -- <episode-id>'); process.exit(1); }

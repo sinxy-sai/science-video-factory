@@ -2,7 +2,7 @@ import {existsSync, rmSync} from 'node:fs';
 import {resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
-import {assertEpisodeId} from './episode-utils';
+import {assertEpisodeId} from '../lib/episode-utils';
 
 export function deleteEpisode(episodeId: string, projectRoot = process.cwd()): void {
   const safeId = assertEpisodeId(episodeId);

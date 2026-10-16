@@ -1,8 +1,8 @@
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {loadShotBriefs} from './workflow-validation';
-import {episodeRoot} from './episode-utils';
-import {validatePlanning} from '../production/planning';
+import {loadShotBriefs} from '../lib/workflow-validation';
+import {episodeRoot} from '../lib/episode-utils';
+import {validatePlanning} from '../../production/planning';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) { console.error('Usage: npm run author-shots -- <episode-id>'); process.exit(1); }

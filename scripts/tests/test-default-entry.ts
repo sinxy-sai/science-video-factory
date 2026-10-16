@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {getDefaultCompositionMetadata} from '../src/defaults';
+import {getDefaultCompositionMetadata} from '../../src/defaults';
 
 assert.deepEqual(getDefaultCompositionMetadata(), {
   durationInFrames: 1,

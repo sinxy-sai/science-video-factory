@@ -1,8 +1,8 @@
 import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import {join, resolve} from 'node:path';
-import {shotBriefSchema, type ShotBrief} from '../content/shot-brief';
-import type {EpisodeModule} from '../content/episode-module';
-import {validatePlanning} from '../production/planning';
+import {shotBriefSchema, type ShotBrief} from '../../content/shot-brief';
+import type {EpisodeModule} from '../../content/episode-module';
+import {validatePlanning} from '../../production/planning';
 
 const placeholderTerms = ['Replace with', 'Describe the science', 'Define palette', 'Choose a named', 'TODO', 'TBD'];
 const nonEmpty = (path: string) => existsSync(path) && readFileSync(path, 'utf8').trim().length > 0;

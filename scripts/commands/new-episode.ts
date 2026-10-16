@@ -1,7 +1,7 @@
 import {copyFileSync, existsSync, mkdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {assertEpisodeId} from './episode-utils';
+import {assertEpisodeId} from '../lib/episode-utils';
 
 const [episodeId] = process.argv.slice(2);
 

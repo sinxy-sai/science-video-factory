@@ -1,8 +1,8 @@
 import {existsSync} from 'node:fs';
 import {join, resolve} from 'node:path';
-import {loadShotBriefs} from './workflow-validation';
-import {getRendererAdapter, validateRenderer} from '../production/renderers';
-import {validatePlanning} from '../production/planning';
+import {loadShotBriefs} from '../lib/workflow-validation';
+import {getRendererAdapter, validateRenderer} from '../../production/renderers';
+import {validatePlanning} from '../../production/planning';
 
 const [episodeId, requestedShot] = process.argv.slice(2);
 if (!episodeId) { console.error('Usage: npm run preview-shots -- <episode-id> [shot-id]'); process.exit(1); }

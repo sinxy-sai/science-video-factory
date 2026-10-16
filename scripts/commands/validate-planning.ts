@@ -1,4 +1,4 @@
-import {validatePlanning} from '../production/planning';
+import {validatePlanning} from '../../production/planning';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) {

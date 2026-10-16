@@ -1,5 +1,5 @@
-import {describeManifest, loadEpisodeModule} from './episode-utils';
-import {validateWorkflow} from './workflow-validation';
+import {describeManifest, loadEpisodeModule} from '../lib/episode-utils';
+import {validateWorkflow} from '../lib/workflow-validation';
 
 const [episodeId] = process.argv.slice(2);
 

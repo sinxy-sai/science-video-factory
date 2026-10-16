@@ -1,7 +1,7 @@
 import {writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {ensureRenderDir, loadEpisodeManifest, describeManifest} from './episode-utils';
-import {probeMedia, validateMediaMetadata} from '../production/media-metadata';
+import {ensureRenderDir, loadEpisodeManifest, describeManifest} from '../lib/episode-utils';
+import {probeMedia, validateMediaMetadata} from '../../production/media-metadata';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) { console.error('Usage: npm run verify-output -- <episode-id>'); process.exit(1); }

@@ -3,7 +3,7 @@ import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
 import {mkdtempSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {deleteEpisode} from './delete-episode';
+import {deleteEpisode} from '../commands/delete-episode';
 
 const root = mkdtempSync(join(tmpdir(), 'science-video-delete-'));
 try {

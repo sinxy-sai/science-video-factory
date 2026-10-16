@@ -1,8 +1,8 @@
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {delimiter, join, resolve} from 'node:path';
-import {getEpisodeModule} from '../content/episodes/registry.generated';
-import type {EpisodeModule} from '../content/episode-module';
-import {totalDurationInFrames, type EpisodeManifest} from '../content/schema';
+import {getEpisodeModule} from '../../content/episodes/registry.generated';
+import type {EpisodeModule} from '../../content/episode-module';
+import {totalDurationInFrames, type EpisodeManifest} from '../../content/schema';
 
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
