@@ -7,9 +7,9 @@ import {validatePlanning} from '../production/planning';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) { console.error('Usage: npm run render-shots -- <episode-id>'); process.exit(1); }
-await loadEpisodeManifest(episodeId);
+const manifest = await loadEpisodeManifest(episodeId);
 validatePlanning(episodeId);
-const outputRoot = join(ensureRenderDir(await loadEpisodeManifest(episodeId)), 'shots');
+const outputRoot = join(ensureRenderDir(manifest), 'shots');
 mkdirSync(outputRoot, {recursive: true});
 let failed = false;
 for (const brief of loadShotBriefs(episodeId)) {
@@ -20,4 +20,4 @@ for (const brief of loadShotBriefs(episodeId)) {
   if (status !== 0 || (brief.renderer === 'hyperframes-default' && !existsSync(output))) { failed = true; console.error(`${episodeId}/${brief.id}: ${brief.renderer} render failed`); }
 }
 if (failed) process.exit(1);
-console.log(`Rendered HyperFrames shots to ${outputRoot}`);
+console.log(`Rendered shot assets to ${outputRoot}`);

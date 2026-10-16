@@ -41,13 +41,13 @@ npm run delete-episode -- my-topic
 8. 根据话题完成 `visual-style.md` 和每个 ShotBrief 的视觉方向，再运行 `npm run author-shots -- <episode-id>`。当前版本使用 episode 自己的视觉语言。
 9. 运行 `npm run validate-shots -- <episode-id>`，按 renderer adapter 执行 HyperFrames、Remotion 或其他 renderer 的检查；不支持的 renderer 会明确失败。
 8. 用 `npm run preview-shots -- <episode-id> [shot-id]` 预览镜头。
-9. 用 `npm run render-shots -- <episode-id>` 输出 HyperFrames 镜头素材。
-10. 将 HyperFrames/Manim 产物放入对应目录，运行 `npm run prepare-assets -- <episode-id>`。
-11. 运行 `npm run generate-registry` 更新静态 registry。
-12. 运行 `npm run validate -- <episode-id>` 或 `npm run validate-all`。
-13. 用 `npm run preview -- <episode-id>` 做动态节奏检查。
-14. 用 `npm run still -- <episode-id> --frame 30` 检查单帧布局。
-15. 用 `npm run render -- <episode-id>` 输出唯一标准文件 `renders/<episode-id>/final.mp4`。
+10. 用 `npm run render-shots -- <episode-id>` 输出镜头素材。
+11. 将 HyperFrames/Manim 产物放入对应目录，运行 `npm run prepare-assets -- <episode-id>`。
+12. 运行 `npm run generate-registry` 更新静态 registry。
+13. 运行 `npm run validate -- <episode-id>` 或 `npm run validate-all`。
+14. 用 `npm run preview -- <episode-id>` 做动态节奏检查。
+15. 用 `npm run still -- <episode-id> --frame 30` 检查单帧布局。
+16. 用 `npm run render -- <episode-id>` 输出唯一标准文件 `renders/<episode-id>/final.mp4`。
 17. 用 `npm run contact-sheet -- <episode-id>` 生成代表帧接触表。
 18. 用 `npm run visual-regression -- <episode-id>` 对比 `renders/<episode-id>/baselines/` 中的基线帧。
 19. 用 `npm run verify-output -- <episode-id>` 写入输出验证摘要，并检查视频 metadata。

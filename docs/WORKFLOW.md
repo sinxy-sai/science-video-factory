@@ -53,7 +53,7 @@ npm run delete-episode -- my-topic
 
 新 episode 默认使用 `hyperframes-default`。每个镜头在 `hyperframes/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查；`remotion-native` 只能在 ShotBrief 中显式声明。
 
-`validate-planning` 先检查计划文档和批准状态。`validate-shots` 通过 renderer adapter 执行 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查；其他 renderer 必须有对应 adapter，否则明确失败。通过后才进入资产准备和最终合成。
+`validate-planning` 先检查计划文档和批准状态。默认每份计划至少 10,000 个字符，也可通过 `PLANNING_MIN_CHARS`、`PLANNING_CONTENT_MIN_CHARS` 和 `PLANNING_SHOT_DESIGN_MIN_CHARS` 调整。`validate-shots` 通过 renderer adapter 执行 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查；其他 renderer 必须有对应 adapter，否则明确失败。通过后才进入资产准备和最终合成。
 
 `author-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-shots` 启动官方 HyperFrames Studio；`render-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
@@ -61,7 +61,7 @@ npm run delete-episode -- my-topic
 
 输出统一为 `renders/<episode-id>/final.mp4`，并带有 `final.manifest.json` 快照，方便追溯生成输入。不要再使用带多个历史命名的 MP4 文件作为标准输出。
 
-删除视频项目时，`delete-episode` 会同时清理对应的 episode 目录、`static/episodes/<episode-id>/`、渲染目录和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。
+删除视频项目时，`delete-episode` 会同时清理对应的 episode 目录、`static/episodes/<episode-id>/`、`styles/<episode-id>/`（如果存在）、渲染目录和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。共享工具代码不会随 episode 删除。
 
 ## 技术分工
 

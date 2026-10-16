@@ -1,7 +1,6 @@
 import {existsSync, statSync} from 'node:fs';
 import {spawnSync} from 'node:child_process';
-import type {EpisodeManifest} from '../content/schema';
-import {totalDurationInFrames} from '../content/schema';
+import {totalDurationInFrames, type EpisodeManifest} from '../content/schema';
 
 export type MediaMetadata = {width:number;height:number;fps:number;duration:number;frames:number;videoCodec:string;audioCodec?:string;hasAudio:boolean;bytes:number;source:'ffprobe'|'manifest'};
 function fpsValue(value: string|number|undefined): number { if(typeof value==='number') return value; if(!value) return 0; const [a,b]=value.split('/').map(Number); return b ? a/b : a; }
