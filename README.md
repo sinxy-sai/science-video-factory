@@ -31,13 +31,15 @@ npm run delete-episode -- my-topic
 
 ## 工作流
 
-1. 将用户需求整理成知识结构，每个场景只承担一个主要关系。
-2. 写完整 `script.md` 和 `storyboard.md`，再为每个场景写一个 `shot-briefs/shot-*.json`。
-3. 默认使用 `hyperframes-default`：在 `hyperframes/<shot-id>/` 中完成 DESIGN.md 和 HTML composition。
+1. 接收用户想法后先进入讨论阶段，确认观众、学习目标、事实边界、时长、节奏、风格和音频策略；未完成批准不能开始写 renderer source。
+2. 写完整 `content-plan.md` 和 `shot-design.md`。三分钟视频默认要求两份文档各至少 10,000 个字符，并且 front matter 必须声明讨论、内容、分镜和制作批准。
+3. 再写 `script.md`、`storyboard.md` 和每个场景的 `shot-briefs/shot-*.json`。
+4. 默认使用 `hyperframes-default`：在 `hyperframes/<shot-id>/` 中完成 DESIGN.md 和 HTML composition。
 4. 在 `manifest.ts` 中定义场景、时长、beats 和本地视觉类型。
 5. 在 `episode.ts` 中使用 `z.enum([...])` 声明本 episode 的视觉 schema，并映射到 `scenes/` 组件。
-6. 根据话题完成 `visual-style.md` 和每个 ShotBrief 的视觉方向，再运行 `npm run author-shots -- <episode-id>`。项目没有默认视觉风格；如需复用明确的外部 Style Pack，必须显式设置 `SCIENCE_VIDEO_STYLE`。
-7. 运行 `npm run validate-shots -- <episode-id>`，调用 HyperFrames 官方 `check` 做 lint、runtime、layout、motion 和 WCAG 检查。
+7. 运行 `npm run validate-planning -- <episode-id>`，检查长文本计划、状态和批准。
+8. 根据话题完成 `visual-style.md` 和每个 ShotBrief 的视觉方向，再运行 `npm run author-shots -- <episode-id>`。可复用的 Style Pack 位于 `styles/<name>/`。
+9. 运行 `npm run validate-shots -- <episode-id>`，按 renderer adapter 执行 HyperFrames、Remotion 或其他 renderer 的检查；不支持的 renderer 会明确失败。
 8. 用 `npm run preview-shots -- <episode-id> [shot-id]` 预览镜头。
 9. 用 `npm run render-shots -- <episode-id>` 输出 HyperFrames 镜头素材。
 10. 将 HyperFrames/Manim 产物放入对应目录，运行 `npm run prepare-assets -- <episode-id>`。
@@ -46,7 +48,9 @@ npm run delete-episode -- my-topic
 13. 用 `npm run preview -- <episode-id>` 做动态节奏检查。
 14. 用 `npm run still -- <episode-id> --frame 30` 检查单帧布局。
 15. 用 `npm run render -- <episode-id>` 输出唯一标准文件 `renders/<episode-id>/final.mp4`。
-16. 用 `npm run verify-output -- <episode-id>` 写入输出验证摘要。
+17. 用 `npm run contact-sheet -- <episode-id>` 生成代表帧接触表。
+18. 用 `npm run visual-regression -- <episode-id>` 对比 `renders/<episode-id>/baselines/` 中的基线帧。
+19. 用 `npm run verify-output -- <episode-id>` 写入输出验证摘要，并检查视频 metadata。
 
 字幕是当前分镜流程的一部分，按场景相对帧写入 manifest 并由 Remotion 渲染；配音仍是可选项，可以在不重写场景组件的情况下接入。场景进度条属于调试信息，不进入最终视频。
 

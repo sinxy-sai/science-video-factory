@@ -5,6 +5,10 @@
 ```text
 用户需求和资料
   ↓
+多轮内容讨论与用户确认
+  ↓
+content-plan.md + shot-design.md（长文本、批准状态）
+  ↓
 观众、学习目标与知识关系
   ↓
   完整旁白剧本：content/episodes/<id>/script.md
@@ -45,15 +49,15 @@ npm run render -- my-topic --scale 0.5
 npm run delete-episode -- my-topic
 ```
 
-`new-episode` 会生成完整目录骨架：`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`hyperframes/`、`manim/` 和 `assets/generated/`。
+`new-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`hyperframes/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准；三分钟视频默认要求每份计划至少 10,000 个字符。
 
 新 episode 默认使用 `hyperframes-default`。每个镜头在 `hyperframes/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查；`remotion-native` 只能在 ShotBrief 中显式声明。
 
-`validate-shots` 调用 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查。通过后才进入资产准备和最终合成。
+`validate-planning` 先检查计划文档和批准状态。`validate-shots` 通过 renderer adapter 执行 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查；其他 renderer 必须有对应 adapter，否则明确失败。通过后才进入资产准备和最终合成。
 
 `author-shots` 默认读取当前 episode 的 `visual-style.md`；只有显式设置 `SCIENCE_VIDEO_STYLE` 时才使用 `styles/<name>/DESIGN.md`。项目不提供默认视觉风格，风格必须根据话题确定。`preview-shots` 启动官方 HyperFrames Studio；`render-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
-`prepare-assets` 会将生成素材统一复制到 `static/episodes/<episode-id>/`，并写入 `assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
+`contact-sheet` 会把代表帧合成为可审阅的 PNG 接触表；`visual-regression` 可对比 `baselines/` 下的历史帧。`prepare-assets` 会将生成素材统一复制到 `static/episodes/<episode-id>/`，并写入 `assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
 
 输出统一为 `renders/<episode-id>/final.mp4`，并带有 `final.manifest.json` 快照，方便追溯生成输入。不要再使用带多个历史命名的 MP4 文件作为标准输出。
 

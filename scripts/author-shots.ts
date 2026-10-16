@@ -2,10 +2,12 @@ import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {loadShotBriefs} from './workflow-validation';
 import {episodeRoot} from './episode-utils';
+import {validatePlanning} from '../production/planning';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) { console.error('Usage: npm run author-shots -- <episode-id>'); process.exit(1); }
 const root = episodeRoot(episodeId);
+validatePlanning(episodeId);
 const explicitStyle = process.env.SCIENCE_VIDEO_STYLE;
 const episodeStylePath = join(root, 'visual-style.md');
 const episodeStyle = readFileSync(episodeStylePath, 'utf8');

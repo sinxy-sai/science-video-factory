@@ -1,6 +1,7 @@
 import {spawnSync} from 'node:child_process';
 import {join} from 'node:path';
 import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from './episode-utils';
+import {validatePlanning} from '../production/planning';
 
 const args = process.argv.slice(2);
 const [episodeId] = args;
@@ -11,6 +12,7 @@ if (!episodeId) {
 }
 
 const {manifest} = await loadEpisodeModule(episodeId);
+validatePlanning(episodeId);
 const propsPath = writePropsFile(manifest);
 const renderDir = ensureRenderDir(manifest);
 const outputName = 'final.mp4';

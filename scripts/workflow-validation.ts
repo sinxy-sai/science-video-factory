@@ -2,6 +2,8 @@ import {existsSync, readdirSync, readFileSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {shotBriefSchema, type ShotBrief} from '../content/shot-brief';
 import type {EpisodeModule} from '../content/episode-module';
+import {hasStylePack} from '../styles/registry';
+import {validatePlanning} from '../production/planning';
 
 const placeholderTerms = ['Replace with', 'Describe the science', 'Define palette', 'Choose a named', 'TODO', 'TBD'];
 const nonEmpty = (path: string) => existsSync(path) && readFileSync(path, 'utf8').trim().length > 0;
@@ -23,6 +25,7 @@ export function loadShotBriefs(episodeId: string): ShotBrief[] {
 export function validateWorkflow(episode: EpisodeModule): void {
   const id = episode.manifest.id;
   const root = resolve('content', 'episodes', id);
+  validatePlanning(id);
   for (const file of ['script.md', 'storyboard.md', 'visual-style.md']) {
     const path = join(root, file);
     if (!nonEmpty(path)) throw new Error(`${id}: missing ${file}`);
@@ -41,7 +44,7 @@ export function validateWorkflow(episode: EpisodeModule): void {
     if ([brief.title, brief.narration, brief.visualStyle, brief.visualDirection.composition, brief.visualDirection.focalPoint, brief.visualDirection.palette, brief.visualDirection.typography, brief.motion.entrance, brief.motion.transformation, brief.motion.transition].some(containsPlaceholder)) {
       throw new Error(`${id}/${brief.id}: ShotBrief still contains placeholder visual or motion direction`);
     }
-    if (brief.visualStyle !== 'episode-defined' && !existsSync(resolve('styles', brief.visualStyle, 'DESIGN.md'))) throw new Error(`${id}/${brief.id}: unknown style pack ${brief.visualStyle}`);
+    if (brief.visualStyle !== 'episode-defined' && !hasStylePack(brief.visualStyle)) throw new Error(`${id}/${brief.id}: unknown style pack ${brief.visualStyle}`);
     if (brief.renderer === 'hyperframes-default' && !brief.implementation.hyperframes) throw new Error(`${id}/${brief.id}: hyperframes-default requires implementation.hyperframes=true`);
     if (brief.renderer === 'remotion-native' && !brief.implementation.remotion) throw new Error(`${id}/${brief.id}: remotion-native requires implementation.remotion=true`);
     if (!sceneIds.has(brief.sceneId)) throw new Error(`${id}/${brief.id}: sceneId ${brief.sceneId} is not in manifest`);
