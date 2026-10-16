@@ -1,5 +1,5 @@
 import {spawnSync} from 'node:child_process';
-import {join} from 'node:path';
+import {join, resolve} from 'node:path';
 import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from '../lib/episode-runtime';
 
 const args = process.argv.slice(2);
@@ -22,8 +22,8 @@ const outputName = `${manifest.id}-frame-${frame}.png`;
 const outputPath = join(renderDir, outputName);
 writeManifestSnapshot(manifest, renderDir, outputName.replace(/\.png$/, ''));
 
-const npmExec = process.platform === 'win32' ? 'npx.cmd' : 'npx';
-const result = spawnSync(npmExec, ['remotion', 'still', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, '--scale=0.5', `--frame=${frame}`, ...browserArgs()], {
+const remotionCli = resolve('node_modules', '@remotion', 'cli', 'remotion-cli.js');
+const result = spawnSync(process.execPath, [remotionCli, 'still', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, '--scale=0.5', `--frame=${frame}`, ...browserArgs()], {
   stdio: 'inherit',
   shell: false,
   env: projectToolEnv(),

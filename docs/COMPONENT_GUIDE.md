@@ -7,7 +7,9 @@
 - `src/visuals/`：一个明确视觉关系的 SVG 或 Canvas 实现。
 - `src/theme/`：颜色和排版 token。
 
-Episode 内容不要直接写进通用组件。通用组件通过 props 接收标题、claim、accent、数据和场景进度。
+镜头画面源文件位于 `content/episodes/<episode-id>/html/<shot-id>/`，可以使用 HTML/CSS/JavaScript、SVG、Canvas 2D 或 Three.js/WebGL，并使用 GSAP 编排确定性动画。HyperFrames 负责浏览器检查、预览和渲染；Remotion 通过 `ShotAssetScene` 合成已渲染的镜头资产、字幕和转场。
+
+Episode 内容不要直接写进通用组件。通用组件通过 props 接收标题、claim、accent、数据和场景进度。镜头视觉不要再通过 Remotion scene JSX 绘制。
 
 ## SVG 优先
 

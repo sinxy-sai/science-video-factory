@@ -1,7 +1,6 @@
 import React from 'react';
 import {AbsoluteFill, Sequence} from 'remotion';
 import {getEpisodeModule} from '../../content/episodes/registry.generated';
-import type {EpisodeModule} from '../../content/episode-module';
 import type {EpisodeManifest} from '../../content/schema';
 import {SceneFrame} from '../components/SceneFrame';
 import {SceneRenderer} from '../scenes/SceneRenderer';
@@ -12,7 +11,6 @@ export const ScienceVideo: React.FC<{manifest?: EpisodeManifest | null}> = ({man
   if (!manifest) {
     return <AbsoluteFill style={{backgroundColor: '#000'}} />;
   }
-  const episode = getEpisodeModule(manifest.id);
   let offset = 0;
   return (
     <AbsoluteFill className="science-video">
@@ -21,7 +19,7 @@ export const ScienceVideo: React.FC<{manifest?: EpisodeManifest | null}> = ({man
         offset += scene.durationInFrames;
         return (
           <Sequence key={scene.id} from={from} durationInFrames={scene.durationInFrames}>
-            <SceneContent episode={episode} scene={scene} />
+            <SceneContent episodeId={manifest.id} scene={scene} />
           </Sequence>
         );
       })}
@@ -30,12 +28,12 @@ export const ScienceVideo: React.FC<{manifest?: EpisodeManifest | null}> = ({man
 };
 
 const SceneContent: React.FC<{
-  episode: EpisodeModule;
+  episodeId: string;
   scene: EpisodeManifest['scenes'][number];
-}> = ({episode, scene}) => {
+}> = ({episodeId, scene}) => {
   return (
     <SceneFrame>
-      <SceneRenderer episode={episode} scene={scene} />
+      <SceneRenderer episodeId={episodeId} scene={scene} />
       <CaptionLayer scene={scene} />
     </SceneFrame>
   );

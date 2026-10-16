@@ -1,16 +1,9 @@
 import {z} from 'zod';
-
-export const shotRendererSchema = z.enum(['hyperframes-default', 'remotion-native', 'manim', 'canvas', 'motion-canvas']);
-export type ShotRenderer = z.infer<typeof shotRendererSchema>;
+import {shotImplementationSchema, shotRendererSchema, type ShotRenderer} from '../production/shot-contract';
+export {shotImplementationSchema, shotRendererSchema};
+export type {ShotRenderer};
 
 export const shotPacingSchema = z.enum(['slow', 'measured', 'fast', 'explosive']);
-
-export const shotImplementationSchema = z.object({
-  hyperframes: z.boolean().default(false),
-  manim: z.boolean().default(false),
-  remotion: z.boolean().default(true),
-  files: z.array(z.string().min(1)).default([]),
-});
 
 export const shotContinuitySchema = z.object({
   leaves: z.array(z.string().min(1)).default([]),
@@ -54,7 +47,7 @@ export const shotBriefSchema = z.object({
   title: z.string().min(1),
   narration: z.string().min(1),
   visual: z.string().min(1),
-  renderer: shotRendererSchema.default('hyperframes-default'),
+  renderer: shotRendererSchema.default('browser'),
   visualStyle: z.string().min(1),
   visualDirection: shotVisualDirectionSchema,
   motion: shotMotionSchema,

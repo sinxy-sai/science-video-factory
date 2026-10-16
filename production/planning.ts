@@ -26,18 +26,6 @@ export const planningFrontMatterSchema = z.object({
 export type PlanningState = z.infer<typeof planningStateSchema>;
 export type PlanningApprovals = z.infer<typeof planningApprovalsSchema>;
 
-export const planningThresholdSchema = z.object({
-  contentPlanMinChars: z.number().int().positive(),
-  shotDesignMinChars: z.number().int().positive(),
-});
-
-export type PlanningThresholds = z.infer<typeof planningThresholdSchema>;
-
-export const DEFAULT_PLANNING_THRESHOLDS: PlanningThresholds = {
-  contentPlanMinChars: 10_000,
-  shotDesignMinChars: 10_000,
-};
-
 const approvedStates = new Set<PlanningState>([
   'shot-design-approved',
   'source-authoring',
@@ -74,13 +62,6 @@ function parseFrontMatter(text: string, path: string): unknown {
   return planningFrontMatterSchema.parse(values);
 }
 
-export function getPlanningThresholds(env: NodeJS.ProcessEnv = process.env): PlanningThresholds {
-  const shared = Number(env.PLANNING_MIN_CHARS ?? '');
-  const content = Number(env.PLANNING_CONTENT_MIN_CHARS ?? '') || shared || DEFAULT_PLANNING_THRESHOLDS.contentPlanMinChars;
-  const shot = Number(env.PLANNING_SHOT_DESIGN_MIN_CHARS ?? '') || shared || DEFAULT_PLANNING_THRESHOLDS.shotDesignMinChars;
-  return planningThresholdSchema.parse({contentPlanMinChars: content, shotDesignMinChars: shot});
-}
-
 export type PlanningDocument = {
   path: string;
   text: string;
@@ -100,13 +81,12 @@ export function loadPlanningDocuments(episodeId: string): {contentPlan: Planning
   return {contentPlan: read('content-plan.md'), shotDesign: read('shot-design.md')};
 }
 
-export function validatePlanning(episodeId: string, thresholds = getPlanningThresholds()): {contentPlan: PlanningDocument; shotDesign: PlanningDocument} {
+export function validatePlanning(episodeId: string): {contentPlan: PlanningDocument; shotDesign: PlanningDocument} {
   const documents = loadPlanningDocuments(episodeId);
-  for (const [label, document, minimum] of [
-    ['content-plan.md', documents.contentPlan, thresholds.contentPlanMinChars],
-    ['shot-design.md', documents.shotDesign, thresholds.shotDesignMinChars],
+  for (const [label, document] of [
+    ['content-plan.md', documents.contentPlan],
+    ['shot-design.md', documents.shotDesign],
   ] as const) {
-    if (document.characters < minimum) throw new Error(`${episodeId}: ${label} has ${document.characters} characters; requires at least ${minimum}`);
     const paragraphs = document.text.split(/\r?\n\s*\r?\n/).map((part) => part.trim()).filter(Boolean);
     const counts = new Map<string, number>();
     for (const paragraph of paragraphs) counts.set(paragraph, (counts.get(paragraph) ?? 0) + 1);

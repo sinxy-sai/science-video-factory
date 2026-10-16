@@ -1,7 +1,7 @@
 import {existsSync, mkdirSync} from 'node:fs';
-import {join, resolve} from 'node:path';
+import {join} from 'node:path';
 import {loadShotBriefs} from '../lib/episode-workflow-validation';
-import {ensureRenderDir, loadEpisodeManifest} from '../lib/episode-runtime';
+import {ensureRenderDir, loadEpisodeManifest, shotOutputPath, shotSourceDirectory} from '../lib/episode-runtime';
 import {getRendererAdapter, validateRenderer} from '../../production/renderers';
 import {validatePlanning} from '../../production/planning';
 
@@ -13,11 +13,11 @@ const outputRoot = join(ensureRenderDir(manifest), 'shots');
 mkdirSync(outputRoot, {recursive: true});
 let failed = false;
 for (const brief of loadShotBriefs(episodeId)) {
-  const directory = resolve('content', 'episodes', episodeId, 'hyperframes', brief.id);
-  const output = join(outputRoot, `${brief.id}.mp4`);
+  const directory = shotSourceDirectory(episodeId, brief);
+  const output = shotOutputPath(episodeId, brief);
   try { validateRenderer({episodeId, brief, directory, output}); } catch (error) { failed = true; console.error(error instanceof Error ? error.message : error); continue; }
   const status = getRendererAdapter(brief.renderer).run('render', {episodeId, brief, directory, output});
-  if (status !== 0 || (brief.renderer === 'hyperframes-default' && !existsSync(output))) { failed = true; console.error(`${episodeId}/${brief.id}: ${brief.renderer} render failed`); }
+  if (status !== 0 || !existsSync(output)) { failed = true; console.error(`${episodeId}/${brief.id}: ${brief.renderer} render failed`); }
 }
 if (failed) process.exit(1);
 console.log(`Rendered shot assets to ${outputRoot}`);

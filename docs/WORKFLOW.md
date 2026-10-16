@@ -7,7 +7,7 @@
   ↓
 多轮内容讨论与用户确认
   ↓
-content-plan.md + shot-design.md（长文本、批准状态）
+content-plan.md + shot-design.md（计划内容、批准状态）
   ↓
 观众、学习目标与知识关系
   ↓
@@ -17,7 +17,7 @@ content-plan.md + shot-design.md（长文本、批准状态）
   ↓
   每镜 ShotBrief：shot-briefs/shot-*.json（连续性 + 技术路线 + 素材）
   ↓
-  每镜实现：Remotion / HyperFrames-GSAP / Manim / SVG-Canvas-WebGL
+  每镜实现：HTML/CSS/JavaScript + SVG/Canvas 2D/Three.js-WebGL + GSAP
   ↓
   静态 hero frame 与动效设计
   ↓
@@ -48,26 +48,30 @@ npm run render-still-frame -- my-topic --frame 30
 npm run remove-episode -- my-topic
 ```
 
-`new-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`hyperframes/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准；三分钟视频默认要求每份计划至少 10,000 个字符。
+`create-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`html/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准，并且不能为空。
 
-新 episode 默认使用 `hyperframes-default`。每个镜头在 `hyperframes/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查；`remotion-native` 只能在 ShotBrief 中显式声明。
+新 episode 默认使用 `browser`。每个镜头在 `html/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查。Remotion 不绘制镜头内容，只合成已渲染的镜头资产。
 
-`validate-planning` 先检查计划文档和批准状态。默认每份计划至少 10,000 个字符，也可通过 `PLANNING_MIN_CHARS`、`PLANNING_CONTENT_MIN_CHARS` 和 `PLANNING_SHOT_DESIGN_MIN_CHARS` 调整。`validate-shots` 通过 renderer adapter 执行 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查；其他 renderer 必须有对应 adapter，否则明确失败。通过后才进入资产准备和最终合成。
+`validate-episode-planning` 先检查计划文档和批准状态，并确认文档非空且没有重复段落。`validate-episode-shots` 通过 `browser` renderer adapter 执行 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查；Manim 和 Blender 在没有执行器时明确失败。通过后才进入资产准备和最终合成。
 
-`author-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-shots` 启动官方 HyperFrames Studio；`render-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
+`author-episode-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-episode-shots` 启动官方 HyperFrames Studio；`render-episode-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-episode-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
-`contact-sheet` 会把代表帧合成为可审阅的 PNG 接触表；`visual-regression` 可对比 `baselines/` 下的历史帧。 最终 `render-episode` 只接受 `--scale 1`，缩放输出不能写入标准 `final.mp4`；预览请使用 `render-still-frame` 或 Remotion 直接输出到临时路径。`prepare-assets` 会将生成素材统一复制到 `static/episodes/<episode-id>/`，并写入 `assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
+`generate-contact-sheet` 会把代表帧合成为可审阅的 PNG 接触表；`compare-episode-visual-regression` 可对比 `baselines/` 下的历史帧。最终 `render-episode` 只接受 `--scale 1`，缩放输出不能写入标准 `final.mp4`；预览请使用 `render-still-frame` 或 Remotion 直接输出到临时路径。`prepare-episode-assets` 会校验 ShotBrief 声明的输出，并将镜头素材和生成素材复制到 `static/episodes/<episode-id>/`，写入 `shots/assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
 
 输出统一为 `renders/<episode-id>/final.mp4`，并带有 `final.manifest.json` 快照，方便追溯生成输入。不要再使用带多个历史命名的 MP4 文件作为标准输出。
 
-删除视频项目时，`delete-episode` 会同时清理对应的 episode 目录、`static/episodes/<episode-id>/`、`styles/<episode-id>/`（如果存在）、渲染目录和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。共享工具代码不会随 episode 删除。
+删除视频项目时，`remove-episode` 会同时清理对应的 episode 目录、`static/episodes/<episode-id>/`、`styles/<episode-id>/`（如果存在）、渲染目录和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。共享工具代码不会随 episode 删除。
 
 ## 技术分工
 
-- **Remotion**：主时间轴、场景编排、字幕、素材合成和最终 MP4。
-- **HyperFrames + GSAP**：复杂 kinetic motion、路径运动、stagger、文字动效和转场；作为镜头级 HTML 动画分支，通过视频或图像序列接入 Remotion。
-- **Manim**：公式、几何、坐标系、向量、矩阵和数学推导镜头；输出素材后交给 Remotion 合成。
-- **SVG / Canvas / WebGL**：分别处理精确图示、粒子/密集重绘和空间/流场效果。
+- **HTML / CSS / JavaScript**：镜头布局、文字和 UI 视觉。
+- **SVG**：图示、路径、箭头、标签和精确矢量元素。
+- **Canvas 2D**：粒子、密集重复绘制和程序化纹理。
+- **Three.js / WebGL / GLSL**：3D、空间运动、光照和着色器。
+- **GSAP**：镜头内动画时间轴、缓动、stagger 和路径编排。
+- **HyperFrames**：驱动浏览器镜头、检查、预览和渲染。
+- **Remotion**：总时间轴、字幕、转场、镜头资产合成和最终视频。
+- **FFmpeg**：编码、封装和音视频复用。
 
 默认不添加音效；字幕仍是分镜契约的一部分。`validate` 会强制检查剧本、分镜、ShotBrief、连续性、实现文件和字幕覆盖率。
 

@@ -1,7 +1,7 @@
 import {existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {loadEpisodeManifest} from '../lib/episode-runtime';
+import {loadEpisodeManifest, shotSourceDirectory} from '../lib/episode-runtime';
 import {loadShotBriefs} from '../lib/episode-workflow-validation';
 import {getRendererAdapter, validateRenderer} from '../../production/renderers';
 
@@ -17,7 +17,7 @@ let failed = false;
 const animationMap = resolve(process.env.CODEX_HOME ?? '', 'plugins', 'cache', 'openai-api-curated', 'hyperframes', 'd416fd5a', 'skills', 'hyperframes', 'scripts', 'animation-map.mjs');
 
 for (const brief of briefs) {
-  const directory = resolve('content', 'episodes', episodeId, 'hyperframes', brief.id);
+  const directory = shotSourceDirectory(episodeId, brief);
   try {
     validateRenderer({episodeId, brief, directory});
   } catch (error) {
@@ -28,7 +28,7 @@ for (const brief of briefs) {
   const adapter = getRendererAdapter(brief.renderer);
   const status = adapter.run('validate', {episodeId, brief, directory});
   if (status !== 0) { failed = true; console.error(`${episodeId}/${brief.id}: ${brief.renderer} validation failed`); }
-  if (brief.renderer === 'hyperframes-default' && brief.qualityChecks.animationMap && existsSync(animationMap)) {
+  if (brief.renderer === 'browser' && brief.qualityChecks.animationMap && existsSync(animationMap)) {
     const mapResult = spawnSync(process.execPath, [animationMap, directory], {cwd: directory, stdio: 'inherit'});
     if (mapResult.status !== 0) { failed = true; console.error(`${episodeId}/${brief.id}: animation map failed`); }
   }
