@@ -22,9 +22,10 @@ const outputName = `${manifest.id}-frame-${frame}.png`;
 const outputPath = join(renderDir, outputName);
 writeManifestSnapshot(manifest, renderDir, outputName.replace(/\.png$/, ''));
 
-const result = spawnSync('npx', ['remotion', 'still', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, '--scale=0.5', `--frame=${frame}`, ...browserArgs()], {
+const npmExec = process.platform === 'win32' ? 'npx.cmd' : 'npx';
+const result = spawnSync(npmExec, ['remotion', 'still', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, '--scale=0.5', `--frame=${frame}`, ...browserArgs()], {
   stdio: 'inherit',
-  shell: true,
+  shell: false,
   env: projectToolEnv(),
 });
 

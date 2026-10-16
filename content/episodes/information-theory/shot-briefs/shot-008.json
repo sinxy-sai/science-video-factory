@@ -1,0 +1,16 @@
+{
+  "id": "shot-008",
+  "sceneId": "channel",
+  "title": "信息论镜头",
+  "narration": "本镜说明信息论中的一个关键关系。",
+  "visual": "channel",
+  "renderer": "remotion-native",
+  "visualStyle": "episode-defined",
+  "visualDirection": {"composition":"深蓝状态空间中的单一主图形","focalPoint":"中央公式或结构图","hierarchy":["标题","主图形","结论公式"],"palette":"深蓝、青绿、琥珀、高对比白","typography":"大字号无衬线标题与衬线公式","texture":"细网格和固定粒子"},
+  "motion": {"entrance":"标题与主图形分层淡入","transformation":"图形在帧驱动下收缩、分裂或重排","exit":"公式停留并淡出","transition":"共享网格和粒子连续","pacing":"measured"},
+  "durationInFrames": 450,
+  "continuity": {"leaves":["information-grid","accent-structure"],"inherits":["information-grid","accent-structure"]},
+  "implementation": {"hyperframes":false,"manim":false,"remotion":true,"files":["scenes/InformationScene.tsx"]},
+  "qualityChecks": {"lint":true,"validate":true,"inspect":true,"animationMap":false,"strict":true},
+  "assets": []
+}

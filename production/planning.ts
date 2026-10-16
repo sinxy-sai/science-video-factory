@@ -107,6 +107,11 @@ export function validatePlanning(episodeId: string, thresholds = getPlanningThre
     ['shot-design.md', documents.shotDesign, thresholds.shotDesignMinChars],
   ] as const) {
     if (document.characters < minimum) throw new Error(`${episodeId}: ${label} has ${document.characters} characters; requires at least ${minimum}`);
+    const paragraphs = document.text.split(/\r?\n\s*\r?\n/).map((part) => part.trim()).filter(Boolean);
+    const counts = new Map<string, number>();
+    for (const paragraph of paragraphs) counts.set(paragraph, (counts.get(paragraph) ?? 0) + 1);
+    const repeated = [...counts.entries()].find(([, count]) => count >= 3);
+    if (repeated) throw new Error(`${episodeId}: ${label} contains repeated paragraph content (${repeated[1]} copies); planning length must come from distinct material`);
     if (!approvedStates.has(document.frontMatter.state)) throw new Error(`${episodeId}: ${label} state must be shot-design-approved or later (got ${document.frontMatter.state})`);
     if (!document.frontMatter.approvals.content || !document.frontMatter.approvals.storyboard || !document.frontMatter.approvals.shotDesign) {
       throw new Error(`${episodeId}: ${label} requires content, storyboard, and shot-design approvals`);

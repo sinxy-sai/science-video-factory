@@ -45,7 +45,6 @@ npm run render-episode-shots -- my-topic
 npm run validate-episode -- my-topic
 npm run preview-episode -- my-topic
 npm run render-still-frame -- my-topic --frame 30
-npm run render-episode -- my-topic --scale 0.5
 npm run remove-episode -- my-topic
 ```
 
@@ -57,7 +56,7 @@ npm run remove-episode -- my-topic
 
 `author-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-shots` 启动官方 HyperFrames Studio；`render-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
-`contact-sheet` 会把代表帧合成为可审阅的 PNG 接触表；`visual-regression` 可对比 `baselines/` 下的历史帧。`prepare-assets` 会将生成素材统一复制到 `static/episodes/<episode-id>/`，并写入 `assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
+`contact-sheet` 会把代表帧合成为可审阅的 PNG 接触表；`visual-regression` 可对比 `baselines/` 下的历史帧。 最终 `render-episode` 只接受 `--scale 1`，缩放输出不能写入标准 `final.mp4`；预览请使用 `render-still-frame` 或 Remotion 直接输出到临时路径。`prepare-assets` 会将生成素材统一复制到 `static/episodes/<episode-id>/`，并写入 `assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
 
 输出统一为 `renders/<episode-id>/final.mp4`，并带有 `final.manifest.json` 快照，方便追溯生成输入。不要再使用带多个历史命名的 MP4 文件作为标准输出。
 
@@ -99,3 +98,4 @@ beats: [
 设计分镜时检查：观众先看到什么？关系如何建立？过程是否经历了两个状态？最后是否有结论或自然转场？
 
 最终视频不渲染调试型进度条。
+
