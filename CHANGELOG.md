@@ -11,10 +11,6 @@ and releases use semantic versioning where practical.
 
 - Open source contribution, security, conduct, and release workflows.
 
-### Changed
-
-- Removed the bundled information theory episode and its generated outputs.
-
 ## [0.1.0-alpha.2]
 
 - Initial workflow hardening release.
