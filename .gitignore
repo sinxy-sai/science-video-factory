@@ -6,5 +6,4 @@ dist/
 *.local
 .venv/
 tools/ffmpeg/
-tools/renderer-fixture/.hyperframes/
 .superpowers/
