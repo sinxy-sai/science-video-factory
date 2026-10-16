@@ -1,6 +1,6 @@
 # Science Video Factory
 
-一个由 Remotion、React 和 TypeScript 驱动的科普视频生成模板。每条视频都是 `content/episodes/<id>/` 下的自包含模块：`script.md` 是完整旁白，`storyboard.md` 是分镜表，`shot-briefs/*.json` 是逐镜契约，`manifest.ts` 描述内容，`episode.ts` 校验本地视觉类型并渲染场景。
+Science Video Factory 是一个由 Remotion、React 和 TypeScript 驱动的、基于清单生成科普视频的开源工作流。每条视频都是 `content/episodes/<id>/` 下的自包含模块：`script.md` 是完整旁白，`storyboard.md` 是分镜表，`shot-briefs/*.json` 是逐镜契约，`manifest.ts` 描述内容，`episode.ts` 校验本地视觉类型并渲染场景。
 
 ## 快速开始
 
