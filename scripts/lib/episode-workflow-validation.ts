@@ -31,7 +31,7 @@ export function validateWorkflow(episode: EpisodeModule): void {
     const text = readFileSync(path, 'utf8');
     if (placeholderTerms.some((term) => text.includes(term))) throw new Error(`${id}: ${file} still contains placeholder text`);
   }
-  for (const directory of ['hyperframes', 'manim', 'assets/generated']) {
+  for (const directory of ['html', 'manim', 'assets/generated']) {
     if (!existsSync(join(root, directory))) throw new Error(`${id}: missing ${directory}/`);
   }
 
@@ -44,14 +44,14 @@ export function validateWorkflow(episode: EpisodeModule): void {
       throw new Error(`${id}/${brief.id}: ShotBrief still contains placeholder visual or motion direction`);
     }
     if (brief.visualStyle !== 'episode-defined') throw new Error(`${id}/${brief.id}: external style packs are not configured; define the episode visual language in visual-style.md`);
-    if (brief.renderer === 'hyperframes-default' && !brief.implementation.hyperframes) throw new Error(`${id}/${brief.id}: hyperframes-default requires implementation.hyperframes=true`);
-    if (brief.renderer === 'remotion-native' && !brief.implementation.remotion) throw new Error(`${id}/${brief.id}: remotion-native requires implementation.remotion=true`);
+    if (brief.renderer === 'browser' && !brief.implementation.sourceRoot.startsWith('html/')) throw new Error(`${id}/${brief.id}: browser shots must use an html/<shot-id>/ sourceRoot`);
+    if (brief.implementation.sourceRoot.startsWith('hyperframes/')) throw new Error(`${id}/${brief.id}: legacy hyperframes source paths are not supported`);
     if (!sceneIds.has(brief.sceneId)) throw new Error(`${id}/${brief.id}: sceneId ${brief.sceneId} is not in manifest`);
     briefSceneIds.add(brief.sceneId);
     const scene = scenes.find((item) => item.id === brief.sceneId)!;
+    if (!scene.shotAsset) throw new Error(`${id}/${brief.id}: manifest scene ${brief.sceneId} is missing shotAsset; prepare the rendered browser shot before final validation`);
     if (brief.durationInFrames !== scene.durationInFrames) throw new Error(`${id}/${brief.id}: duration does not match manifest scene ${brief.sceneId}`);
-    if (brief.implementation.hyperframes && !brief.implementation.files.some((file) => file.includes('hyperframes'))) throw new Error(`${id}/${brief.id}: HyperFrames shot must declare a hyperframes file`);
-    if (brief.implementation.manim && !brief.implementation.files.some((file) => file.includes('manim'))) throw new Error(`${id}/${brief.id}: Manim shot must declare a manim file`);
+    if (brief.renderer === 'browser' && !brief.implementation.files.some((file) => file.startsWith('html/'))) throw new Error(`${id}/${brief.id}: browser shot must declare an html implementation file`);
     for (const file of brief.implementation.files) if (!existsSync(join(root, file))) throw new Error(`${id}/${brief.id}: implementation file does not exist: ${file}`);
     if (index > 0) {
       const previous = briefs[index - 1];

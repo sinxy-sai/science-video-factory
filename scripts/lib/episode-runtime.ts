@@ -3,6 +3,8 @@ import {delimiter, join, resolve} from 'node:path';
 import {getEpisodeModule} from '../../content/episodes/registry.generated';
 import type {EpisodeModule} from '../../content/episode-module';
 import {totalDurationInFrames, type EpisodeManifest} from '../../content/schema';
+import type {ShotBrief} from '../../content/shot-brief';
+import type {ShotAssetRecord} from '../../production/shot-assets';
 
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -26,8 +28,36 @@ export function writePropsFile(manifest: EpisodeManifest): string {
   const tempDir = resolve('.remotion');
   mkdirSync(tempDir, {recursive: true});
   const path = join(tempDir, `${manifest.id}.props.json`);
-  writeFileSync(path, JSON.stringify({manifest}, null, 2), 'utf8');
+  writeFileSync(path, JSON.stringify({manifest: hydrateManifestWithShotAssets(manifest)}, null, 2), 'utf8');
   return path;
+}
+
+export function loadPreparedShotAssets(episodeId: string): ShotAssetRecord[] {
+  const path = join(staticEpisodeRoot(episodeId), 'shots', 'assets.manifest.json');
+  if (!existsSync(path)) return [];
+  return JSON.parse(readFileSync(path, 'utf8')) as ShotAssetRecord[];
+}
+
+export function hydrateManifestWithShotAssets(manifest: EpisodeManifest): EpisodeManifest {
+  const assets = new Map(loadPreparedShotAssets(manifest.id).map((asset) => [asset.sceneId, asset]));
+  return {
+    ...manifest,
+    scenes: manifest.scenes.map((scene) => {
+      if (scene.shotAsset) return scene;
+      const asset = assets.get(scene.id);
+      if (!asset) return scene;
+      return {
+        ...scene,
+        shotAsset: {
+          path: asset.path,
+          kind: asset.kind,
+          width: asset.width,
+          height: asset.height,
+          fps: asset.fps,
+        },
+      };
+    }),
+  };
 }
 
 export function ensureRenderDir(manifest: EpisodeManifest): string {
@@ -42,6 +72,14 @@ export function episodeRoot(id: string): string {
 
 export function staticEpisodeRoot(id: string): string {
   return resolve('static', 'episodes', assertEpisodeId(id));
+}
+
+export function shotSourceDirectory(episodeId: string, brief: ShotBrief): string {
+  return resolve(episodeRoot(episodeId), brief.implementation.sourceRoot);
+}
+
+export function shotOutputPath(episodeId: string, brief: ShotBrief): string {
+  return resolve('renders', assertEpisodeId(episodeId), 'shots', `${brief.id}.${brief.implementation.output.kind === 'frame-sequence' ? 'frames' : brief.implementation.output.kind}`);
 }
 
 export function writeManifestSnapshot(manifest: EpisodeManifest, directory: string, filename: string): string {

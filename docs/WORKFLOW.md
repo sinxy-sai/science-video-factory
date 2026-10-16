@@ -17,7 +17,7 @@ content-plan.md + shot-design.md（长文本、批准状态）
   ↓
   每镜 ShotBrief：shot-briefs/shot-*.json（连续性 + 技术路线 + 素材）
   ↓
-  每镜实现：Remotion / HyperFrames-GSAP / Manim / SVG-Canvas-WebGL
+  每镜实现：HTML/CSS/JavaScript + SVG/Canvas 2D/Three.js-WebGL + GSAP / HyperFrames / Remotion / FFmpeg
   ↓
   静态 hero frame 与动效设计
   ↓
@@ -48,9 +48,9 @@ npm run render-still-frame -- my-topic --frame 30
 npm run remove-episode -- my-topic
 ```
 
-`new-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`hyperframes/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准；三分钟视频默认要求每份计划至少 10,000 个字符。
+`new-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`html/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准；三分钟视频默认要求每份计划至少 10,000 个字符。
 
-新 episode 默认使用 `hyperframes-default`。每个镜头在 `hyperframes/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查；`remotion-native` 只能在 ShotBrief 中显式声明。
+新 episode 默认使用 `browser`。每个镜头在 `html/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查。Remotion 不绘制镜头内容，只合成已渲染的镜头资产。
 
 `validate-planning` 先检查计划文档和批准状态。默认每份计划至少 10,000 个字符，也可通过 `PLANNING_MIN_CHARS`、`PLANNING_CONTENT_MIN_CHARS` 和 `PLANNING_SHOT_DESIGN_MIN_CHARS` 调整。`validate-shots` 通过 renderer adapter 执行 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查；其他 renderer 必须有对应 adapter，否则明确失败。通过后才进入资产准备和最终合成。
 
@@ -64,10 +64,14 @@ npm run remove-episode -- my-topic
 
 ## 技术分工
 
-- **Remotion**：主时间轴、场景编排、字幕、素材合成和最终 MP4。
-- **HyperFrames + GSAP**：复杂 kinetic motion、路径运动、stagger、文字动效和转场；作为镜头级 HTML 动画分支，通过视频或图像序列接入 Remotion。
-- **Manim**：公式、几何、坐标系、向量、矩阵和数学推导镜头；输出素材后交给 Remotion 合成。
-- **SVG / Canvas / WebGL**：分别处理精确图示、粒子/密集重绘和空间/流场效果。
+- **HTML / CSS / JavaScript**：镜头布局、文字和 UI 视觉。
+- **SVG**：图示、路径、箭头、标签和精确矢量元素。
+- **Canvas 2D**：粒子、密集重复绘制和程序化纹理。
+- **Three.js / WebGL / GLSL**：3D、空间运动、光照和着色器。
+- **GSAP**：镜头内动画时间轴、缓动、stagger 和路径编排。
+- **HyperFrames**：驱动浏览器镜头、检查、预览和渲染。
+- **Remotion**：总时间轴、字幕、转场、镜头资产合成和最终视频。
+- **FFmpeg**：编码、封装和音视频复用。
 
 默认不添加音效；字幕仍是分镜契约的一部分。`validate` 会强制检查剧本、分镜、ShotBrief、连续性、实现文件和字幕覆盖率。
 

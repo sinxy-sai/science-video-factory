@@ -1,6 +1,8 @@
-import {cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync} from 'node:fs';
-import {join, relative, resolve} from 'node:path';
+import {cpSync, existsSync, mkdirSync, rmSync, writeFileSync} from 'node:fs';
+import {join} from 'node:path';
+import {buildShotAssetRecord, validateShotAssetOutput} from '../../production/shot-assets';
 import {episodeRoot, loadEpisodeManifest, staticEpisodeRoot} from '../lib/episode-runtime';
+import {loadShotBriefs} from '../lib/episode-workflow-validation';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) {
@@ -14,33 +16,19 @@ const destinationRoot = staticEpisodeRoot(episodeId);
 if (existsSync(destinationRoot)) rmSync(destinationRoot, {recursive: true, force: true});
 mkdirSync(destinationRoot, {recursive: true});
 
-const sources = [
-  ['generated', join(sourceRoot, 'assets', 'generated')],
-  ['hyperframes', join(sourceRoot, 'hyperframes')],
-  ['manim', join(sourceRoot, 'manim')],
-] as const;
-const files: Array<{source: string; destination: string}> = [];
-for (const [name, source] of sources) {
-  if (!existsSync(source)) continue;
-  const destination = join(destinationRoot, name);
-  cpSync(source, destination, {recursive: true});
-  for (const file of readdirSync(destination, {recursive: true, withFileTypes: true})) {
-    if (file.isFile()) {
-      const full = join(file.parentPath ?? destination, file.name);
-      files.push({source: relative(resolve(), join(source, relative(destination, full))), destination: relative(resolve(), full)});
-    }
-  }
+const generatedSource = join(sourceRoot, 'assets', 'generated');
+if (existsSync(generatedSource)) cpSync(generatedSource, join(destinationRoot, 'generated'), {recursive: true});
+
+const shotDestination = join(destinationRoot, 'shots');
+mkdirSync(shotDestination, {recursive: true});
+const records = [];
+for (const brief of loadShotBriefs(episodeId)) {
+  const errors = validateShotAssetOutput(episodeId, brief);
+  if (errors.length > 0) throw new Error(`${episodeId}/${brief.id}: ${errors.join('; ')}`);
+  const source = brief.implementation.output.path;
+  const extension = brief.implementation.output.kind === 'frame-sequence' ? 'frames' : brief.implementation.output.kind;
+  cpSync(source, join(shotDestination, `${brief.id}.${extension}`), {recursive: brief.implementation.output.kind === 'frame-sequence'});
+  records.push(buildShotAssetRecord(episodeId, brief));
 }
-const shotRenderRoot = resolve('renders', episodeId, 'shots');
-if (existsSync(shotRenderRoot)) {
-  const destination = join(destinationRoot, 'shots');
-  cpSync(shotRenderRoot, destination, {recursive: true});
-  for (const file of readdirSync(destination, {recursive: true, withFileTypes: true})) {
-    if (file.isFile()) {
-      const full = join(file.parentPath ?? destination, file.name);
-      files.push({source: relative(resolve(), join(shotRenderRoot, relative(destination, full))), destination: relative(resolve(), full)});
-    }
-  }
-}
-writeFileSync(join(destinationRoot, 'assets.manifest.json'), JSON.stringify({episodeId, files}, null, 2) + '\n', 'utf8');
-console.log(`Prepared ${files.length} assets for ${episodeId}`);
+writeFileSync(join(shotDestination, 'assets.manifest.json'), JSON.stringify(records, null, 2) + '\n', 'utf8');
+console.log(`Prepared ${records.length} rendered shot assets for ${episodeId}`);

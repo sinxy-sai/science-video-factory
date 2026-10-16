@@ -1,6 +1,7 @@
 import {existsSync} from 'node:fs';
-import {join, resolve} from 'node:path';
+import {resolve} from 'node:path';
 import {loadShotBriefs} from '../lib/episode-workflow-validation';
+import {shotSourceDirectory} from '../lib/episode-runtime';
 import {getRendererAdapter, validateRenderer} from '../../production/renderers';
 import {validatePlanning} from '../../production/planning';
 
@@ -9,6 +10,6 @@ if (!episodeId) { console.error('Usage: npm run preview-episode-shots -- <episod
 validatePlanning(episodeId);
 const brief = loadShotBriefs(episodeId).find((item) => !requestedShot || item.id === requestedShot);
 if (!brief) throw new Error(`${episodeId}: requested shot not found`);
-const directory = resolve('content', 'episodes', episodeId, 'hyperframes', brief.id);
+const directory = shotSourceDirectory(episodeId, brief);
 validateRenderer({episodeId, brief, directory});
 process.exit(getRendererAdapter(brief.renderer).run('preview', {episodeId, brief, directory}));

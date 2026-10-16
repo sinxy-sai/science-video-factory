@@ -1,6 +1,6 @@
 # 场景指南
 
-每个 episode 是自包含模块，目录至少包含 `script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`manifest.ts`、`episode.ts`、`scenes/`、`assets/generated/`、`hyperframes/` 和 `manim/`。`episode.ts` 使用公共 manifest schema 加上本地视觉 schema 校验 manifest，并负责把视觉值映射到本 episode 的场景组件。生成的 `content/episodes/registry.generated.ts` 通过静态 import 收集所有 episode，命令行和 Remotion 都从这个 registry 加载模块。
+每个 episode 是自包含模块，目录至少包含 `script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`manifest.ts`、`episode.ts`、`scenes/`、`assets/generated/`、`html/` 和 `manim/`。`html/<shot-id>/index.html` 是镜头画面源文件；它可以组合 HTML/CSS/JavaScript、SVG、Canvas 2D 或 Three.js/WebGL，并用 GSAP 编排确定性动画。HyperFrames 检查、预览并渲染这些浏览器镜头，Remotion 只合成已准备的镜头资产。生成的 `content/episodes/registry.generated.ts` 通过静态 import 收集所有 episode，命令行和 Remotion 都从这个 registry 加载模块。
 
 ### ShotBrief 契约
 

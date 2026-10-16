@@ -1,6 +1,8 @@
 # Science Video Factory
 
-Science Video Factory 是一个由 Remotion、React 和 TypeScript 驱动的、基于清单生成科普视频的开源工作流。每条视频都是 `content/episodes/<id>/` 下的自包含模块：`script.md` 是完整旁白，`storyboard.md` 是分镜表，`shot-briefs/*.json` 是逐镜契约，`manifest.ts` 描述内容，`episode.ts` 校验本地视觉类型并渲染场景。
+Science Video Factory 是一个基于清单生成科普视频的开源工作流。镜头使用 HTML/CSS/JavaScript、SVG、Canvas 2D 或 Three.js/WebGL 绘制，使用 GSAP 编排镜头内动画；HyperFrames 驱动浏览器检查、预览和渲染；Remotion 负责总时间轴、字幕、转场和镜头资产合成；FFmpeg 负责编码封装。
+
+每条视频都是 `content/episodes/<id>/` 下的自包含模块：`script.md` 是完整旁白，`storyboard.md` 是分镜表，`shot-briefs/*.json` 是逐镜契约，`html/<shot-id>/index.html` 是镜头画面源文件，`manifest.ts` 描述内容。
 
 ## 快速开始
 
@@ -34,7 +36,7 @@ npm run remove-episode -- my-topic
 1. 接收用户想法后先进入讨论阶段，确认观众、学习目标、事实边界、时长、节奏、风格和音频策略；未完成批准不能开始写 renderer source。
 2. 写完整 `content-plan.md` 和 `shot-design.md`。三分钟视频默认要求两份文档各至少 10,000 个字符，并且 front matter 必须声明讨论、内容、分镜和制作批准。
 3. 再写 `script.md`、`storyboard.md` 和每个场景的 `shot-briefs/shot-*.json`。
-4. 默认使用 `hyperframes-default`：在 `hyperframes/<shot-id>/` 中完成 DESIGN.md 和 HTML composition。
+4. 默认使用 `browser`：在 `html/<shot-id>/` 中完成 DESIGN.md 和 HTML composition。
 5. 在 `manifest.ts` 中定义场景、时长、beats 和本地视觉类型。
 6. 在 `episode.ts` 中使用 `z.enum([...])` 声明本 episode 的视觉 schema，并映射到 `scenes/` 组件。
 7. 运行 `npm run validate-episode-planning -- <episode-id>`，检查长文本计划、状态和批准。

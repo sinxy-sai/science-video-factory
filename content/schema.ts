@@ -25,6 +25,15 @@ export const captionSchema = z.object({
 });
 export type Caption = z.infer<typeof captionSchema>;
 
+export const shotAssetReferenceSchema = z.object({
+  path: z.string().min(1),
+  kind: z.enum(['mp4', 'webm', 'frame-sequence']),
+  width: z.number().int().positive(),
+  height: z.number().int().positive(),
+  fps: z.number().int().positive().max(120),
+});
+export type ShotAssetReference = z.infer<typeof shotAssetReferenceSchema>;
+
 const audioSchema = z
   .object({
     src: z.string().min(1),
@@ -43,6 +52,7 @@ export const sceneSchema = z
     captions: z.array(captionSchema).default([]),
     supportingText: z.string().min(1).optional(),
     accent: z.string().regex(/^#[0-9a-fA-F]{6}$/).optional(),
+    shotAsset: shotAssetReferenceSchema.optional(),
     audio: audioSchema,
   })
   .superRefine((scene, ctx) => {
