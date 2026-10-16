@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {join} from 'node:path';
 import {shotAssetPath, shotOutputPath, shotSourceDirectory} from '../lib/episode-runtime';
 import type {ShotBrief} from '../../content/shot-brief';
 
@@ -12,7 +13,7 @@ const brief = {
   qualityChecks: {lint: true, validate: true, inspect: true, animationMap: true, strict: true}, assets: [],
 } as ShotBrief;
 
-assert.equal(shotSourceDirectory('demo', brief).endsWith('content\\episodes\\demo\\html\\shot-001'), true);
-assert.equal(shotOutputPath('demo', brief).endsWith('renders\\demo\\shots\\shot-001.mp4'), true);
+assert.equal(shotSourceDirectory('demo', brief).endsWith(join('content', 'episodes', 'demo', 'html', 'shot-001')), true);
+assert.equal(shotOutputPath('demo', brief).endsWith(join('renders', 'demo', 'shots', 'shot-001.mp4')), true);
 assert.equal(shotAssetPath('demo', brief), 'episodes/demo/shots/shot-001.mp4');
 console.log('shot command routing behaves as expected');
