@@ -29,7 +29,7 @@ npm run create-episode -- my-topic
 npm run remove-episode -- my-topic
 ```
 
-该命令会删除 `content/episodes/<episode-id>/`、`renders/<episode-id>/` 和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。只会清理这个 episode 对应的文件。
+该命令会删除 `content/episodes/<episode-id>/`、`renders/<episode-id>/`、`static/episodes/<episode-id>/`、`.remotion/<episode-id>.props.json` 和对应的 `styles/<episode-id>/`（如果存在），然后重新生成 registry。只会清理这个 episode 对应的文件。
 
 ## 工作流
 

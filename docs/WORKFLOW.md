@@ -60,7 +60,7 @@ npm run remove-episode -- my-topic
 
 输出统一为 `renders/<episode-id>/final.mp4`，并带有 `final.manifest.json` 快照，方便追溯生成输入。不要再使用带多个历史命名的 MP4 文件作为标准输出。
 
-删除视频项目时，`delete-episode` 会同时清理对应的 episode 目录、`static/episodes/<episode-id>/`、`styles/<episode-id>/`（如果存在）、渲染目录和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。共享工具代码不会随 episode 删除。
+删除视频项目时，`remove-episode` 会同时清理对应的 episode 目录、`static/episodes/<episode-id>/`、`styles/<episode-id>/`（如果存在）、渲染目录和 `.remotion/<episode-id>.props.json`，然后重新生成 registry。共享工具代码不会随 episode 删除。
 
 ## 技术分工
 

@@ -1,1 +1,0 @@
-Browser-authored fixture shots.

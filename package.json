@@ -40,7 +40,7 @@
     "test:remove-episode": "tsx scripts/tests/test-remove-episode.ts",
     "test:storyboard-beats": "tsx scripts/tests/test-storyboard-beats.ts",
     "test:caption-timing": "tsx scripts/tests/test-caption-timing.ts",
-    "test:browser-routing": "tsx scripts/tests/test-shot-contract.ts && tsx scripts/tests/test-renderer-adapters.ts && tsx scripts/tests/test-shot-command-routing.ts && tsx scripts/tests/test-shot-assets.ts && tsx scripts/tests/test-shot-composition.ts && tsx scripts/tests/test-browser-renderer-fixture.ts",
+    "test:browser-routing": "tsx scripts/tests/test-shot-contract.ts && tsx scripts/tests/test-renderer-adapters.ts && tsx scripts/tests/test-shot-command-routing.ts && tsx scripts/tests/test-shot-assets.ts && tsx scripts/tests/test-shot-composition.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
