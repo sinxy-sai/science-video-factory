@@ -82,6 +82,11 @@ export function shotOutputPath(episodeId: string, brief: ShotBrief): string {
   return resolve('renders', assertEpisodeId(episodeId), 'shots', `${brief.id}.${brief.implementation.output.kind === 'frame-sequence' ? 'frames' : brief.implementation.output.kind}`);
 }
 
+export function shotAssetPath(episodeId: string, brief: ShotBrief): string {
+  const extension = brief.implementation.output.kind === 'frame-sequence' ? 'frames' : brief.implementation.output.kind;
+  return `episodes/${assertEpisodeId(episodeId)}/shots/${brief.id}.${extension}`;
+}
+
 export function writeManifestSnapshot(manifest: EpisodeManifest, directory: string, filename: string): string {
   const path = join(directory, `${filename}.manifest.json`);
   writeFileSync(path, JSON.stringify(manifest, null, 2), 'utf8');

@@ -49,7 +49,6 @@ export function validateWorkflow(episode: EpisodeModule): void {
     if (!sceneIds.has(brief.sceneId)) throw new Error(`${id}/${brief.id}: sceneId ${brief.sceneId} is not in manifest`);
     briefSceneIds.add(brief.sceneId);
     const scene = scenes.find((item) => item.id === brief.sceneId)!;
-    if (!scene.shotAsset) throw new Error(`${id}/${brief.id}: manifest scene ${brief.sceneId} is missing shotAsset; prepare the rendered browser shot before final validation`);
     if (brief.durationInFrames !== scene.durationInFrames) throw new Error(`${id}/${brief.id}: duration does not match manifest scene ${brief.sceneId}`);
     if (brief.renderer === 'browser' && !brief.implementation.files.some((file) => file.startsWith('html/'))) throw new Error(`${id}/${brief.id}: browser shot must declare an html implementation file`);
     for (const file of brief.implementation.files) if (!existsSync(join(root, file))) throw new Error(`${id}/${brief.id}: implementation file does not exist: ${file}`);

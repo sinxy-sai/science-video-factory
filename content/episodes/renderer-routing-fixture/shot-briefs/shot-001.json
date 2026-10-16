@@ -1,0 +1,34 @@
+{
+  "id": "shot-001",
+  "sceneId": "intro",
+  "title": "Browser authored SVG shot",
+  "narration": "This is a browser authored shot.",
+  "visual": "intro",
+  "renderer": "browser",
+  "visualStyle": "episode-defined",
+  "visualDirection": {
+    "composition": "Centered title and SVG bar",
+    "focalPoint": "The animated bar",
+    "hierarchy": ["title", "bar", "label"],
+    "palette": "navy, mint, and amber",
+    "typography": "large sans serif display type"
+  },
+  "motion": {
+    "entrance": "title rises into place",
+    "transformation": "bar grows and dot appears",
+    "exit": "transition-owned",
+    "transition": "crossfade",
+    "pacing": "measured"
+  },
+  "durationInFrames": 120,
+  "continuity": {"leaves": ["browser-shot"], "inherits": []},
+  "implementation": {
+    "sourceRoot": "html/shot-001",
+    "output": {"kind": "mp4", "path": "renders/renderer-routing-fixture/shots/shot-001.mp4", "width": 1280, "height": 720, "fps": 30},
+    "composition": "asset",
+    "visualMode": "svg",
+    "files": ["html/shot-001/index.html"]
+  },
+  "qualityChecks": {"lint": true, "validate": true, "inspect": true, "animationMap": true, "strict": true},
+  "assets": []
+}

@@ -1,6 +1,6 @@
 # Browser Shot Renderer Routing Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** Make every visual shot browser-authored and rendered through HyperFrames, while Remotion only handles episode timing, captions, transitions, and final composition.
 
@@ -41,29 +41,29 @@
 - `ShotOutputContract = {kind, path, width, height, fps, alpha?}`
 - `ShotImplementation = {sourceRoot, output, composition: 'asset', visualMode, files}`
 
-- [ ] **Step 1: Write failing schema tests**
+- [x] **Step 1: Write failing schema tests**
 
 Add cases proving that a browser brief accepts `sourceRoot: 'html/shot-001'`, `visualMode: 'svg'`, and an MP4 output, while `remotion-native`, `composition: 'native'`, missing output dimensions, and missing `sourceRoot` are rejected.
 
-- [ ] **Step 2: Run the focused test**
+- [x] **Step 2: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-shot-contract.ts`
 
 Expected: FAIL because the new schemas and types do not exist.
 
-- [ ] **Step 3: Implement the schemas and migration defaults**
+- [x] **Step 3: Implement the schemas and migration defaults**
 
 Create Zod schemas in `production/shot-contract.ts`; update `content/shot-brief.ts` to import them, remove `remotion-native`, and require the browser implementation fields. Keep only explicit defaults that can be derived safely: `renderer: 'browser'`, `visualMode: 'html'`, `composition: 'asset'`, and output path `renders/<episode-id>/shots/<shot-id>.mp4` at the manifest's width/fps when the loader supplies episode context.
 
 Add `shotAssetSchema` to `content/schema.ts` with `renderer`, `visualMode`, `kind`, `path`, `width`, `height`, `fps`, and `durationInFrames`, then add required `shotAsset` to each scene manifest once the loader is updated in Task 3.
 
-- [ ] **Step 4: Run the focused test**
+- [x] **Step 4: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-shot-contract.ts`
 
 Expected: PASS for valid browser contracts and rejection cases.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add production/shot-contract.ts content/shot-brief.ts content/schema.ts scripts/tests/test-shot-contract.ts
@@ -83,29 +83,29 @@ git commit -m "feat: define browser shot output contracts"
 - `RendererAdapter.run(operation, context): number`
 - `getRendererAdapter('browser' | 'manim' | 'blender')`
 
-- [ ] **Step 1: Write failing adapter tests**
+- [x] **Step 1: Write failing adapter tests**
 
 Cover: browser source path must be `html/<shot-id>/index.html`; missing `data-composition-id`/timeline source must fail validation; browser render delegates to HyperFrames with the declared output; `manim` and `blender` return explicit unsupported diagnostics; `remotion-native` is rejected by schema and adapter lookup.
 
-- [ ] **Step 2: Run the focused test**
+- [x] **Step 2: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-renderer-adapters.ts`
 
 Expected: FAIL because the adapter still exposes `hyperframes-default`, external placeholders, and `remotion-native`.
 
-- [ ] **Step 3: Implement the browser adapter**
+- [x] **Step 3: Implement the browser adapter**
 
 Refactor `production/renderers.ts` so the browser adapter resolves only `content/episodes/<id>/html/<shot-id>/`, runs HyperFrames `check`, `preview`, and `render`, and passes the declared output path, dimensions, fps, and strict flags. Add deterministic source checks for the required composition element, GSAP/JavaScript timeline registration, and `visualMode` rules. Return exact diagnostics for unsupported external adapters.
 
 Update `validateWorkflow()` to require `renderer: 'browser'` for browser shots, reject any `hyperframes/` source path, require implementation files under `html/`, and ensure every declared file exists.
 
-- [ ] **Step 4: Run the focused test**
+- [x] **Step 4: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-renderer-adapters.ts`
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add production/renderers.ts scripts/lib/episode-workflow-validation.ts scripts/tests/test-renderer-adapters.ts
@@ -127,27 +127,27 @@ git commit -m "feat: add executable browser renderer adapter"
 - `getShotOutputPath(episodeId, brief): string`
 - `getShotAssetPath(episodeId, brief): string`
 
-- [ ] **Step 1: Write failing command-routing tests**
+- [x] **Step 1: Write failing command-routing tests**
 
 Assert that generated episodes contain `html/shot-001/index.html`, ShotBrief files point to that source root, validation/preview/render resolve the same directory, and no command constructs `hyperframes/<shot-id>`.
 
-- [ ] **Step 2: Run the focused test**
+- [x] **Step 2: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-shot-command-routing.ts`
 
 Expected: FAIL because commands currently hardcode `hyperframes/<shot-id>`.
 
-- [ ] **Step 3: Implement shared path helpers**
+- [x] **Step 3: Implement shared path helpers**
 
 Add path helpers to `scripts/lib/episode-runtime.ts`; use them from all shot commands. Update the episode scaffold to create `html/shot-001/DESIGN.md`, `index.html`, and local GSAP asset references. Set generated ShotBrief `renderer: 'browser'`, `visualMode: 'html'`, `composition: 'asset'`, source file `html/shot-001/index.html`, and an MP4 output contract.
 
-- [ ] **Step 4: Run the focused test**
+- [x] **Step 4: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-shot-command-routing.ts`
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add scripts/commands scripts/lib/episode-runtime.ts scripts/tests/test-shot-command-routing.ts
@@ -167,27 +167,27 @@ git commit -m "feat: route shot commands through browser sources"
 - `buildShotAssetManifest(episodeId, briefs): ShotAssetRecord[]`
 - `readShotAssetManifest(episodeId): ShotAssetRecord[]`
 
-- [ ] **Step 1: Write failing asset-registry tests**
+- [x] **Step 1: Write failing asset-registry tests**
 
 Assert that preparation fails when a declared output is absent, copies each output into `static/episodes/<id>/shots/`, and writes `shots/assets.manifest.json` with renderer, visual mode, dimensions, fps, duration, and relative path.
 
-- [ ] **Step 2: Run the focused test**
+- [x] **Step 2: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-shot-assets.ts`
 
 Expected: FAIL because preparation currently copies the whole HyperFrames tree and does not register output contracts.
 
-- [ ] **Step 3: Implement the asset registry**
+- [x] **Step 3: Implement the asset registry**
 
 Create `production/shot-assets.ts` for validating output metadata and serializing records. Change preparation to copy only declared browser sources and rendered outputs into `static/episodes/<id>/shots/`, then write the manifest after every output passes existence and metadata checks. Make missing outputs hard failures.
 
-- [ ] **Step 4: Run the focused test**
+- [x] **Step 4: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-shot-assets.ts`
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add scripts/commands/prepare-episode-assets.ts scripts/lib/episode-workflow-validation.ts production/shot-assets.ts scripts/tests/test-shot-assets.ts
@@ -209,27 +209,27 @@ git commit -m "feat: register rendered shot assets"
 - `EpisodeModule.renderScene` is removed from the required visual path.
 - `SceneContent` receives a `shotAsset` record and renders the asset before caption/transition layers.
 
-- [ ] **Step 1: Write failing composition tests**
+- [x] **Step 1: Write failing composition tests**
 
 Assert that a scene with a prepared MP4 asset renders an `OffthreadVideo`/equivalent asset layer, captions remain above it, and no episode scene is allowed to render arbitrary native visual JSX.
 
-- [ ] **Step 2: Run the focused test**
+- [x] **Step 2: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-shot-composition.ts`
 
 Expected: FAIL because `SceneRenderer` currently calls `episode.renderScene()`.
 
-- [ ] **Step 3: Implement asset-only scene routing**
+- [x] **Step 3: Implement asset-only scene routing**
 
 Load the prepared asset manifest by episode id, resolve the scene's asset path, and render it with the correct duration and dimensions. Keep `CaptionLayer` and future transition layers in `SceneFrame`. Remove `renderScene` from `EpisodeModule` or make it metadata-only, and update generated episode modules accordingly. Fail loudly when an asset is missing.
 
-- [ ] **Step 4: Run the focused test**
+- [x] **Step 4: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-shot-composition.ts`
 
 Expected: PASS.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```bash
 git add src/compositions/ScienceVideo.tsx src/scenes/SceneRenderer.tsx src/scenes/ShotAssetScene.tsx src/components/SceneFrame.tsx content/episode-module.ts scripts/tests/test-shot-composition.ts
@@ -255,31 +255,31 @@ git commit -m "feat: compose episodes from rendered shot assets"
 **Interfaces:**
 - Fixture uses `renderer: 'browser'`, `visualMode: 'svg'`, and the new `html/<shot-id>/` source path.
 
-- [ ] **Step 1: Write the fixture validation test**
+- [x] **Step 1: Write the fixture validation test**
 
 The test must assert that the fixture has a browser source, a `data-composition-id`, a registered timeline, no `hyperframes/` directory, and a valid ShotBrief.
 
-- [ ] **Step 2: Run the focused test**
+- [x] **Step 2: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-browser-fixture.ts`
 
 Expected: FAIL until the fixture exists.
 
-- [ ] **Step 3: Implement the fixture**
+- [x] **Step 3: Implement the fixture**
 
 Create a deterministic SVG explanatory shot with a hero frame, labeled visual relationship, GSAP-driven motion, and at least two meaningful state changes. Keep the visual style local to `DESIGN.md`/`visual-style.md`; do not copy `classroom-replica.html` as episode content.
 
-- [ ] **Step 4: Update workflow docs**
+- [x] **Step 4: Update workflow docs**
 
 Replace old `hyperframes/<shot-id>` source references with `html/<shot-id>`, document HyperFrames as the browser driver/checker/renderer, and state that Remotion consumes shot assets only.
 
-- [ ] **Step 5: Run the focused test**
+- [x] **Step 5: Run the focused test**
 
 Run: `npm exec tsx scripts/tests/test-browser-fixture.ts`
 
 Expected: PASS.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add content/episodes/renderer-routing-fixture docs/WORKFLOW.md docs/SCENE_GUIDE.md docs/COMPONENT_GUIDE.md scripts/tests/test-browser-fixture.ts
@@ -293,13 +293,13 @@ git commit -m "feat: add browser-authored renderer fixture"
 - Modify: `README.md`
 - Test: existing project test suite and fixture commands
 
-- [ ] **Step 1: Run type and contract tests**
+- [x] **Step 1: Run type and contract tests**
 
 Run: `npm run typecheck` and all focused tests from Tasks 1–6.
 
 Expected: PASS.
 
-- [ ] **Step 2: Validate and render the fixture shot**
+- [x] **Step 2: Validate and render the fixture shot**
 
 Run:
 
@@ -311,7 +311,7 @@ npm run prepare-episode-assets -- renderer-routing-fixture
 
 Expected: HyperFrames checks pass, `renders/renderer-routing-fixture/shots/shot-001.mp4` exists, and the static shot asset manifest is written.
 
-- [ ] **Step 3: Render the fixture episode**
+- [x] **Step 3: Render the fixture episode**
 
 Run:
 
@@ -324,13 +324,13 @@ npm run verify-episode-output -- renderer-routing-fixture
 
 Expected: Remotion composites the rendered shot and captions into `renders/renderer-routing-fixture/final.mp4`; output metadata verification passes.
 
-- [ ] **Step 4: Run the full repository checks**
+- [x] **Step 4: Run the full repository checks**
 
 Run: `npm test`
 
 Expected: Existing workflow tests plus the new browser routing tests pass.
 
-- [ ] **Step 5: Update README and commit**
+- [x] **Step 5: Update README and commit**
 
 Document the new routing commands and source layout in `README.md`, then commit:
 

@@ -1,5 +1,5 @@
 import {spawnSync} from 'node:child_process';
-import {join} from 'node:path';
+import {join, resolve} from 'node:path';
 import {existsSync, unlinkSync} from 'node:fs';
 import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from '../lib/episode-runtime';
 import {validatePlanning} from '../../production/planning';
@@ -26,8 +26,8 @@ if (scale !== '1') {
   console.error(`Refusing to write scaled output to standard final.mp4 (requested --scale ${scale}). Render final.mp4 at --scale 1; use render-still-frame or direct Remotion for previews.`);
   process.exit(1);
 }
-const npmExec = process.platform === 'win32' ? 'npx.cmd' : 'npx';
-const result = spawnSync(npmExec, ['remotion', 'render', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, `--scale=${scale}`, ...browserArgs()], {
+const remotionCli = resolve('node_modules', '@remotion', 'cli', 'remotion-cli.js');
+const result = spawnSync(process.execPath, [remotionCli, 'render', 'src/entry.ts', 'ScienceVideo', outputPath, `--props=${propsPath}`, `--scale=${scale}`, ...browserArgs()], {
   stdio: 'inherit',
   shell: false,
   env: projectToolEnv(),
