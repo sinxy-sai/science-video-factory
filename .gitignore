@@ -6,3 +6,4 @@ dist/
 *.local
 .venv/
 tools/ffmpeg/
+.superpowers/

@@ -1,8 +1,19 @@
 {
   "name": "science-video-factory",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "description": "Manifest-driven science explainer videos built with Remotion.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sinxy-sai/science-video-factory.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sinxy-sai/science-video-factory/issues"
+  },
+  "homepage": "https://github.com/sinxy-sai/science-video-factory#readme",
+  "engines": {
+    "node": ">=20"
+  },
   "type": "module",
   "scripts": {
     "dev": "remotion studio --no-open",
