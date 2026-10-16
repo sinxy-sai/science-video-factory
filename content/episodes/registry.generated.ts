@@ -1,4 +1,4 @@
-// GENERATED FILE. Run npm run generate-registry to update.
+// GENERATED FILE. Run npm run generate-episode-registry to update.
 import type {EpisodeModule} from '../episode-module';
 
 

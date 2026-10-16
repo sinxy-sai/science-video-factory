@@ -1,12 +1,12 @@
 import {spawnSync} from 'node:child_process';
 import {join} from 'node:path';
-import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from '../lib/episode-utils';
+import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from '../lib/episode-runtime';
 
 const args = process.argv.slice(2);
 const [episodeId] = args;
 
 if (!episodeId) {
-  console.error('Usage: npm run still -- <episode-id> --frame 30');
+  console.error('Usage: npm run render-still-frame -- <episode-id> --frame 30');
   process.exit(1);
 }
 

@@ -44,12 +44,12 @@
 ## 精确工作流
 
 ```powershell
-npm run new-episode -- my-topic
-npm run prepare-assets -- my-topic
-npm run validate -- my-topic
-npm run preview -- my-topic
-npm run still -- my-topic --frame 30
-npm run render -- my-topic
+npm run create-episode -- my-topic
+npm run prepare-episode-assets -- my-topic
+npm run validate-episode -- my-topic
+npm run preview-episode -- my-topic
+npm run render-still-frame -- my-topic --frame 30
+npm run render-episode -- my-topic
 ```
 
 最终文件是 `renders/my-topic/final.mp4`。`validate` 失败时不能进入标准渲染流程。

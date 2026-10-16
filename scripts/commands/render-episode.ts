@@ -1,13 +1,13 @@
 import {spawnSync} from 'node:child_process';
 import {join} from 'node:path';
-import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from '../lib/episode-utils';
+import {browserArgs, ensureRenderDir, loadEpisodeModule, parseFlag, projectToolEnv, writeManifestSnapshot, writePropsFile} from '../lib/episode-runtime';
 import {validatePlanning} from '../../production/planning';
 
 const args = process.argv.slice(2);
 const [episodeId] = args;
 
 if (!episodeId) {
-  console.error('Usage: npm run render -- <episode-id> [--scale 1]');
+  console.error('Usage: npm run render-episode -- <episode-id> [--scale 1]');
   process.exit(1);
 }
 

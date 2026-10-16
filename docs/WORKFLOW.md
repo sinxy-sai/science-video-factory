@@ -23,7 +23,7 @@ content-plan.md + shot-design.md（长文本、批准状态）
   ↓
   content/episodes/<id>/manifest.ts
   ↓
-  npm run prepare-assets -- <id>
+  npm run prepare-episode-assets -- <id>
   ↓
   Schema、连续性、分镜一致性与字幕覆盖校验
   ↓
@@ -37,16 +37,16 @@ Remotion 总合成与 MP4 渲染
 ## 命令
 
 ```powershell
-npm run new-episode -- my-topic
-npm run validate-shots -- my-topic
-npm run author-shots -- my-topic
-npm run prepare-assets -- my-topic
-npm run render-shots -- my-topic
-npm run validate -- my-topic
-npm run preview -- my-topic
-npm run still -- my-topic --frame 30
-npm run render -- my-topic --scale 0.5
-npm run delete-episode -- my-topic
+npm run create-episode -- my-topic
+npm run validate-episode-shots -- my-topic
+npm run author-episode-shots -- my-topic
+npm run prepare-episode-assets -- my-topic
+npm run render-episode-shots -- my-topic
+npm run validate-episode -- my-topic
+npm run preview-episode -- my-topic
+npm run render-still-frame -- my-topic --frame 30
+npm run render-episode -- my-topic --scale 0.5
+npm run remove-episode -- my-topic
 ```
 
 `new-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`hyperframes/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准；三分钟视频默认要求每份计划至少 10,000 个字符。

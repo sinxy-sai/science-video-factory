@@ -1,10 +1,10 @@
 import {cpSync, existsSync, mkdirSync, readdirSync, rmSync, writeFileSync} from 'node:fs';
 import {join, relative, resolve} from 'node:path';
-import {episodeRoot, loadEpisodeManifest, staticEpisodeRoot} from '../lib/episode-utils';
+import {episodeRoot, loadEpisodeManifest, staticEpisodeRoot} from '../lib/episode-runtime';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) {
-  console.error('Usage: npm run prepare-assets -- <episode-id>');
+  console.error('Usage: npm run prepare-episode-assets -- <episode-id>');
   process.exit(1);
 }
 

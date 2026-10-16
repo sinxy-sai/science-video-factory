@@ -1,6 +1,6 @@
 import {episodeRegistry} from '../../content/episodes/registry.generated';
-import {describeManifest} from '../lib/episode-utils';
-import {validateWorkflow} from '../lib/workflow-validation';
+import {describeManifest} from '../lib/episode-runtime';
+import {validateWorkflow} from '../lib/episode-workflow-validation';
 
 let failed = false;
 for (const id of Object.keys(episodeRegistry)) {

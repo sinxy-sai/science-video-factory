@@ -1,10 +1,10 @@
 import {writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {ensureRenderDir, loadEpisodeManifest, describeManifest} from '../lib/episode-utils';
+import {ensureRenderDir, loadEpisodeManifest, describeManifest} from '../lib/episode-runtime';
 import {probeMedia, validateMediaMetadata} from '../../production/media-metadata';
 
 const [episodeId] = process.argv.slice(2);
-if (!episodeId) { console.error('Usage: npm run verify-output -- <episode-id>'); process.exit(1); }
+if (!episodeId) { console.error('Usage: npm run verify-episode-output -- <episode-id>'); process.exit(1); }
 const manifest = await loadEpisodeManifest(episodeId);
 const directory = ensureRenderDir(manifest);
 const output = join(directory, 'final.mp4');

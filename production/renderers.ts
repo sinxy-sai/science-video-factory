@@ -2,7 +2,7 @@ import {existsSync} from 'node:fs';
 import {join, resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
 import type {ShotBrief, ShotRenderer} from '../content/shot-brief';
-import {projectToolEnv} from '../scripts/lib/episode-utils';
+import {projectToolEnv} from '../scripts/lib/episode-runtime';
 
 export type RendererOperation = 'validate' | 'render' | 'preview';
 

@@ -3,7 +3,7 @@ import {existsSync, mkdirSync, writeFileSync} from 'node:fs';
 import {mkdtempSync, rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
-import {deleteEpisode} from '../commands/delete-episode';
+import {deleteEpisode} from '../commands/remove-episode';
 
 const root = mkdtempSync(join(tmpdir(), 'science-video-delete-'));
 try {
@@ -34,7 +34,7 @@ try {
   assert.equal(existsSync(join(root, '.remotion', 'keep-me.props.json')), true);
   assert.throws(() => deleteEpisode('missing-topic', root), /Episode not found/);
   assert.throws(() => deleteEpisode('../outside', root), /Invalid episode id/);
-  console.log('delete-episode removes episode plans, renderer sources, static assets, and render directories safely');
+  console.log('remove-episode removes episode plans, renderer sources, static assets, and render directories safely');
 } finally {
   rmSync(root, {recursive: true, force: true});
 }

@@ -2,7 +2,7 @@ import {validatePlanning} from '../../production/planning';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) {
-  console.error('Usage: npm run validate-planning -- <episode-id>');
+  console.error('Usage: npm run validate-episode-planning -- <episode-id>');
   process.exit(1);
 }
 try {

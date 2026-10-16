@@ -2,7 +2,7 @@ import {existsSync, rmSync} from 'node:fs';
 import {resolve, sep} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {spawnSync} from 'node:child_process';
-import {assertEpisodeId} from '../lib/episode-utils';
+import {assertEpisodeId} from '../lib/episode-runtime';
 
 export function deleteEpisode(episodeId: string, projectRoot = process.cwd()): void {
   const safeId = assertEpisodeId(episodeId);
@@ -41,12 +41,12 @@ export function deleteEpisode(episodeId: string, projectRoot = process.cwd()): v
 function runCli(): void {
   const [episodeId] = process.argv.slice(2);
   if (!episodeId) {
-    console.error('Usage: npm run delete-episode -- <episode-id>');
+    console.error('Usage: npm run remove-episode -- <episode-id>');
     process.exit(1);
   }
 
   deleteEpisode(episodeId);
-  const result = spawnSync('npm', ['run', 'generate-registry'], {stdio: 'inherit', shell: true});
+  const result = spawnSync('npm', ['run', 'generate-episode-registry'], {stdio: 'inherit', shell: true});
   if (result.status !== 0) {
     process.exit(result.status ?? 1);
   }

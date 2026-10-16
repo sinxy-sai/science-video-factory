@@ -1,10 +1,10 @@
 import {existsSync, readdirSync, mkdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {ensureRenderDir, loadEpisodeManifest, writePropsFile, browserArgs, projectToolEnv} from '../lib/episode-utils';
+import {ensureRenderDir, loadEpisodeManifest, writePropsFile, browserArgs, projectToolEnv} from '../lib/episode-runtime';
 import {totalDurationInFrames} from '../../content/schema';
 import {createContactSheet, decodePng, encodePng} from '../../production/visual-regression';
-const [episodeId]=process.argv.slice(2); if(!episodeId){console.error('Usage: npm run contact-sheet -- <episode-id>');process.exit(1);}
+const [episodeId]=process.argv.slice(2); if(!episodeId){console.error('Usage: npm run generate-contact-sheet -- <episode-id>');process.exit(1);}
 const manifest=await loadEpisodeManifest(episodeId), dir=ensureRenderDir(manifest), framesDir=join(dir,'frames');
 mkdirSync(framesDir,{recursive:true});
 const pngs=readdirSync(dir).filter(f=>/\.png$/i.test(f)).map(f=>join(dir,f));

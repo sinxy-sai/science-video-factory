@@ -1,10 +1,10 @@
 import {existsSync, readdirSync} from 'node:fs';
 import {join} from 'node:path';
-import {ensureRenderDir, loadEpisodeManifest} from '../lib/episode-utils';
+import {ensureRenderDir, loadEpisodeManifest} from '../lib/episode-runtime';
 import {comparePngs, decodePng} from '../../production/visual-regression';
 
 const [episodeId] = process.argv.slice(2);
-if (!episodeId) { console.error('Usage: npm run visual-regression -- <episode-id>'); process.exit(1); }
+if (!episodeId) { console.error('Usage: npm run compare-episode-visual-regression -- <episode-id>'); process.exit(1); }
 const dir = ensureRenderDir(await loadEpisodeManifest(episodeId));
 const baseline = join(dir, 'baselines');
 const frameDir = join(dir, 'frames');

@@ -1,6 +1,6 @@
 # Scripts
 
-The scripts are grouped by role:
+The scripts use `verb-object` names and are grouped by role:
 
 - `commands/` — user-facing CLI entry points. The names and npm commands remain stable.
 - `lib/` — shared command helpers and workflow validation.

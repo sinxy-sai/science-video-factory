@@ -1,11 +1,11 @@
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
-import {loadShotBriefs} from '../lib/workflow-validation';
-import {episodeRoot} from '../lib/episode-utils';
+import {loadShotBriefs} from '../lib/episode-workflow-validation';
+import {episodeRoot} from '../lib/episode-runtime';
 import {validatePlanning} from '../../production/planning';
 
 const [episodeId] = process.argv.slice(2);
-if (!episodeId) { console.error('Usage: npm run author-shots -- <episode-id>'); process.exit(1); }
+if (!episodeId) { console.error('Usage: npm run author-episode-shots -- <episode-id>'); process.exit(1); }
 const root = episodeRoot(episodeId);
 validatePlanning(episodeId);
 const episodeStylePath = join(root, 'visual-style.md');

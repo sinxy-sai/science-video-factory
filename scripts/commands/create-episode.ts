@@ -1,12 +1,12 @@
 import {copyFileSync, existsSync, mkdirSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {assertEpisodeId} from '../lib/episode-utils';
+import {assertEpisodeId} from '../lib/episode-runtime';
 
 const [episodeId] = process.argv.slice(2);
 
 if (!episodeId) {
-  console.error('Usage: npm run new-episode -- <episode-id>');
+  console.error('Usage: npm run create-episode -- <episode-id>');
   process.exit(1);
 }
 
@@ -37,7 +37,7 @@ writeFileSync(join(directory, 'shot-design.md'), `---\nstate: discussion\napprov
 writeFileSync(join(directory, 'script.md'), `# ${safeId}\n\n## 目标\n\n在这里写完整旁白剧本。每个镜头的 narration 必须与最终配音一致。\n\n## 旁白\n\n在这里写本集完整旁白。\n`, 'utf8');
 writeFileSync(join(directory, 'storyboard.md'), `# ${safeId} 分镜表\n\n| 镜头 | 时间 | 画面 | 旁白 | 技术 |\n|---|---|---|---|---|\n| shot-001 | 00:00–00:05 | Replace with shot description | Replace with narration | Remotion |\n`, 'utf8');
 writeFileSync(join(directory, 'visual-style.md'), `# ${safeId} Visual Style\n\nDefine palette, typography, motion language, and continuity rules for this episode.\n`, 'utf8');
-writeFileSync(join(directory, 'hyperframes', 'README.md'), '# HyperFrames\n\nDefault renderer path. Each shot gets `hyperframes/<shot-id>/DESIGN.md`, `index.html`, and rendered output. Run `npm run validate-shots -- <episode-id>` before final composition.\n', 'utf8');
+writeFileSync(join(directory, 'hyperframes', 'README.md'), '# HyperFrames\n\nDefault renderer path. Each shot gets `hyperframes/<shot-id>/DESIGN.md`, `index.html`, and rendered output. Run `npm run validate-episode-shots -- <episode-id>` before final composition.\n', 'utf8');
 writeFileSync(join(directory, 'manim', 'README.md'), '# Manim\n\nPlace Manim source files and rendered outputs here.\n', 'utf8');
 writeFileSync(join(directory, 'hyperframes', 'shot-001', 'DESIGN.md'), `# Shot 001 Design\n\nChoose a named HyperFrames visual style and define the hero frame before writing animation.\n`, 'utf8');
 copyFileSync('node_modules/gsap/dist/gsap.min.js', join(directory, 'hyperframes', 'shot-001', 'assets', 'gsap.min.js'));
@@ -59,14 +59,14 @@ writeFileSync(
   'utf8',
 );
 
-const result = spawnSync('npm', ['run', 'generate-registry'], {stdio: 'inherit', shell: true});
+const result = spawnSync('npm', ['run', 'generate-episode-registry'], {stdio: 'inherit', shell: true});
 if (result.status !== 0) {
   process.exit(result.status ?? 1);
 }
 
 console.log(`Created episode scaffold: ${directory}`);
 console.log(`Next commands:`);
-console.log(`  npm run validate -- ${safeId}`);
-console.log(`  npm run validate-shots -- ${safeId}`);
-console.log(`  npm run preview -- ${safeId}`);
-console.log(`  npm run render -- ${safeId}`);
+console.log(`  npm run validate-episode -- ${safeId}`);
+console.log(`  npm run validate-episode-shots -- ${safeId}`);
+console.log(`  npm run preview-episode -- ${safeId}`);
+console.log(`  npm run render-episode -- ${safeId}`);

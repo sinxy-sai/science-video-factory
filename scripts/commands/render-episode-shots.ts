@@ -1,12 +1,12 @@
 import {existsSync, mkdirSync} from 'node:fs';
 import {join, resolve} from 'node:path';
-import {loadShotBriefs} from '../lib/workflow-validation';
-import {ensureRenderDir, loadEpisodeManifest} from '../lib/episode-utils';
+import {loadShotBriefs} from '../lib/episode-workflow-validation';
+import {ensureRenderDir, loadEpisodeManifest} from '../lib/episode-runtime';
 import {getRendererAdapter, validateRenderer} from '../../production/renderers';
 import {validatePlanning} from '../../production/planning';
 
 const [episodeId] = process.argv.slice(2);
-if (!episodeId) { console.error('Usage: npm run render-shots -- <episode-id>'); process.exit(1); }
+if (!episodeId) { console.error('Usage: npm run render-episode-shots -- <episode-id>'); process.exit(1); }
 const manifest = await loadEpisodeManifest(episodeId);
 validatePlanning(episodeId);
 const outputRoot = join(ensureRenderDir(manifest), 'shots');

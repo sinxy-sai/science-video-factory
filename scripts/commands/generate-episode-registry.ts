@@ -31,7 +31,7 @@ function generateRegistry(): void {
     .map((id) => `  [${toImportAlias(id)}.manifest.id]: ${toImportAlias(id)},`)
     .join('\n');
 
-  const output = `// GENERATED FILE. Run npm run generate-registry to update.\nimport type {EpisodeModule} from '../episode-module';\n${imports}\n\nexport const episodeRegistry: Record<string, EpisodeModule> = {\n${entries}\n};\n\nexport function getEpisodeModule(id: string): EpisodeModule {\n  const episode = episodeRegistry[id];\n  if (!episode) {\n    throw new Error(\`Unknown episode "\${id}". Available episodes: \${Object.keys(episodeRegistry).join(', ')}\`);\n  }\n  return episode;\n}\n`;
+  const output = `// GENERATED FILE. Run npm run generate-episode-registry to update.\nimport type {EpisodeModule} from '../episode-module';\n${imports}\n\nexport const episodeRegistry: Record<string, EpisodeModule> = {\n${entries}\n};\n\nexport function getEpisodeModule(id: string): EpisodeModule {\n  const episode = episodeRegistry[id];\n  if (!episode) {\n    throw new Error(\`Unknown episode "\${id}". Available episodes: \${Object.keys(episodeRegistry).join(', ')}\`);\n  }\n  return episode;\n}\n`;
 
   writeFileSync(registryPath, output, 'utf8');
 }

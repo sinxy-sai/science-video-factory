@@ -1,10 +1,10 @@
 import {spawnSync} from 'node:child_process';
-import {browserArgs, loadEpisodeModule, writePropsFile} from '../lib/episode-utils';
+import {browserArgs, loadEpisodeModule, writePropsFile} from '../lib/episode-runtime';
 
 const [episodeId] = process.argv.slice(2);
 
 if (!episodeId) {
-  console.error('Usage: npm run preview -- <episode-id>');
+  console.error('Usage: npm run preview-episode -- <episode-id>');
   process.exit(1);
 }
 

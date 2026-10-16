@@ -1,10 +1,10 @@
-import {describeManifest, loadEpisodeModule} from '../lib/episode-utils';
-import {validateWorkflow} from '../lib/workflow-validation';
+import {describeManifest, loadEpisodeModule} from '../lib/episode-runtime';
+import {validateWorkflow} from '../lib/episode-workflow-validation';
 
 const [episodeId] = process.argv.slice(2);
 
 if (!episodeId) {
-  console.error('Usage: npm run validate -- <episode-id>');
+  console.error('Usage: npm run validate-episode -- <episode-id>');
   process.exit(1);
 }
 

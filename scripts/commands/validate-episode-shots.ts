@@ -1,13 +1,13 @@
 import {existsSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {spawnSync} from 'node:child_process';
-import {loadEpisodeManifest} from '../lib/episode-utils';
-import {loadShotBriefs} from '../lib/workflow-validation';
+import {loadEpisodeManifest} from '../lib/episode-runtime';
+import {loadShotBriefs} from '../lib/episode-workflow-validation';
 import {getRendererAdapter, validateRenderer} from '../../production/renderers';
 
 const [episodeId] = process.argv.slice(2);
 if (!episodeId) {
-  console.error('Usage: npm run validate-shots -- <episode-id>');
+  console.error('Usage: npm run validate-episode-shots -- <episode-id>');
   process.exit(1);
 }
 
