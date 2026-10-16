@@ -46,7 +46,7 @@ function runCli(): void {
   if (result.status !== 0) {
     process.exit(result.status ?? 1);
   }
-  console.log(`Deleted episode: ${episodeId}`);
+  console.log(`Deleted episode and generated assets: ${episodeId}`);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
