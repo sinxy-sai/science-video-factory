@@ -2,7 +2,7 @@
 
 ## Status
 
-- State: implemented in the browser-first workflow
+- State: implemented and extended with Manim and layered shot composition
 - Scope: replace placeholder renderer routing with an executable multi-backend shot pipeline
 - First production route: browser-authored shots powered by HyperFrames, composed by Remotion
 
@@ -12,6 +12,7 @@
 2. Keep Remotion as the episode timeline, caption, transition, and final composition layer.
 3. Keep FFmpeg in the encoding and muxing role.
 4. Allow a shot to declare its renderer and output contract in its ShotBrief.
+5. Allow one shot to combine multiple renderer layers with FFmpeg.
 5. Make rendered shot assets discoverable and reproducible through the existing episode asset workflow.
 6. Make every shot's visual content come from the browser-authored route; Remotion does not draw shot visuals.
 
@@ -20,7 +21,7 @@
 - Do not replace Remotion as the final episode compositor.
 - Do not keep `remotion-native` as a shot renderer.
 - Do not introduce a second root timeline outside the episode manifest.
-- Do not implement Blender or Manim execution in this first routing pass.
+- Blender remains unsupported; Manim is implemented as a project-local renderer and can be used as a transparent layer.
 - Do not redesign narration, caption authoring, or prompt generation.
 - Do not use `classroom-replica.html` as episode content; use an equivalent HTML/SVG shot as a routing fixture.
 

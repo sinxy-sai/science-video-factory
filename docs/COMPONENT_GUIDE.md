@@ -7,7 +7,7 @@
 - `src/visuals/`：一个明确视觉关系的 SVG 或 Canvas 实现。
 - `src/theme/`：颜色和排版 token。
 
-镜头画面源文件位于 `content/episodes/<episode-id>/html/<shot-id>/`，可以使用 HTML/CSS/JavaScript、SVG、Canvas 2D 或 Three.js/WebGL，并使用 GSAP 编排确定性动画。HyperFrames 负责浏览器检查、预览和渲染；Remotion 通过 `ShotAssetScene` 合成已渲染的镜头资产、字幕和转场。
+镜头画面源文件位于 `content/episodes/<episode-id>/html/<shot-id>/` 或 `manim/<shot-id>/`。一个 layered shot 可以把 HTML/CSS/JavaScript、SVG、Canvas 2D、Three.js/WebGL 和 Manim 分成多个图层，在同一 shot 时间线上渲染，再由 FFmpeg 合成；Remotion 通过 `ShotAssetScene` 合成已渲染的镜头资产、字幕和转场。字幕由 Remotion 的 CaptionLayer 统一渲染，镜头 HTML 不得重复绘制 ShotBrief 标题、镜头序号或完整 caption；图内只使用少量关系标签，避免默认的 PPT 式大标题布局。旁白、字幕和配音 cue 必须对齐同一帧时间轴。
 
 Episode 内容不要直接写进通用组件。通用组件通过 props 接收标题、claim、accent、数据和场景进度。镜头视觉不要再通过 Remotion scene JSX 绘制。
 

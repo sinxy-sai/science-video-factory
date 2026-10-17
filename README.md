@@ -8,6 +8,8 @@ Science Video Factory 是一个基于清单生成科普视频的开源工作流�
 
 ```powershell
 npm install
+npm run doctor
+npm run check-agent-harness
 npm run create-episode -- my-topic
 npm run prepare-episode-assets -- my-topic
 npm run validate-episode -- my-topic
@@ -16,6 +18,17 @@ npm run validate-episode -- my-topic
 npm run preview-episode -- my-topic
 npm run render-episode -- my-topic
 ```
+
+依赖诊断与安装：
+
+```powershell
+npm run doctor
+npm run setup:python
+```
+
+工作流优先使用项目 `.venv` 中的 Python/Manim，以及 `tools/ffmpeg/bin` 中的 FFmpeg/FFprobe，不要求系统 PATH 已配置这些工具。
+
+工作流 skill 的规范源是 `skills/science-video-workflow/SKILL.md`，并同步到三个 harness 的项目发现目录：`.agents/skills/science-video-workflow/SKILL.md`、`.claude/skills/science-video-workflow/SKILL.md` 和 `.codex/skills/science-video-workflow/SKILL.md`。四份文件必须保持完全一致；修改规范源后运行 `npm run sync-agent-harness-skill`，提交前运行 `npm run check-agent-harness` 检查内容哈希和项目 guide 引用。`.codex` 不是独立规则来源，也不会被删除。
 
 如果需要新建主题：
 

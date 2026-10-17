@@ -1,6 +1,6 @@
 import {z} from 'zod';
-import {shotImplementationSchema, shotRendererSchema, type ShotRenderer} from '../production/shot-contract';
-export {shotImplementationSchema, shotRendererSchema};
+import {shotImplementationSchema, shotRendererSchema, shotLayerSchema, type ShotRenderer} from '../production/shot-contract';
+export {shotImplementationSchema, shotRendererSchema, shotLayerSchema};
 export type {ShotRenderer};
 
 export const shotPacingSchema = z.enum(['slow', 'measured', 'fast', 'explosive']);
@@ -56,6 +56,11 @@ export const shotBriefSchema = z.object({
   implementation: shotImplementationSchema,
   qualityChecks: shotQualityChecksSchema,
   assets: z.array(shotAssetSchema).default([]),
+}).superRefine((brief, ctx) => {
+  if (brief.renderer !== 'composite' || brief.implementation.composition !== 'layered') return;
+  for (const [index, layer] of brief.implementation.layers.entries()) {
+    if (layer.durationInFrames !== brief.durationInFrames) ctx.addIssue({code: z.ZodIssueCode.custom, path: ['implementation', 'layers', index, 'durationInFrames'], message: 'Layer duration must match the shot duration'});
+  }
 });
 
 export type ShotBrief = z.infer<typeof shotBriefSchema>;

@@ -38,5 +38,20 @@ const base = {
 assert.equal(shotBriefSchema.safeParse(base).success, true);
 assert.equal(shotBriefSchema.safeParse({...base, renderer: 'remotion-native'}).success, false);
 assert.equal(shotBriefSchema.safeParse({...base, implementation: {...base.implementation, sourceRoot: 'hyperframes/shot-001'}}).success, false);
+assert.equal(shotBriefSchema.safeParse({...base, renderer: 'manim', implementation: {...base.implementation, sourceRoot: 'manim/shot-001', entryPoint: 'FourierShot', visualMode: 'external'}}).success, true);
 assert.equal(shotBriefSchema.safeParse({...base, implementation: {...base.implementation, output: {...base.implementation.output, width: 0}}}).success, false);
+const layered = {
+  ...base,
+  renderer: 'composite',
+  implementation: {
+    composition: 'layered',
+    output: base.implementation.output,
+    layers: [
+      {id: 'background', renderer: 'browser', sourceRoot: 'html/shot-001/background', output: base.implementation.output, visualMode: 'svg', files: ['html/shot-001/background/index.html'], zIndex: 0, alpha: false, durationInFrames: 120},
+      {id: 'math-overlay', renderer: 'manim', sourceRoot: 'manim/shot-001/math', entryPoint: 'FourierOverlay', output: {...base.implementation.output, kind: 'frame-sequence', alpha: true}, visualMode: 'external', files: ['manim/shot-001/math/scene.py'], zIndex: 10, alpha: true, durationInFrames: 120},
+    ],
+  },
+};
+assert.equal(shotBriefSchema.safeParse(layered).success, true);
+assert.equal(shotBriefSchema.safeParse({...layered, implementation: {...layered.implementation, layers: layered.implementation.layers.map((layer) => ({...layer, output: {...layer.output, width: 640}}))}}).success, false);
 console.log('browser shot contract behaves as expected');
