@@ -69,7 +69,7 @@ The Remotion renderer receives the selected manifest through a serialized props 
 
 - Build the static hero frame before adding motion.
 - Keep primary content in a full-size safe container with padding and flex layout.
-- Use `useCurrentFrame`, `interpolate`, and `spring` for deterministic animation.
+- For Remotion-owned layers, use `useCurrentFrame`, `interpolate`, and `spring` for deterministic animation. Browser-authored shots must use HyperFrames `hf-seek` frame events and GSAP or equivalent frame-derived state.
 - Keep text at readable video sizes and avoid long paragraphs.
 - Do not rely on hover, audio, or interaction to reveal the core explanation.
 - Give motion a job: introduce, emphasize, compare, show process, or show cause and effect.
