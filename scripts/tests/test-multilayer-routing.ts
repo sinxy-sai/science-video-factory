@@ -12,8 +12,16 @@ try {
   mkdirSync(manimDirectory, {recursive: true});
   writeFileSync(join(browserDirectory, 'index.html'), '<div data-composition-id="shot-001" data-width="1280" data-height="720" data-duration="4"><script>window.__timelines={};</script></div>', 'utf8');
   writeFileSync(join(manimDirectory, 'scene.py'), 'from manim import *\nclass FourierOverlay(Scene):\n    def construct(self):\n        self.wait(1)\n', 'utf8');
-  for (const file of ['python.exe', 'manim.exe']) { mkdirSync(join(root, '.venv', 'Scripts'), {recursive: true}); writeFileSync(join(root, '.venv', 'Scripts', file), '', 'utf8'); }
-  for (const file of ['ffmpeg.exe', 'ffprobe.exe']) { mkdirSync(join(root, 'tools', 'ffmpeg', 'bin'), {recursive: true}); writeFileSync(join(root, 'tools', 'ffmpeg', 'bin', file), '', 'utf8'); }
+  const scriptsDirectory = process.platform === 'win32' ? 'Scripts' : 'bin';
+  const executable = (name: string) => process.platform === 'win32' ? `${name}.exe` : name;
+  mkdirSync(join(root, '.venv', scriptsDirectory), {recursive: true});
+  for (const file of ['python', 'manim']) {
+    writeFileSync(join(root, '.venv', scriptsDirectory, executable(file)), '', 'utf8');
+  }
+  mkdirSync(join(root, 'tools', 'ffmpeg', 'bin'), {recursive: true});
+  for (const file of ['ffmpeg', 'ffprobe']) {
+    writeFileSync(join(root, 'tools', 'ffmpeg', 'bin', executable(file)), '', 'utf8');
+  }
   const brief = {
     id: 'shot-001', sceneId: 'intro', title: 'demo', narration: 'demo', visual: 'demo', renderer: 'composite', visualStyle: 'episode-defined',
     visualDirection: {composition: 'demo', focalPoint: 'demo', hierarchy: ['demo'], palette: 'demo', typography: 'demo'},
