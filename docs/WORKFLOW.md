@@ -56,7 +56,7 @@ npm run setup:python
 
 新 episode 默认使用 `browser`。每个镜头在 `html/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查。Remotion 不绘制镜头内容，只合成已渲染的镜头资产。
 
-`validate-episode-planning` 先检查计划文档和批准状态，并确认文档非空且没有重复段落。`validate-episode-shots` 按 ShotBrief 的 renderer 路由：`browser` 通过 HyperFrames `check`，Manim 通过项目 `.venv` 执行，覆盖对应 renderer 的源文件、运行时和输出检查；Blender 在没有执行器时明确失败。通过后才进入资产准备和最终合成。
+`validate-episode-planning` 先检查计划文档和批准状态，并确认文档非空且没有重复段落。`validate-episode-shots` 按 ShotBrief 的 renderer 路由：`browser` 通过 HyperFrames `check`，Manim 通过项目 `.venv` 执行，`composite` 逐层校验各 renderer；Blender 在没有执行器时明确失败。通过后才进入资产准备和最终合成。
 
 `author-episode-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-episode-shots` 启动官方 HyperFrames Studio；`render-episode-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-episode-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
@@ -76,6 +76,8 @@ npm run setup:python
 - **HyperFrames**：驱动浏览器镜头、检查、预览和渲染。
 - **Remotion**：总时间轴、字幕、转场、镜头资产合成和最终视频。
 - **FFmpeg**：编码、封装和音视频复用。
+
+一个 ShotBrief 可以使用 `renderer: "composite"` 和 `implementation.composition: "layered"` 组合多个图层。每层声明自己的 renderer、源文件、`zIndex` 和输出；例如浏览器/Three.js 作为不透明背景，Manim 作为透明 PNG 序列叠加层。各层先独立渲染，再由 FFmpeg 按 zIndex 合成为一个镜头 MP4，Remotion 继续负责字幕、转场和 episode 级合成。所有图层必须共享镜头的尺寸、fps 和时长，最底层必须不透明。
 
 默认不添加音效、配乐或配音音频。旁白文案、屏幕字幕和未来的配音音频必须共享同一套 scene-relative 帧时间轴：`script.md`/ShotBrief 保存文案，manifest captions 保存显示区间，未来 voiceover cue 必须复用这些区间。当前尚未生成配音音频，但不能另起一套时间轴。字幕由 Remotion 的 CaptionLayer 统一渲染。`validate` 会强制检查剧本、分镜、ShotBrief、连续性、实现文件和字幕覆盖率。
 

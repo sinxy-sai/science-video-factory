@@ -3,6 +3,7 @@ import {join, resolve} from 'node:path';
 import {shotBriefSchema, type ShotBrief} from '../../content/shot-brief';
 import type {EpisodeModule} from '../../content/episode-module';
 import {validatePlanning} from '../../production/planning';
+import {implementationFiles, isLayeredImplementation} from '../../production/shot-contract';
 
 const placeholderTerms = ['Replace with', 'Describe the science', 'Define palette', 'Choose a named', 'TODO', 'TBD'];
 const nonEmpty = (path: string) => existsSync(path) && readFileSync(path, 'utf8').trim().length > 0;
@@ -87,19 +88,23 @@ export function validateWorkflow(episode: EpisodeModule): void {
       throw new Error(`${id}/${brief.id}: ShotBrief still contains placeholder visual or motion direction`);
     }
     if (brief.visualStyle !== 'episode-defined') throw new Error(`${id}/${brief.id}: external style packs are not configured; define the episode visual language in visual-style.md`);
-    if (brief.renderer === 'browser' && !brief.implementation.sourceRoot.startsWith('html/')) throw new Error(`${id}/${brief.id}: browser shots must use an html/<shot-id>/ sourceRoot`);
-    if (brief.renderer === 'manim' && !brief.implementation.sourceRoot.startsWith('manim/')) throw new Error(`${id}/${brief.id}: manim shots must use a manim/<shot-id>/ sourceRoot`);
-    if (brief.renderer === 'manim' && !brief.implementation.entryPoint) throw new Error(`${id}/${brief.id}: manim shots must declare implementation.entryPoint`);
-    if (brief.implementation.sourceRoot.startsWith('hyperframes/')) throw new Error(`${id}/${brief.id}: legacy hyperframes source paths are not supported`);
+    const implementation = brief.implementation;
+    if (!isLayeredImplementation(implementation) && brief.renderer === 'browser' && !implementation.sourceRoot.startsWith('html/')) throw new Error(`${id}/${brief.id}: browser shots must use an html/<shot-id>/ sourceRoot`);
+    if (!isLayeredImplementation(implementation) && brief.renderer === 'manim' && !implementation.sourceRoot.startsWith('manim/')) throw new Error(`${id}/${brief.id}: manim shots must use a manim/<shot-id>/ sourceRoot`);
+    if (!isLayeredImplementation(implementation) && brief.renderer === 'manim' && !implementation.entryPoint) throw new Error(`${id}/${brief.id}: manim shots must declare implementation.entryPoint`);
+    if (!isLayeredImplementation(implementation) && implementation.sourceRoot.startsWith('hyperframes/')) throw new Error(`${id}/${brief.id}: legacy hyperframes source paths are not supported`);
+    if (brief.renderer === 'composite' && !isLayeredImplementation(implementation)) throw new Error(`${id}/${brief.id}: composite shots must use layered implementation`);
+    if (brief.renderer !== 'composite' && isLayeredImplementation(implementation)) throw new Error(`${id}/${brief.id}: layered implementation must use composite renderer`);
     if (!sceneIds.has(brief.sceneId)) throw new Error(`${id}/${brief.id}: sceneId ${brief.sceneId} is not in manifest`);
     briefSceneIds.add(brief.sceneId);
     const scene = scenes.find((item) => item.id === brief.sceneId)!;
     if (brief.durationInFrames !== scene.durationInFrames) throw new Error(`${id}/${brief.id}: duration does not match manifest scene ${brief.sceneId}`);
-    if (brief.renderer === 'browser' && !brief.implementation.files.some((file) => file.startsWith('html/'))) throw new Error(`${id}/${brief.id}: browser shot must declare an html implementation file`);
-    if (brief.renderer === 'manim' && !brief.implementation.files.some((file) => file.startsWith('manim/') && /\.py$/i.test(file))) throw new Error(`${id}/${brief.id}: manim shot must declare a manim .py implementation file`);
-    for (const file of brief.implementation.files) if (!existsSync(join(root, file))) throw new Error(`${id}/${brief.id}: implementation file does not exist: ${file}`);
+    const files = implementationFiles(implementation);
+    if (brief.renderer === 'browser' && !files.some((file) => file.startsWith('html/'))) throw new Error(`${id}/${brief.id}: browser shot must declare an html implementation file`);
+    if (brief.renderer === 'manim' && !files.some((file) => file.startsWith('manim/') && /\.py$/i.test(file))) throw new Error(`${id}/${brief.id}: manim shot must declare a manim .py implementation file`);
+    for (const file of files) if (!existsSync(join(root, file))) throw new Error(`${id}/${brief.id}: implementation file does not exist: ${file}`);
     if (brief.renderer === 'browser') {
-      const sourceFiles = brief.implementation.files.filter((file) => /\.html?$/i.test(file));
+      const sourceFiles = files.filter((file) => /\.html?$/i.test(file));
       const source = sourceFiles.map((file) => readFileSync(join(root, file), 'utf8')).join('\n');
       validateBrowserShotText({
         episodeId: id,
@@ -108,6 +113,12 @@ export function validateWorkflow(episode: EpisodeModule): void {
         captions: scene.captions.map((caption) => caption.text),
         source,
       });
+    }
+    if (brief.renderer === 'composite' && isLayeredImplementation(implementation)) {
+      for (const layer of implementation.layers.filter((item) => item.renderer === 'browser')) {
+        const source = layer.files.filter((file) => /\.html?$/i.test(file)).map((file) => readFileSync(join(root, file), 'utf8')).join('\n');
+        validateBrowserShotText({episodeId: id, shotId: `${brief.id}/${layer.id}`, title: brief.title, captions: scene.captions.map((caption) => caption.text), source});
+      }
     }
     if (index > 0) {
       const previous = briefs[index - 1];

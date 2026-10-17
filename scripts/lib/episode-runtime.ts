@@ -5,6 +5,7 @@ import type {EpisodeModule} from '../../content/episode-module';
 import {totalDurationInFrames, type EpisodeManifest} from '../../content/schema';
 import type {ShotBrief} from '../../content/shot-brief';
 import type {ShotAssetRecord} from '../../production/shot-assets';
+import {isLayeredImplementation} from '../../production/shot-contract';
 import {projectDependencyEnv} from './project-dependencies';
 
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -76,6 +77,7 @@ export function staticEpisodeRoot(id: string): string {
 }
 
 export function shotSourceDirectory(episodeId: string, brief: ShotBrief): string {
+  if (isLayeredImplementation(brief.implementation)) return episodeRoot(episodeId);
   return resolve(episodeRoot(episodeId), brief.implementation.sourceRoot);
 }
 

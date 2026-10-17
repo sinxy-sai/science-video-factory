@@ -36,8 +36,8 @@ Treat these guides as part of the workflow contract. If a guide conflicts with t
 2. Write the complete narration in `script.md`.
 3. Write `storyboard.md` with one claim, one visual relationship, explicit beats, and caption intent per shot.
 4. Create one `shot-briefs/shot-*.json` for every manifest scene. Include continuity, renderer choice, implementation files, and assets.
-5. Implement each shot through its declared route: browser shots in `html/<shot-id>/`, Manim shots in `manim/<shot-id>/*.py` with `implementation.entryPoint`; keep `manifest.ts`/`episode.ts` as episode metadata and schema.
-6. Run `npm run validate-episode-shots -- <episode-id>`. This invokes HyperFrames for browser shots and project-local Manim dry-run validation for Manim shots.
+5. Implement each shot through its declared route: browser shots in `html/<shot-id>/`, Manim shots in `manim/<shot-id>/*.py` with `implementation.entryPoint`, or layered shots with multiple renderer layers. Keep `manifest.ts`/`episode.ts` as episode metadata and schema.
+6. Run `npm run validate-episode-shots -- <episode-id>`. This invokes HyperFrames for browser layers, project-local Manim dry-run validation for Manim layers, and the composite layer contract for layered shots.
 7. Use `npm run preview-episode-shots -- <episode-id> [shot-id]` and `npm run render-episode-shots -- <episode-id>` for shot preview and rendering.
 8. Run `npm run prepare-episode-assets -- <episode-id>` and `npm run validate-episode -- <episode-id>`. Both shot and episode validation must pass before final render.
 9. Preview with `npm run preview-episode -- <episode-id>` and inspect the dynamic rhythm.
@@ -55,7 +55,7 @@ The Remotion renderer receives the selected manifest through a serialized props 
 - Use CSS for layout, typography, and simple transitions.
 - Use Canvas 2D for dense repeated marks, particles, or high-frequency redraw. Use frame-derived values; never use wall-clock time or unseeded randomness.
 - Add Three.js, WebGL, or GLSL only when depth, scale, flow, or a shader is part of the explanation.
-- Keep Remotion as the final composition timeline. HyperFrames drives browser-authored shots; GSAP controls shot-level motion; Manim drives mathematical shots; Blender remains an explicit future adapter.
+- Keep Remotion as the final episode composition timeline. HyperFrames drives browser-authored layers; GSAP controls browser motion; Manim drives mathematical layers; FFmpeg composites layers within a shot; Blender remains an explicit future adapter.
 - Choose the visual mode from the storyboard: HTML/CSS for layout, SVG for labeled vector relationships, Canvas 2D for dense redraw, and Three.js/WebGL for depth, lighting, shaders, or spatial motion.
 
 ### Text ownership

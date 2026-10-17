@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {mkdirSync, mkdtempSync, rmSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
-import {getRendererAdapter} from '../../production/renderers';
+import {buildManimRenderArgs, getRendererAdapter} from '../../production/renderers';
 
 const root = mkdtempSync(join(tmpdir(), 'science-video-manim-'));
 try {
@@ -26,6 +26,10 @@ try {
   assert.deepEqual(errors, []);
   writeFileSync(file, 'from manim import *\n\nclass OtherShot(Scene):\n    def construct(self):\n        pass\n', 'utf8');
   assert.equal(getRendererAdapter('manim').validate({episodeId: 'demo', directory: source, brief, projectRoot: root}).some((message) => message.includes('entryPoint')), true);
+  const transparentBrief = {...brief, implementation: {...brief.implementation, output: {...brief.implementation.output, kind: 'frame-sequence', alpha: true}}};
+  const args = buildManimRenderArgs({episodeId: 'demo', directory: source, brief: transparentBrief as any, projectRoot: root}, file, join(root, 'renders/demo/layers/math'));
+  assert.equal(args.includes('--transparent'), true);
+  assert.equal(args.includes('png-sequence'), true);
   console.log('manim adapter contract behaves as expected');
 } finally {
   rmSync(root, {recursive: true, force: true});

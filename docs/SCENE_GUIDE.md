@@ -10,6 +10,7 @@
 - `continuity.inherits` 和 `continuity.leaves`
 - `renderer`、`implementation.sourceRoot`、`implementation.files`
 - `implementation.visualMode`、`implementation.composition` 和 `implementation.output`
+- layered 镜头还要声明 `implementation.layers`；每层有独立 renderer、源文件、`zIndex`、alpha 和中间输出
 - 该镜头的连续性、质量检查和已声明资产
 
 镜头之间的连续性必须可追溯：下一镜声明继承的对象，必须由上一镜声明留下。
@@ -42,7 +43,7 @@
 
 ### Beat purpose
 
-可用的 beat purpose 包括：`enter`、`establish`、`focus`、`process`、`compare`、`resolve`、`transition`。浏览器镜头通过 HyperFrames 的 `hf-seek` 时间驱动 HTML/CSS/JavaScript、SVG、Canvas 或 WebGL 状态；Manim 镜头由场景类的确定性动画时间线驱动；Remotion 负责镜头资产之上的字幕和转场。
+可用的 beat purpose 包括：`enter`、`establish`、`focus`、`process`、`compare`、`resolve`、`transition`。浏览器镜头通过 HyperFrames 的 `hf-seek` 时间驱动 HTML/CSS/JavaScript、SVG、Canvas 或 WebGL 状态；Manim 镜头由场景类的确定性动画时间线驱动；layered 镜头让这些 renderer 在同一 shot 时间线上分别生成图层，再由 FFmpeg 叠加；Remotion 负责镜头资产之上的字幕和转场。
 
 ## 精确工作流
 

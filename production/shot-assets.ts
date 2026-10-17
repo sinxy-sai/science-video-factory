@@ -2,12 +2,13 @@ import {existsSync, readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import type {ShotBrief} from '../content/shot-brief';
 import {shotAssetPath} from '../scripts/lib/episode-runtime';
+import {isLayeredImplementation, type VisualMode} from './shot-contract';
 
 export type ShotAssetRecord = {
   id: string;
   sceneId: string;
   renderer: ShotBrief['renderer'];
-  visualMode: ShotBrief['implementation']['visualMode'];
+  visualMode: VisualMode;
   kind: ShotBrief['implementation']['output']['kind'];
   path: string;
   sourcePath: string;
@@ -18,7 +19,9 @@ export type ShotAssetRecord = {
 };
 
 export function buildShotAssetRecord(episodeId: string, brief: ShotBrief): ShotAssetRecord {
-  return {id: brief.id, sceneId: brief.sceneId, renderer: brief.renderer, visualMode: brief.implementation.visualMode, kind: brief.implementation.output.kind, path: shotAssetPath(episodeId, brief), sourcePath: brief.implementation.output.path, width: brief.implementation.output.width, height: brief.implementation.output.height, fps: brief.implementation.output.fps, durationInFrames: brief.durationInFrames};
+  const implementation = brief.implementation;
+  const visualMode = isLayeredImplementation(implementation) ? 'external' : implementation.visualMode;
+  return {id: brief.id, sceneId: brief.sceneId, renderer: brief.renderer, visualMode, kind: implementation.output.kind, path: shotAssetPath(episodeId, brief), sourcePath: implementation.output.path, width: implementation.output.width, height: implementation.output.height, fps: implementation.output.fps, durationInFrames: brief.durationInFrames};
 }
 
 export function buildShotAssetManifest(episodeId: string, briefs: ShotBrief[]): ShotAssetRecord[] {
