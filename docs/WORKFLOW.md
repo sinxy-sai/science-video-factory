@@ -46,13 +46,17 @@ npm run validate-episode -- my-topic
 npm run preview-episode -- my-topic
 npm run render-still-frame -- my-topic --frame 30
 npm run remove-episode -- my-topic
+npm run doctor
+npm run setup:python
 ```
+
+`npm run doctor` 是渲染前的依赖发现入口：它优先检查项目 `.venv` 中的 Python/Manim，以及 `tools/ffmpeg/bin` 中的 FFmpeg/FFprobe，不依赖系统 PATH。`npm run setup:python` 按 `requirements.txt` 创建或补齐项目 `.venv`。
 
 `create-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`html/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准，并且不能为空。
 
 新 episode 默认使用 `browser`。每个镜头在 `html/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查。Remotion 不绘制镜头内容，只合成已渲染的镜头资产。
 
-`validate-episode-planning` 先检查计划文档和批准状态，并确认文档非空且没有重复段落。`validate-episode-shots` 通过 `browser` renderer adapter 执行 HyperFrames `check`，覆盖 lint、runtime、layout、motion 和 WCAG 对比度检查；Manim 和 Blender 在没有执行器时明确失败。通过后才进入资产准备和最终合成。
+`validate-episode-planning` 先检查计划文档和批准状态，并确认文档非空且没有重复段落。`validate-episode-shots` 按 ShotBrief 的 renderer 路由：`browser` 通过 HyperFrames `check`，Manim 通过项目 `.venv` 执行，覆盖对应 renderer 的源文件、运行时和输出检查；Blender 在没有执行器时明确失败。通过后才进入资产准备和最终合成。
 
 `author-episode-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-episode-shots` 启动官方 HyperFrames Studio；`render-episode-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-episode-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 

@@ -88,12 +88,15 @@ export function validateWorkflow(episode: EpisodeModule): void {
     }
     if (brief.visualStyle !== 'episode-defined') throw new Error(`${id}/${brief.id}: external style packs are not configured; define the episode visual language in visual-style.md`);
     if (brief.renderer === 'browser' && !brief.implementation.sourceRoot.startsWith('html/')) throw new Error(`${id}/${brief.id}: browser shots must use an html/<shot-id>/ sourceRoot`);
+    if (brief.renderer === 'manim' && !brief.implementation.sourceRoot.startsWith('manim/')) throw new Error(`${id}/${brief.id}: manim shots must use a manim/<shot-id>/ sourceRoot`);
+    if (brief.renderer === 'manim' && !brief.implementation.entryPoint) throw new Error(`${id}/${brief.id}: manim shots must declare implementation.entryPoint`);
     if (brief.implementation.sourceRoot.startsWith('hyperframes/')) throw new Error(`${id}/${brief.id}: legacy hyperframes source paths are not supported`);
     if (!sceneIds.has(brief.sceneId)) throw new Error(`${id}/${brief.id}: sceneId ${brief.sceneId} is not in manifest`);
     briefSceneIds.add(brief.sceneId);
     const scene = scenes.find((item) => item.id === brief.sceneId)!;
     if (brief.durationInFrames !== scene.durationInFrames) throw new Error(`${id}/${brief.id}: duration does not match manifest scene ${brief.sceneId}`);
     if (brief.renderer === 'browser' && !brief.implementation.files.some((file) => file.startsWith('html/'))) throw new Error(`${id}/${brief.id}: browser shot must declare an html implementation file`);
+    if (brief.renderer === 'manim' && !brief.implementation.files.some((file) => file.startsWith('manim/') && /\.py$/i.test(file))) throw new Error(`${id}/${brief.id}: manim shot must declare a manim .py implementation file`);
     for (const file of brief.implementation.files) if (!existsSync(join(root, file))) throw new Error(`${id}/${brief.id}: implementation file does not exist: ${file}`);
     if (brief.renderer === 'browser') {
       const sourceFiles = brief.implementation.files.filter((file) => /\.html?$/i.test(file));

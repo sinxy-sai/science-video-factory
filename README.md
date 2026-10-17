@@ -8,6 +8,7 @@ Science Video Factory 是一个基于清单生成科普视频的开源工作流�
 
 ```powershell
 npm install
+npm run doctor
 npm run create-episode -- my-topic
 npm run prepare-episode-assets -- my-topic
 npm run validate-episode -- my-topic
@@ -16,6 +17,15 @@ npm run validate-episode -- my-topic
 npm run preview-episode -- my-topic
 npm run render-episode -- my-topic
 ```
+
+依赖诊断与安装：
+
+```powershell
+npm run doctor
+npm run setup:python
+```
+
+工作流优先使用项目 `.venv` 中的 Python/Manim，以及 `tools/ffmpeg/bin` 中的 FFmpeg/FFprobe，不要求系统 PATH 已配置这些工具。
 
 如果需要新建主题：
 

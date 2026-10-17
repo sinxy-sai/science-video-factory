@@ -38,5 +38,6 @@ const base = {
 assert.equal(shotBriefSchema.safeParse(base).success, true);
 assert.equal(shotBriefSchema.safeParse({...base, renderer: 'remotion-native'}).success, false);
 assert.equal(shotBriefSchema.safeParse({...base, implementation: {...base.implementation, sourceRoot: 'hyperframes/shot-001'}}).success, false);
+assert.equal(shotBriefSchema.safeParse({...base, renderer: 'manim', implementation: {...base.implementation, sourceRoot: 'manim/shot-001', entryPoint: 'FourierShot', visualMode: 'external'}}).success, true);
 assert.equal(shotBriefSchema.safeParse({...base, implementation: {...base.implementation, output: {...base.implementation.output, width: 0}}}).success, false);
 console.log('browser shot contract behaves as expected');

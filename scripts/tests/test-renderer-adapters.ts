@@ -6,7 +6,8 @@ assert.equal(browser.id, 'browser');
 assert.equal(getRendererAdapter('manim').id, 'manim');
 assert.equal(getRendererAdapter('blender').id, 'blender');
 
-const unsupported = getRendererAdapter('manim').validate({
+const manim = getRendererAdapter('manim');
+const unsupported = manim.validate({
   episodeId: 'demo',
   directory: 'content/episodes/demo/html/shot-001',
   brief: {
@@ -18,5 +19,5 @@ const unsupported = getRendererAdapter('manim').validate({
     qualityChecks: {lint: true, validate: true, inspect: true, animationMap: true, strict: true}, assets: [],
   },
 });
-assert.equal(unsupported.some((message) => message.includes('not configured')), true);
+assert.equal(unsupported.some((message) => message.includes('manim source')), true);
 console.log('renderer adapter routing behaves as expected');

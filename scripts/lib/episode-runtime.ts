@@ -1,10 +1,11 @@
 import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
-import {delimiter, join, resolve} from 'node:path';
+import {join, resolve} from 'node:path';
 import {getEpisodeModule} from '../../content/episodes/registry.generated';
 import type {EpisodeModule} from '../../content/episode-module';
 import {totalDurationInFrames, type EpisodeManifest} from '../../content/schema';
 import type {ShotBrief} from '../../content/shot-brief';
 import type {ShotAssetRecord} from '../../production/shot-assets';
+import {projectDependencyEnv} from './project-dependencies';
 
 const idPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 
@@ -124,10 +125,6 @@ export function browserArgs(): string[] {
   return executable ? [`--browser-executable=${executable}`] : [];
 }
 
-export function projectToolEnv(): NodeJS.ProcessEnv {
-  const ffmpegBin = resolve('tools', 'ffmpeg', 'bin');
-  return {
-    ...process.env,
-    PATH: `${ffmpegBin}${delimiter}${process.env.PATH ?? ''}`,
-  };
+export function projectToolEnv(projectRoot = process.cwd()): NodeJS.ProcessEnv {
+  return projectDependencyEnv(projectRoot);
 }

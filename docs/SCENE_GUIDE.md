@@ -1,6 +1,6 @@
 # 场景指南
 
-每个 episode 是自包含模块，目录至少包含 `script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`manifest.ts`、`episode.ts`、`scenes/`、`assets/generated/`、`html/` 和 `manim/`。`html/<shot-id>/index.html` 是镜头画面源文件；它可以组合 HTML/CSS/JavaScript、SVG、Canvas 2D 或 Three.js/WebGL，并用 GSAP 编排确定性动画。HyperFrames 检查、预览并渲染这些浏览器镜头，Remotion 只合成已准备的镜头资产、字幕和转场。生成的 `content/episodes/registry.generated.ts` 通过静态 import 收集所有 episode，命令行和 Remotion 都从这个 registry 加载模块。
+每个 episode 是自包含模块，目录至少包含 `script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`manifest.ts`、`episode.ts`、`scenes/`、`assets/generated/`、`html/` 和 `manim/`。浏览器镜头使用 `html/<shot-id>/index.html`，可以组合 HTML/CSS/JavaScript、SVG、Canvas 2D 或 Three.js/WebGL，并用 GSAP 编排确定性动画；数学、几何、向量和公式镜头使用 `manim/<shot-id>/*.py`，并在 ShotBrief 中声明 `implementation.entryPoint`。HyperFrames 检查、预览并渲染浏览器镜头，Manim 使用项目 `.venv` 渲染数学镜头，Remotion 只合成已准备的镜头资产、字幕和转场。生成的 `content/episodes/registry.generated.ts` 通过静态 import 收集所有 episode，命令行和 Remotion 都从这个 registry 加载模块。
 
 ### ShotBrief 契约
 
@@ -42,7 +42,7 @@
 
 ### Beat purpose
 
-可用的 beat purpose 包括：`enter`、`establish`、`focus`、`process`、`compare`、`resolve`、`transition`。浏览器镜头通过 HyperFrames 的 `hf-seek` 时间驱动 HTML/CSS/JavaScript、SVG、Canvas 或 WebGL 状态；Remotion 负责镜头资产之上的字幕和转场。
+可用的 beat purpose 包括：`enter`、`establish`、`focus`、`process`、`compare`、`resolve`、`transition`。浏览器镜头通过 HyperFrames 的 `hf-seek` 时间驱动 HTML/CSS/JavaScript、SVG、Canvas 或 WebGL 状态；Manim 镜头由场景类的确定性动画时间线驱动；Remotion 负责镜头资产之上的字幕和转场。
 
 ## 精确工作流
 

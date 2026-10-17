@@ -22,7 +22,8 @@ export type ShotOutputContract = z.infer<typeof shotOutputSchema>;
 export const shotCompositionSchema = z.literal('asset');
 
 export const shotImplementationSchema = z.object({
-  sourceRoot: z.string().regex(/^html\/shot-[0-9]{3}$/),
+  sourceRoot: z.string().regex(/^(?:html|manim)\/shot-[0-9]{3}$/),
+  entryPoint: z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/).optional(),
   output: shotOutputSchema,
   composition: shotCompositionSchema.default('asset'),
   visualMode: visualModeSchema.default('html'),
