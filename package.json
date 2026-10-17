@@ -2,7 +2,7 @@
   "name": "science-video-factory",
   "version": "0.1.0",
   "private": false,
-  "description": "Manifest-driven science explainer videos built with Remotion.",
+  "description": "Manifest-driven science explainer videos with HyperFrames, Manim, Remotion, and FFmpeg.",
   "repository": {
     "type": "git",
     "url": "https://github.com/sinxy-sai/science-video-factory.git"

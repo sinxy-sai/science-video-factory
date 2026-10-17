@@ -2,6 +2,7 @@ import {existsSync, mkdirSync, readFileSync, writeFileSync} from 'node:fs';
 import {join} from 'node:path';
 import {loadShotBriefs} from '../lib/episode-workflow-validation';
 import {episodeRoot} from '../lib/episode-runtime';
+import {isLayeredImplementation} from '../../production/shot-contract';
 import {validatePlanning} from '../../production/planning';
 
 const [episodeId] = process.argv.slice(2);
@@ -14,11 +15,22 @@ if (episodeStyle.includes('Define palette')) {
   throw new Error(`${episodeId}: define the topic-specific visual language in visual-style.md before authoring shots`);
 }
 for (const brief of loadShotBriefs(episodeId)) {
-  const shotRoot = join(root, 'hyperframes', brief.id);
-  mkdirSync(join(shotRoot, 'assets'), {recursive: true});
-  const designPath = join(shotRoot, 'DESIGN.md');
-  if (!existsSync(designPath) || readFileSync(designPath, 'utf8').includes('Choose a named')) {
-    writeFileSync(designPath, `${episodeStyle}\n\n## Shot Direction\n\n${brief.visualDirection.composition}\n\nFocal point: ${brief.visualDirection.focalPoint}\n\nMotion: ${brief.motion.entrance}; ${brief.motion.transformation}; ${brief.motion.transition}.\n`, 'utf8');
+  const browserRoots = isLayeredImplementation(brief.implementation)
+    ? brief.implementation.layers.filter((layer) => layer.renderer === 'browser').map((layer) => layer.sourceRoot)
+    : brief.renderer === 'browser'
+      ? [brief.implementation.sourceRoot]
+      : [];
+  if (browserRoots.length === 0) {
+    console.log(`Skipped author workspace: ${episodeId}/${brief.id} (renderer ${brief.renderer} has no browser source)`);
+    continue;
+  }
+  for (const sourceRoot of new Set(browserRoots)) {
+    const shotRoot = join(root, sourceRoot);
+    mkdirSync(join(shotRoot, 'assets'), {recursive: true});
+    const designPath = join(shotRoot, 'DESIGN.md');
+    if (!existsSync(designPath) || readFileSync(designPath, 'utf8').includes('Choose a named')) {
+      writeFileSync(designPath, `${episodeStyle}\n\n## Shot Direction\n\n${brief.visualDirection.composition}\n\nFocal point: ${brief.visualDirection.focalPoint}\n\nMotion: ${brief.motion.entrance}; ${brief.motion.transformation}; ${brief.motion.transition}.\n`, 'utf8');
+    }
   }
   console.log(`Authored workspace: ${episodeId}/${brief.id} (episode-defined)`);
 }

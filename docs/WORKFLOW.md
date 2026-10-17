@@ -38,14 +38,22 @@ Remotion 总合成与 MP4 渲染
 
 ```powershell
 npm run create-episode -- my-topic
-npm run validate-episode-shots -- my-topic
+npm run validate-episode-planning -- my-topic
 npm run author-episode-shots -- my-topic
-npm run prepare-episode-assets -- my-topic
+npm run validate-episode-shots -- my-topic
+npm run preview-episode-shots -- my-topic
 npm run render-episode-shots -- my-topic
+npm run prepare-episode-assets -- my-topic
 npm run validate-episode -- my-topic
 npm run preview-episode -- my-topic
 npm run render-still-frame -- my-topic --frame 30
 npm run remove-episode -- my-topic
+npm run render-episode -- my-topic
+npm run verify-episode-output -- my-topic
+npm run generate-contact-sheet -- my-topic
+npm run compare-episode-visual-regression -- my-topic
+npm run generate-episode-registry
+npm run validate-all-episodes
 npm run doctor
 npm run check-agent-harness
 npm run sync-agent-harness-skill
@@ -56,13 +64,13 @@ npm run setup:python
 
 工作流 skill 的规范源是 `skills/science-video-workflow/SKILL.md`，并通过三个 harness 入口共享：`.agents/skills/science-video-workflow/SKILL.md`、`.claude/skills/science-video-workflow/SKILL.md` 和 `.codex/skills/science-video-workflow/SKILL.md`。四份文件必须内容一致，并且都要求读取本文件、`docs/SCENE_GUIDE.md` 和 `docs/COMPONENT_GUIDE.md`。修改规范源后运行 `npm run sync-agent-harness-skill`，`npm run check-agent-harness` 检查源文件和入口存在、内容哈希一致和 guide 引用完整。`AGENTS.md` 或 `CLAUDE.md` 可以补充宿主指令，但不是工作流规则的必要入口。
 
-`create-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`html/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准，并且不能为空。
+`create-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`html/`、`manim/` 和 `assets/generated/`，并保留一个可选的 `scenes/` 目录作为脚手架。计划文档必须经过讨论、内容、分镜和制作批准，并且不能为空。
 
 新 episode 默认使用 `browser`。每个镜头在 `html/<shot-id>/` 中直接按官方 HyperFrames skill 编写和检查。Remotion 不绘制镜头内容，只合成已渲染的镜头资产。
 
 `validate-episode-planning` 先检查计划文档和批准状态，并确认文档非空且没有重复段落。`validate-episode-shots` 按 ShotBrief 的 renderer 路由：`browser` 通过 HyperFrames `check`，Manim 通过项目 `.venv` 执行，`composite` 逐层校验各 renderer；Blender 在没有执行器时明确失败。通过后才进入资产准备和最终合成。
 
-`author-episode-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-episode-shots` 启动官方 HyperFrames Studio；`render-episode-shots` 生成 `renders/<episode-id>/shots/shot-*.mp4`；`verify-episode-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
+`author-episode-shots` 读取当前 episode 的 `visual-style.md`，风格必须根据话题确定。`preview-episode-shots` 按 ShotBrief 启动对应的 HyperFrames 或 Manim 预览；`render-episode-shots` 生成各 ShotBrief 声明的镜头输出（MP4、WebM 或帧序列）到 `renders/<episode-id>/shots/`；`verify-episode-output` 检查最终 `final.mp4` 并写入 `output-verification.json`。
 
 `generate-contact-sheet` 会把代表帧合成为可审阅的 PNG 接触表；`compare-episode-visual-regression` 可对比 `baselines/` 下的历史帧。最终 `render-episode` 只接受 `--scale 1`，缩放输出不能写入标准 `final.mp4`；预览请使用 `render-still-frame` 或 Remotion 直接输出到临时路径。`prepare-episode-assets` 会校验 ShotBrief 声明的输出，并将镜头素材和生成素材复制到 `static/episodes/<episode-id>/`，写入 `shots/assets.manifest.json`。`static/` 是 Remotion 的运行时静态资源根目录，由脚本生成，不作为源素材维护。
 
