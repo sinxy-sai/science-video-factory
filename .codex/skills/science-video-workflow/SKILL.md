@@ -7,6 +7,16 @@ description: Build reusable science explainer videos with browser-authored shots
 
 This project generates explanatory videos for real viewers. Keep the explanation clear, but allow cinematic staging, visual metaphor, camera movement, rhythm changes, and varied animation types when they improve understanding and attention.
 
+## Required project guides
+
+Before planning, creating, editing, validating, previewing, or rendering an episode, read these project guides from the repository root:
+
+1. `docs/WORKFLOW.md` — episode lifecycle, commands, output paths, and renderer responsibilities.
+2. `docs/SCENE_GUIDE.md` — episode structure, ShotBrief contract, continuity, and beat rules.
+3. `docs/COMPONENT_GUIDE.md` — reusable component boundaries and visual implementation constraints.
+
+Treat these guides as part of the workflow contract. If a guide conflicts with this skill, follow the higher-priority project or user instruction and update the guide or skill when the contract changes. Do not assume that the guides were read in an earlier turn.
+
 ## Skill routing
 
 - Use `superpowers:brainstorming` before designing a new content flow or component behavior.
