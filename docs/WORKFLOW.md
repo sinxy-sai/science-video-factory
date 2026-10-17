@@ -47,10 +47,14 @@ npm run preview-episode -- my-topic
 npm run render-still-frame -- my-topic --frame 30
 npm run remove-episode -- my-topic
 npm run doctor
+npm run check-agent-harness
+npm run sync-agent-harness-skill
 npm run setup:python
 ```
 
 `npm run doctor` 是渲染前的依赖发现入口：它优先检查项目 `.venv` 中的 Python/Manim，以及 `tools/ffmpeg/bin` 中的 FFmpeg/FFprobe，不依赖系统 PATH。`npm run setup:python` 按 `requirements.txt` 创建或补齐项目 `.venv`。
+
+工作流 skill 的规范源是 `skills/science-video-workflow/SKILL.md`，并通过三个 harness 入口共享：`.agents/skills/science-video-workflow/SKILL.md`、`.claude/skills/science-video-workflow/SKILL.md` 和 `.codex/skills/science-video-workflow/SKILL.md`。四份文件必须内容一致，并且都要求读取本文件、`docs/SCENE_GUIDE.md` 和 `docs/COMPONENT_GUIDE.md`。修改规范源后运行 `npm run sync-agent-harness-skill`，`npm run check-agent-harness` 检查源文件和入口存在、内容哈希一致和 guide 引用完整。`AGENTS.md` 或 `CLAUDE.md` 可以补充宿主指令，但不是工作流规则的必要入口。
 
 `create-episode` 会生成完整目录骨架：`content-plan.md`、`shot-design.md`、`script.md`、`storyboard.md`、`visual-style.md`、`shot-briefs/`、`html/`、`manim/` 和 `assets/generated/`。计划文档必须经过讨论、内容、分镜和制作批准，并且不能为空。
 
