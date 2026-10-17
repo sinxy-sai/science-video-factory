@@ -1,6 +1,6 @@
 # Science Video Factory
 
-Science Video Factory 是一个基于清单生成科普视频的开源工作流。镜头使用 HTML/CSS/JavaScript、SVG、Canvas 2D 或 Three.js/WebGL 绘制，使用 GSAP 编排镜头内动画；HyperFrames 驱动浏览器检查、预览和渲染；Remotion 负责总时间轴、字幕、转场和镜头资产合成；FFmpeg 负责编码封装。
+Science Video Factory 是一个基于清单生成科普视频的开源工作流。镜头可以使用 HTML/CSS/JavaScript、SVG、Canvas 2D、Three.js/WebGL 或 Manim 绘制，并用 GSAP 编排浏览器镜头动画；同一个镜头可以把浏览器图层与 Manim 数学图层组合起来。HyperFrames 驱动浏览器镜头的检查、预览和渲染；Manim 使用项目本地 Python 环境；Remotion 负责总时间轴、字幕、转场和镜头资产合成；FFmpeg 负责图层合成、编码和封装。
 
 每条视频都是 `content/episodes/<id>/` 下的自包含模块：`script.md` 是完整旁白，`storyboard.md` 是分镜表，`shot-briefs/*.json` 是逐镜契约，`html/<shot-id>/index.html` 是镜头画面源文件，`manifest.ts` 描述内容。
 
