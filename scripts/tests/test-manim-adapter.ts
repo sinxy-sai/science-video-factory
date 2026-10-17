@@ -7,11 +7,13 @@ import {buildManimRenderArgs, getRendererAdapter} from '../../production/rendere
 const root = mkdtempSync(join(tmpdir(), 'science-video-manim-'));
 try {
   const source = join(root, 'content', 'episodes', 'demo', 'manim', 'shot-001');
+  const scriptsDirectory = process.platform === 'win32' ? 'Scripts' : 'bin';
+  const executable = (name: string) => process.platform === 'win32' ? `${name}.exe` : name;
   mkdirSync(source, {recursive: true});
-  mkdirSync(join(root, '.venv', 'Scripts'), {recursive: true});
+  mkdirSync(join(root, '.venv', scriptsDirectory), {recursive: true});
   mkdirSync(join(root, 'tools', 'ffmpeg', 'bin'), {recursive: true});
-  for (const dependency of ['python.exe', 'manim.exe']) writeFileSync(join(root, '.venv', 'Scripts', dependency), '', 'utf8');
-  for (const dependency of ['ffmpeg.exe', 'ffprobe.exe']) writeFileSync(join(root, 'tools', 'ffmpeg', 'bin', dependency), '', 'utf8');
+  for (const dependency of ['python', 'manim']) writeFileSync(join(root, '.venv', scriptsDirectory, executable(dependency)), '', 'utf8');
+  for (const dependency of ['ffmpeg', 'ffprobe']) writeFileSync(join(root, 'tools', 'ffmpeg', 'bin', executable(dependency)), '', 'utf8');
   const file = join(source, 'scene.py');
   writeFileSync(file, 'from manim import *\n\nclass FourierShot(Scene):\n    def construct(self):\n        self.wait(1)\n', 'utf8');
   const brief = {
