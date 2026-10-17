@@ -23,6 +23,8 @@
 - `beats`：按场景局部帧定义的动画阶段，不能重叠或超出场景时长。
 - `supportingText`：补充说明，可省略。
 
+`title`、`claim`、`supportingText` 和 caption 是脚本/合成层数据，不会自动出现在镜头画面里。旁白文案、caption 显示区间和未来配音 cue 必须使用同一 scene-relative 帧时间轴。浏览器镜头只保留视觉关系需要的短标签；不要在每个镜头重复画 episode 标题、镜头序号或完整字幕。
+
 示例视觉类型（具体可用值由各 episode 的本地 schema 决定）：
 
 - `title`：提出问题或建立概念。

@@ -73,7 +73,15 @@ npm run remove-episode -- my-topic
 - **Remotion**：总时间轴、字幕、转场、镜头资产合成和最终视频。
 - **FFmpeg**：编码、封装和音视频复用。
 
-默认不添加音效；字幕仍是分镜契约的一部分。`validate` 会强制检查剧本、分镜、ShotBrief、连续性、实现文件和字幕覆盖率。
+默认不添加音效、配乐或配音音频。旁白文案、屏幕字幕和未来的配音音频必须共享同一套 scene-relative 帧时间轴：`script.md`/ShotBrief 保存文案，manifest captions 保存显示区间，未来 voiceover cue 必须复用这些区间。当前尚未生成配音音频，但不能另起一套时间轴。字幕由 Remotion 的 CaptionLayer 统一渲染。`validate` 会强制检查剧本、分镜、ShotBrief、连续性、实现文件和字幕覆盖率。
+
+### 画面文字与字幕分工
+
+- `ShotBrief.title`、manifest 的 `scene.title` 和镜头序号是元数据，不得自动绘制到浏览器镜头。
+- 浏览器镜头默认不得出现 `SHOT / 001`、`镜头 01`、episode 标题或“标题 + 副标题 + 图表”的 PPT 式页眉。
+- narration/caption 文案由 Remotion 统一渲染。HTML/CSS/SVG/Canvas/Three.js 只绘制解释关系和必要的短标签。
+- 图内标签必须和 caption 分工，不能逐字重复完整 caption；只保留读懂关系所需的词，例如“缓存”“远处来源”“需要更新”。
+- `validate-episode` 会检查 browser source 中的标题、序号和完整 caption 重复，发现后失败。
 
 ## 内容原则
 

@@ -47,6 +47,13 @@ The Remotion renderer receives the selected manifest through a serialized props 
 - Keep Remotion as the final composition timeline. HyperFrames drives browser-authored shots; GSAP controls shot-level motion; Manim and Blender remain explicit future adapters.
 - Choose the visual mode from the storyboard: HTML/CSS for layout, SVG for labeled vector relationships, Canvas 2D for dense redraw, and Three.js/WebGL for depth, lighting, shaders, or spatial motion.
 
+### Text ownership
+
+- `ShotBrief.title`, scene titles, and shot numbers are metadata only. Do not render them into browser-authored shots.
+- Do not default to a PPT-like `title + subtitle + diagram` layout. Build the visual relationship first.
+- Remotion owns narration captions. Browser shots may use only short relationship labels that are not a verbatim copy of caption text.
+- The workflow has no default sound effects, music, or voiceover audio. Keep narration as text until an audio workflow is explicitly introduced, but reserve one shared scene-relative frame timeline for narration text, caption cues, and future voiceover cues. Never author independent subtitle and voiceover timings.
+
 ## Layout and motion rules
 
 - Build the static hero frame before adding motion.
@@ -60,4 +67,4 @@ The Remotion renderer receives the selected manifest through a serialized props 
 
 ## Future audio
 
-Captions are part of the storyboard contract: add scene-relative caption cues to the manifest and render them with the caption layer. Audio and narration remain optional extensions; route them to `remotion-captions` or an approved narration workflow without making the no-audio renderer wait for an audio file.
+Captions are part of the storyboard contract: add scene-relative caption cues to the manifest and render them with the caption layer. Narration currently means the text script/metadata only; future voiceover cues must reuse the caption timing. Do not generate voiceover audio, sound effects, or music unless the episode explicitly opts into an audio workflow.

@@ -8,6 +8,49 @@ const placeholderTerms = ['Replace with', 'Describe the science', 'Define palett
 const nonEmpty = (path: string) => existsSync(path) && readFileSync(path, 'utf8').trim().length > 0;
 const containsPlaceholder = (value: string) => placeholderTerms.some((term) => value.includes(term));
 
+const normalizeText = (value: string) => value.replace(/\s+/g, '').trim();
+const visibleText = (source: string) => source
+  .replace(/<!--[\s\S]*?-->/g, '')
+  .replace(/<head\b[\s\S]*?<\/head>/gi, '')
+  .replace(/<script\b[\s\S]*?<\/script>/gi, '')
+  .replace(/<style\b[\s\S]*?<\/style>/gi, '')
+  .replace(/<[^>]+>/g, ' ');
+
+/**
+ * Browser shots own the visual relationship; the episode title, shot number,
+ * and narration captions belong to metadata/Remotion layers. Keep this check
+ * deliberately small and deterministic so it catches the common PPT-like
+ * duplication without banning useful labels such as "缓存" or "远处来源".
+ */
+export function validateBrowserShotText(input: {
+  episodeId: string;
+  shotId: string;
+  title: string;
+  captions: string[];
+  source: string;
+}): void {
+  const source = input.source;
+  const normalizedSource = normalizeText(visibleText(source));
+  const title = normalizeText(input.title);
+  if (title.length >= 4 && normalizedSource.includes(title)) {
+    throw new Error(`${input.episodeId}/${input.shotId}: browser shot must not render ShotBrief title text; keep titles in metadata and captions in Remotion`);
+  }
+  if (/(?:SHOT\s*[/#-]?\s*\d{1,3}|镜头\s*[0-9一二三四五六七八九十]+|分镜\s*[0-9一二三四五六七八九十]+)/i.test(visibleText(source))) {
+    throw new Error(`${input.episodeId}/${input.shotId}: browser shot must not render shot sequence labels such as SHOT / 001 or 镜头 01`);
+  }
+  for (const caption of input.captions) {
+    const normalizedCaption = normalizeText(caption);
+    if (normalizedCaption.length >= 6 && normalizedSource.includes(normalizedCaption)) {
+      throw new Error(`${input.episodeId}/${input.shotId}: browser shot repeats caption text; captions are rendered by Remotion`);
+    }
+    const hanText = caption.replace(/[^\u3400-\u9fff]/g, '');
+    const captionFragments = Array.from({length: Math.max(0, hanText.length - 5)}, (_, index) => hanText.slice(index, index + 6));
+    if (captionFragments.some((fragment) => normalizedSource.includes(fragment))) {
+      throw new Error(`${input.episodeId}/${input.shotId}: browser shot repeats a caption phrase (${captionFragments.join('、')}); captions are rendered by Remotion`);
+    }
+  }
+}
+
 export function loadShotBriefs(episodeId: string): ShotBrief[] {
   const directory = resolve('content', 'episodes', episodeId, 'shot-briefs');
   if (!existsSync(directory)) throw new Error(`${episodeId}: missing shot-briefs/`);
@@ -52,6 +95,17 @@ export function validateWorkflow(episode: EpisodeModule): void {
     if (brief.durationInFrames !== scene.durationInFrames) throw new Error(`${id}/${brief.id}: duration does not match manifest scene ${brief.sceneId}`);
     if (brief.renderer === 'browser' && !brief.implementation.files.some((file) => file.startsWith('html/'))) throw new Error(`${id}/${brief.id}: browser shot must declare an html implementation file`);
     for (const file of brief.implementation.files) if (!existsSync(join(root, file))) throw new Error(`${id}/${brief.id}: implementation file does not exist: ${file}`);
+    if (brief.renderer === 'browser') {
+      const sourceFiles = brief.implementation.files.filter((file) => /\.html?$/i.test(file));
+      const source = sourceFiles.map((file) => readFileSync(join(root, file), 'utf8')).join('\n');
+      validateBrowserShotText({
+        episodeId: id,
+        shotId: brief.id,
+        title: brief.title,
+        captions: scene.captions.map((caption) => caption.text),
+        source,
+      });
+    }
     if (index > 0) {
       const previous = briefs[index - 1];
       const previousLeaves = new Set(previous.continuity.leaves);
